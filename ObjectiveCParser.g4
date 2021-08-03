@@ -1,20 +1,16 @@
-/**
-* ObjectiveC version 2
-* based on an LL ansic grammars and
-* and ObjectiveC grammar found in Learning Object C
-*
-* It's a Work in progress, most of the .h file can be parsed
-* June 2008 Cedric Cuche
-**/
-grammar ObjectiveC2ansi;
-options {
-  backtrack=true;
-  output=AST;
-}
-translation_unit: external_declaration+ EOF;
-external_declaration:
+grammar ObjectiveC; //имя грамматики
+
+translation_unit: external_declaration+ EOF; 
+/** это файл
+файл состоит из 1+ external_declaration + EOF
+
+С большой буквы - терминал
+С маленькой - нетерминал
+Правило: ИЛИ | ИЛИ ; (; это конец) **/
+
+external_declaration: 
 COMMENT | LINE_COMMENT | preprocessor_declaration
-|function_definition
+| function_definition
 | declaration
 | class_interface
 | class_implementation
@@ -23,6 +19,7 @@ COMMENT | LINE_COMMENT | preprocessor_declaration
 | protocol_declaration
 | protocol_declaration_list
 | class_declaration_list;
+
 preprocessor_declaration:
 '#import' file_specification
 | '#include' file_specification
