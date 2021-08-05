@@ -2,10 +2,23 @@
 
 package parser // ObjC
 
-import "github.com/antlr/antlr4/runtime/Go/antlr"
+import (
+	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/go-echarts/go-echarts/v2/charts"
+	"github.com/go-echarts/go-echarts/v2/opts"
+)
+
+type Tree struct {
+	charts.BaseConfiguration
+}
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
-type BaseObjCListener struct{}
+type BaseObjCListener struct {
+	Tree Tree
+	Root opts.TreeData
+	nodes []*opts.TreeData
+	current *opts.TreeData
+}
 
 var _ ObjCListener = &BaseObjCListener{}
 
