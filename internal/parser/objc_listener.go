@@ -1,11 +1,11 @@
-// Code generated from ObjectiveC.g4 by ANTLR 4.9.2. DO NOT EDIT.
+// Code generated from ObjC.g4 by ANTLR 4.9.2. DO NOT EDIT.
 
-package parser // ObjectiveC
+package parser // ObjC
 
 import "github.com/antlr/antlr4/runtime/Go/antlr"
 
-// ObjectiveCListener is a complete listener for a parse tree produced by ObjectiveCParser.
-type ObjectiveCListener interface {
+// ObjCListener is a complete listener for a parse tree produced by ObjCParser.
+type ObjCListener interface {
 	antlr.ParseTreeListener
 
 	// EnterTranslation_unit is called when entering the translation_unit production.
@@ -16,12 +16,6 @@ type ObjectiveCListener interface {
 
 	// EnterPreprocessor_declaration is called when entering the preprocessor_declaration production.
 	EnterPreprocessor_declaration(c *Preprocessor_declarationContext)
-
-	// EnterFile_specification is called when entering the file_specification production.
-	EnterFile_specification(c *File_specificationContext)
-
-	// EnterMacro_specification is called when entering the macro_specification production.
-	EnterMacro_specification(c *Macro_specificationContext)
 
 	// EnterClass_interface is called when entering the class_interface production.
 	EnterClass_interface(c *Class_interfaceContext)
@@ -53,6 +47,18 @@ type ObjectiveCListener interface {
 	// EnterProtocol_list is called when entering the protocol_list production.
 	EnterProtocol_list(c *Protocol_listContext)
 
+	// EnterProperty_declaration is called when entering the property_declaration production.
+	EnterProperty_declaration(c *Property_declarationContext)
+
+	// EnterProperty_attributes_declaration is called when entering the property_attributes_declaration production.
+	EnterProperty_attributes_declaration(c *Property_attributes_declarationContext)
+
+	// EnterProperty_attributes_list is called when entering the property_attributes_list production.
+	EnterProperty_attributes_list(c *Property_attributes_listContext)
+
+	// EnterProperty_attribute is called when entering the property_attribute production.
+	EnterProperty_attribute(c *Property_attributeContext)
+
 	// EnterClass_name is called when entering the class_name production.
 	EnterClass_name(c *Class_nameContext)
 
@@ -67,9 +73,6 @@ type ObjectiveCListener interface {
 
 	// EnterInstance_variables is called when entering the instance_variables production.
 	EnterInstance_variables(c *Instance_variablesContext)
-
-	// EnterInstance_variable_declaration is called when entering the instance_variable_declaration production.
-	EnterInstance_variable_declaration(c *Instance_variable_declarationContext)
 
 	// EnterVisibility_specification is called when entering the visibility_specification production.
 	EnterVisibility_specification(c *Visibility_specificationContext)
@@ -110,6 +113,18 @@ type ObjectiveCListener interface {
 	// EnterMethod_type is called when entering the method_type production.
 	EnterMethod_type(c *Method_typeContext)
 
+	// EnterProperty_implementation is called when entering the property_implementation production.
+	EnterProperty_implementation(c *Property_implementationContext)
+
+	// EnterProperty_synthesize_list is called when entering the property_synthesize_list production.
+	EnterProperty_synthesize_list(c *Property_synthesize_listContext)
+
+	// EnterProperty_synthesize_item is called when entering the property_synthesize_item production.
+	EnterProperty_synthesize_item(c *Property_synthesize_itemContext)
+
+	// EnterBlock_type is called when entering the block_type production.
+	EnterBlock_type(c *Block_typeContext)
+
 	// EnterType_specifier is called when entering the type_specifier production.
 	EnterType_specifier(c *Type_specifierContext)
 
@@ -121,6 +136,24 @@ type ObjectiveCListener interface {
 
 	// EnterPrimary_expression is called when entering the primary_expression production.
 	EnterPrimary_expression(c *Primary_expressionContext)
+
+	// EnterDictionary_pair is called when entering the dictionary_pair production.
+	EnterDictionary_pair(c *Dictionary_pairContext)
+
+	// EnterDictionary_expression is called when entering the dictionary_expression production.
+	EnterDictionary_expression(c *Dictionary_expressionContext)
+
+	// EnterArray_expression is called when entering the array_expression production.
+	EnterArray_expression(c *Array_expressionContext)
+
+	// EnterBox_expression is called when entering the box_expression production.
+	EnterBox_expression(c *Box_expressionContext)
+
+	// EnterBlock_parameters is called when entering the block_parameters production.
+	EnterBlock_parameters(c *Block_parametersContext)
+
+	// EnterBlock_expression is called when entering the block_expression production.
+	EnterBlock_expression(c *Block_expressionContext)
 
 	// EnterMessage_expression is called when entering the message_expression production.
 	EnterMessage_expression(c *Message_expressionContext)
@@ -146,8 +179,8 @@ type ObjectiveCListener interface {
 	// EnterEncode_expression is called when entering the encode_expression production.
 	EnterEncode_expression(c *Encode_expressionContext)
 
-	// EnterException_declarator is called when entering the exception_declarator production.
-	EnterException_declarator(c *Exception_declaratorContext)
+	// EnterType_variable_declarator is called when entering the type_variable_declarator production.
+	EnterType_variable_declarator(c *Type_variable_declaratorContext)
 
 	// EnterTry_statement is called when entering the try_statement production.
 	EnterTry_statement(c *Try_statementContext)
@@ -167,6 +200,9 @@ type ObjectiveCListener interface {
 	// EnterSynchronized_statement is called when entering the synchronized_statement production.
 	EnterSynchronized_statement(c *Synchronized_statementContext)
 
+	// EnterAutorelease_statement is called when entering the autorelease_statement production.
+	EnterAutorelease_statement(c *Autorelease_statementContext)
+
 	// EnterFunction_definition is called when entering the function_definition production.
 	EnterFunction_definition(c *Function_definitionContext)
 
@@ -175,6 +211,9 @@ type ObjectiveCListener interface {
 
 	// EnterDeclaration_specifiers is called when entering the declaration_specifiers production.
 	EnterDeclaration_specifiers(c *Declaration_specifiersContext)
+
+	// EnterArc_behaviour_specifier is called when entering the arc_behaviour_specifier production.
+	EnterArc_behaviour_specifier(c *Arc_behaviour_specifierContext)
 
 	// EnterStorage_class_specifier is called when entering the storage_class_specifier production.
 	EnterStorage_class_specifier(c *Storage_class_specifierContext)
@@ -208,6 +247,9 @@ type ObjectiveCListener interface {
 
 	// EnterEnumerator is called when entering the enumerator production.
 	EnterEnumerator(c *EnumeratorContext)
+
+	// EnterPointer is called when entering the pointer production.
+	EnterPointer(c *PointerContext)
 
 	// EnterDeclarator is called when entering the declarator production.
 	EnterDeclarator(c *DeclaratorContext)
@@ -253,6 +295,18 @@ type ObjectiveCListener interface {
 
 	// EnterSelection_statement is called when entering the selection_statement production.
 	EnterSelection_statement(c *Selection_statementContext)
+
+	// EnterFor_in_statement is called when entering the for_in_statement production.
+	EnterFor_in_statement(c *For_in_statementContext)
+
+	// EnterFor_statement is called when entering the for_statement production.
+	EnterFor_statement(c *For_statementContext)
+
+	// EnterWhile_statement is called when entering the while_statement production.
+	EnterWhile_statement(c *While_statementContext)
+
+	// EnterDo_statement is called when entering the do_statement production.
+	EnterDo_statement(c *Do_statementContext)
 
 	// EnterIteration_statement is called when entering the iteration_statement production.
 	EnterIteration_statement(c *Iteration_statementContext)
@@ -335,12 +389,6 @@ type ObjectiveCListener interface {
 	// ExitPreprocessor_declaration is called when exiting the preprocessor_declaration production.
 	ExitPreprocessor_declaration(c *Preprocessor_declarationContext)
 
-	// ExitFile_specification is called when exiting the file_specification production.
-	ExitFile_specification(c *File_specificationContext)
-
-	// ExitMacro_specification is called when exiting the macro_specification production.
-	ExitMacro_specification(c *Macro_specificationContext)
-
 	// ExitClass_interface is called when exiting the class_interface production.
 	ExitClass_interface(c *Class_interfaceContext)
 
@@ -371,6 +419,18 @@ type ObjectiveCListener interface {
 	// ExitProtocol_list is called when exiting the protocol_list production.
 	ExitProtocol_list(c *Protocol_listContext)
 
+	// ExitProperty_declaration is called when exiting the property_declaration production.
+	ExitProperty_declaration(c *Property_declarationContext)
+
+	// ExitProperty_attributes_declaration is called when exiting the property_attributes_declaration production.
+	ExitProperty_attributes_declaration(c *Property_attributes_declarationContext)
+
+	// ExitProperty_attributes_list is called when exiting the property_attributes_list production.
+	ExitProperty_attributes_list(c *Property_attributes_listContext)
+
+	// ExitProperty_attribute is called when exiting the property_attribute production.
+	ExitProperty_attribute(c *Property_attributeContext)
+
 	// ExitClass_name is called when exiting the class_name production.
 	ExitClass_name(c *Class_nameContext)
 
@@ -385,9 +445,6 @@ type ObjectiveCListener interface {
 
 	// ExitInstance_variables is called when exiting the instance_variables production.
 	ExitInstance_variables(c *Instance_variablesContext)
-
-	// ExitInstance_variable_declaration is called when exiting the instance_variable_declaration production.
-	ExitInstance_variable_declaration(c *Instance_variable_declarationContext)
 
 	// ExitVisibility_specification is called when exiting the visibility_specification production.
 	ExitVisibility_specification(c *Visibility_specificationContext)
@@ -428,6 +485,18 @@ type ObjectiveCListener interface {
 	// ExitMethod_type is called when exiting the method_type production.
 	ExitMethod_type(c *Method_typeContext)
 
+	// ExitProperty_implementation is called when exiting the property_implementation production.
+	ExitProperty_implementation(c *Property_implementationContext)
+
+	// ExitProperty_synthesize_list is called when exiting the property_synthesize_list production.
+	ExitProperty_synthesize_list(c *Property_synthesize_listContext)
+
+	// ExitProperty_synthesize_item is called when exiting the property_synthesize_item production.
+	ExitProperty_synthesize_item(c *Property_synthesize_itemContext)
+
+	// ExitBlock_type is called when exiting the block_type production.
+	ExitBlock_type(c *Block_typeContext)
+
 	// ExitType_specifier is called when exiting the type_specifier production.
 	ExitType_specifier(c *Type_specifierContext)
 
@@ -439,6 +508,24 @@ type ObjectiveCListener interface {
 
 	// ExitPrimary_expression is called when exiting the primary_expression production.
 	ExitPrimary_expression(c *Primary_expressionContext)
+
+	// ExitDictionary_pair is called when exiting the dictionary_pair production.
+	ExitDictionary_pair(c *Dictionary_pairContext)
+
+	// ExitDictionary_expression is called when exiting the dictionary_expression production.
+	ExitDictionary_expression(c *Dictionary_expressionContext)
+
+	// ExitArray_expression is called when exiting the array_expression production.
+	ExitArray_expression(c *Array_expressionContext)
+
+	// ExitBox_expression is called when exiting the box_expression production.
+	ExitBox_expression(c *Box_expressionContext)
+
+	// ExitBlock_parameters is called when exiting the block_parameters production.
+	ExitBlock_parameters(c *Block_parametersContext)
+
+	// ExitBlock_expression is called when exiting the block_expression production.
+	ExitBlock_expression(c *Block_expressionContext)
 
 	// ExitMessage_expression is called when exiting the message_expression production.
 	ExitMessage_expression(c *Message_expressionContext)
@@ -464,8 +551,8 @@ type ObjectiveCListener interface {
 	// ExitEncode_expression is called when exiting the encode_expression production.
 	ExitEncode_expression(c *Encode_expressionContext)
 
-	// ExitException_declarator is called when exiting the exception_declarator production.
-	ExitException_declarator(c *Exception_declaratorContext)
+	// ExitType_variable_declarator is called when exiting the type_variable_declarator production.
+	ExitType_variable_declarator(c *Type_variable_declaratorContext)
 
 	// ExitTry_statement is called when exiting the try_statement production.
 	ExitTry_statement(c *Try_statementContext)
@@ -485,6 +572,9 @@ type ObjectiveCListener interface {
 	// ExitSynchronized_statement is called when exiting the synchronized_statement production.
 	ExitSynchronized_statement(c *Synchronized_statementContext)
 
+	// ExitAutorelease_statement is called when exiting the autorelease_statement production.
+	ExitAutorelease_statement(c *Autorelease_statementContext)
+
 	// ExitFunction_definition is called when exiting the function_definition production.
 	ExitFunction_definition(c *Function_definitionContext)
 
@@ -493,6 +583,9 @@ type ObjectiveCListener interface {
 
 	// ExitDeclaration_specifiers is called when exiting the declaration_specifiers production.
 	ExitDeclaration_specifiers(c *Declaration_specifiersContext)
+
+	// ExitArc_behaviour_specifier is called when exiting the arc_behaviour_specifier production.
+	ExitArc_behaviour_specifier(c *Arc_behaviour_specifierContext)
 
 	// ExitStorage_class_specifier is called when exiting the storage_class_specifier production.
 	ExitStorage_class_specifier(c *Storage_class_specifierContext)
@@ -526,6 +619,9 @@ type ObjectiveCListener interface {
 
 	// ExitEnumerator is called when exiting the enumerator production.
 	ExitEnumerator(c *EnumeratorContext)
+
+	// ExitPointer is called when exiting the pointer production.
+	ExitPointer(c *PointerContext)
 
 	// ExitDeclarator is called when exiting the declarator production.
 	ExitDeclarator(c *DeclaratorContext)
@@ -571,6 +667,18 @@ type ObjectiveCListener interface {
 
 	// ExitSelection_statement is called when exiting the selection_statement production.
 	ExitSelection_statement(c *Selection_statementContext)
+
+	// ExitFor_in_statement is called when exiting the for_in_statement production.
+	ExitFor_in_statement(c *For_in_statementContext)
+
+	// ExitFor_statement is called when exiting the for_statement production.
+	ExitFor_statement(c *For_statementContext)
+
+	// ExitWhile_statement is called when exiting the while_statement production.
+	ExitWhile_statement(c *While_statementContext)
+
+	// ExitDo_statement is called when exiting the do_statement production.
+	ExitDo_statement(c *Do_statementContext)
 
 	// ExitIteration_statement is called when exiting the iteration_statement production.
 	ExitIteration_statement(c *Iteration_statementContext)
