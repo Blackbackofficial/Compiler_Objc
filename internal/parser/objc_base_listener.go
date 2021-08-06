@@ -89,7 +89,10 @@ func (s *BaseObjCListener) EnterClass_interface(ctx *Class_interfaceContext) {
 }
 
 // ExitClass_interface is called when production class_interface is exited.
-func (s *BaseObjCListener) ExitClass_interface(ctx *Class_interfaceContext) {}
+func (s *BaseObjCListener) ExitClass_interface(ctx *Class_interfaceContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCategory_interface is called when production category_interface is entered.
 func (s *BaseObjCListener) EnterCategory_interface(ctx *Category_interfaceContext) {
@@ -100,7 +103,10 @@ func (s *BaseObjCListener) EnterCategory_interface(ctx *Category_interfaceContex
 }
 
 // ExitCategory_interface is called when production category_interface is exited.
-func (s *BaseObjCListener) ExitCategory_interface(ctx *Category_interfaceContext) {}
+func (s *BaseObjCListener) ExitCategory_interface(ctx *Category_interfaceContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_implementation is called when production class_implementation is entered.
 func (s *BaseObjCListener) EnterClass_implementation(ctx *Class_implementationContext) {
@@ -111,7 +117,10 @@ func (s *BaseObjCListener) EnterClass_implementation(ctx *Class_implementationCo
 }
 
 // ExitClass_implementation is called when production class_implementation is exited.
-func (s *BaseObjCListener) ExitClass_implementation(ctx *Class_implementationContext) {}
+func (s *BaseObjCListener) ExitClass_implementation(ctx *Class_implementationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCategory_implementation is called when production category_implementation is entered.
 func (s *BaseObjCListener) EnterCategory_implementation(ctx *Category_implementationContext) {
@@ -122,7 +131,10 @@ func (s *BaseObjCListener) EnterCategory_implementation(ctx *Category_implementa
 }
 
 // ExitCategory_implementation is called when production category_implementation is exited.
-func (s *BaseObjCListener) ExitCategory_implementation(ctx *Category_implementationContext) {}
+func (s *BaseObjCListener) ExitCategory_implementation(ctx *Category_implementationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_declaration is called when production protocol_declaration is entered.
 func (s *BaseObjCListener) EnterProtocol_declaration(ctx *Protocol_declarationContext) {
@@ -133,7 +145,10 @@ func (s *BaseObjCListener) EnterProtocol_declaration(ctx *Protocol_declarationCo
 }
 
 // ExitProtocol_declaration is called when production protocol_declaration is exited.
-func (s *BaseObjCListener) ExitProtocol_declaration(ctx *Protocol_declarationContext) {}
+func (s *BaseObjCListener) ExitProtocol_declaration(ctx *Protocol_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_declaration_list is called when production protocol_declaration_list is entered.
 func (s *BaseObjCListener) EnterProtocol_declaration_list(ctx *Protocol_declaration_listContext) {
@@ -144,7 +159,10 @@ func (s *BaseObjCListener) EnterProtocol_declaration_list(ctx *Protocol_declarat
 }
 
 // ExitProtocol_declaration_list is called when production protocol_declaration_list is exited.
-func (s *BaseObjCListener) ExitProtocol_declaration_list(ctx *Protocol_declaration_listContext) {}
+func (s *BaseObjCListener) ExitProtocol_declaration_list(ctx *Protocol_declaration_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_declaration_list is called when production class_declaration_list is entered.
 func (s *BaseObjCListener) EnterClass_declaration_list(ctx *Class_declaration_listContext) {
@@ -155,7 +173,10 @@ func (s *BaseObjCListener) EnterClass_declaration_list(ctx *Class_declaration_li
 }
 
 // ExitClass_declaration_list is called when production class_declaration_list is exited.
-func (s *BaseObjCListener) ExitClass_declaration_list(ctx *Class_declaration_listContext) {}
+func (s *BaseObjCListener) ExitClass_declaration_list(ctx *Class_declaration_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_list is called when production class_list is entered.
 func (s *BaseObjCListener) EnterClass_list(ctx *Class_listContext) {
@@ -166,7 +187,10 @@ func (s *BaseObjCListener) EnterClass_list(ctx *Class_listContext) {
 }
 
 // ExitClass_list is called when production class_list is exited.
-func (s *BaseObjCListener) ExitClass_list(ctx *Class_listContext) {}
+func (s *BaseObjCListener) ExitClass_list(ctx *Class_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_reference_list is called when production protocol_reference_list is entered.
 func (s *BaseObjCListener) EnterProtocol_reference_list(ctx *Protocol_reference_listContext) {
@@ -177,7 +201,10 @@ func (s *BaseObjCListener) EnterProtocol_reference_list(ctx *Protocol_reference_
 }
 
 // ExitProtocol_reference_list is called when production protocol_reference_list is exited.
-func (s *BaseObjCListener) ExitProtocol_reference_list(ctx *Protocol_reference_listContext) {}
+func (s *BaseObjCListener) ExitProtocol_reference_list(ctx *Protocol_reference_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_list is called when production protocol_list is entered.
 func (s *BaseObjCListener) EnterProtocol_list(ctx *Protocol_listContext) {
@@ -188,7 +215,10 @@ func (s *BaseObjCListener) EnterProtocol_list(ctx *Protocol_listContext) {
 }
 
 // ExitProtocol_list is called when production protocol_list is exited.
-func (s *BaseObjCListener) ExitProtocol_list(ctx *Protocol_listContext) {}
+func (s *BaseObjCListener) ExitProtocol_list(ctx *Protocol_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_declaration is called when production property_declaration is entered.
 func (s *BaseObjCListener) EnterProperty_declaration(ctx *Property_declarationContext) {
@@ -199,7 +229,10 @@ func (s *BaseObjCListener) EnterProperty_declaration(ctx *Property_declarationCo
 }
 
 // ExitProperty_declaration is called when production property_declaration is exited.
-func (s *BaseObjCListener) ExitProperty_declaration(ctx *Property_declarationContext) {}
+func (s *BaseObjCListener) ExitProperty_declaration(ctx *Property_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_attributes_declaration is called when production property_attributes_declaration is entered.
 func (s *BaseObjCListener) EnterProperty_attributes_declaration(ctx *Property_attributes_declarationContext) {
@@ -210,7 +243,10 @@ func (s *BaseObjCListener) EnterProperty_attributes_declaration(ctx *Property_at
 }
 
 // ExitProperty_attributes_declaration is called when production property_attributes_declaration is exited.
-func (s *BaseObjCListener) ExitProperty_attributes_declaration(ctx *Property_attributes_declarationContext) {}
+func (s *BaseObjCListener) ExitProperty_attributes_declaration(ctx *Property_attributes_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_attributes_list is called when production property_attributes_list is entered.
 func (s *BaseObjCListener) EnterProperty_attributes_list(ctx *Property_attributes_listContext) {
@@ -221,7 +257,10 @@ func (s *BaseObjCListener) EnterProperty_attributes_list(ctx *Property_attribute
 }
 
 // ExitProperty_attributes_list is called when production property_attributes_list is exited.
-func (s *BaseObjCListener) ExitProperty_attributes_list(ctx *Property_attributes_listContext) {}
+func (s *BaseObjCListener) ExitProperty_attributes_list(ctx *Property_attributes_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_attribute is called when production property_attribute is entered.
 func (s *BaseObjCListener) EnterProperty_attribute(ctx *Property_attributeContext) {
@@ -232,7 +271,10 @@ func (s *BaseObjCListener) EnterProperty_attribute(ctx *Property_attributeContex
 }
 
 // ExitProperty_attribute is called when production property_attribute is exited.
-func (s *BaseObjCListener) ExitProperty_attribute(ctx *Property_attributeContext) {}
+func (s *BaseObjCListener) ExitProperty_attribute(ctx *Property_attributeContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_name is called when production class_name is entered.
 func (s *BaseObjCListener) EnterClass_name(ctx *Class_nameContext) {
@@ -243,7 +285,10 @@ func (s *BaseObjCListener) EnterClass_name(ctx *Class_nameContext) {
 }
 
 // ExitClass_name is called when production class_name is exited.
-func (s *BaseObjCListener) ExitClass_name(ctx *Class_nameContext) {}
+func (s *BaseObjCListener) ExitClass_name(ctx *Class_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSuperclass_name is called when production superclass_name is entered.
 func (s *BaseObjCListener) EnterSuperclass_name(ctx *Superclass_nameContext) {
@@ -254,7 +299,10 @@ func (s *BaseObjCListener) EnterSuperclass_name(ctx *Superclass_nameContext) {
 }
 
 // ExitSuperclass_name is called when production superclass_name is exited.
-func (s *BaseObjCListener) ExitSuperclass_name(ctx *Superclass_nameContext) {}
+func (s *BaseObjCListener) ExitSuperclass_name(ctx *Superclass_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCategory_name is called when production category_name is entered.
 func (s *BaseObjCListener) EnterCategory_name(ctx *Category_nameContext) {
@@ -265,7 +313,10 @@ func (s *BaseObjCListener) EnterCategory_name(ctx *Category_nameContext) {
 }
 
 // ExitCategory_name is called when production category_name is exited.
-func (s *BaseObjCListener) ExitCategory_name(ctx *Category_nameContext) {}
+func (s *BaseObjCListener) ExitCategory_name(ctx *Category_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_name is called when production protocol_name is entered.
 func (s *BaseObjCListener) EnterProtocol_name(ctx *Protocol_nameContext) {
@@ -276,7 +327,10 @@ func (s *BaseObjCListener) EnterProtocol_name(ctx *Protocol_nameContext) {
 }
 
 // ExitProtocol_name is called when production protocol_name is exited.
-func (s *BaseObjCListener) ExitProtocol_name(ctx *Protocol_nameContext) {}
+func (s *BaseObjCListener) ExitProtocol_name(ctx *Protocol_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInstance_variables is called when production instance_variables is entered.
 func (s *BaseObjCListener) EnterInstance_variables(ctx *Instance_variablesContext) {
@@ -287,7 +341,10 @@ func (s *BaseObjCListener) EnterInstance_variables(ctx *Instance_variablesContex
 }
 
 // ExitInstance_variables is called when production instance_variables is exited.
-func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext) {}
+func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterVisibility_specification is called when production visibility_specification is entered.
 func (s *BaseObjCListener) EnterVisibility_specification(ctx *Visibility_specificationContext) {
@@ -298,7 +355,10 @@ func (s *BaseObjCListener) EnterVisibility_specification(ctx *Visibility_specifi
 }
 
 // ExitVisibility_specification is called when production visibility_specification is exited.
-func (s *BaseObjCListener) ExitVisibility_specification(ctx *Visibility_specificationContext) {}
+func (s *BaseObjCListener) ExitVisibility_specification(ctx *Visibility_specificationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInterface_declaration_list is called when production interface_declaration_list is entered.
 func (s *BaseObjCListener) EnterInterface_declaration_list(ctx *Interface_declaration_listContext) {
@@ -309,7 +369,10 @@ func (s *BaseObjCListener) EnterInterface_declaration_list(ctx *Interface_declar
 }
 
 // ExitInterface_declaration_list is called when production interface_declaration_list is exited.
-func (s *BaseObjCListener) ExitInterface_declaration_list(ctx *Interface_declaration_listContext) {}
+func (s *BaseObjCListener) ExitInterface_declaration_list(ctx *Interface_declaration_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_method_declaration is called when production class_method_declaration is entered.
 func (s *BaseObjCListener) EnterClass_method_declaration(ctx *Class_method_declarationContext) {
@@ -320,7 +383,10 @@ func (s *BaseObjCListener) EnterClass_method_declaration(ctx *Class_method_decla
 }
 
 // ExitClass_method_declaration is called when production class_method_declaration is exited.
-func (s *BaseObjCListener) ExitClass_method_declaration(ctx *Class_method_declarationContext) {}
+func (s *BaseObjCListener) ExitClass_method_declaration(ctx *Class_method_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInstance_method_declaration is called when production instance_method_declaration is entered.
 func (s *BaseObjCListener) EnterInstance_method_declaration(ctx *Instance_method_declarationContext) {
@@ -331,7 +397,10 @@ func (s *BaseObjCListener) EnterInstance_method_declaration(ctx *Instance_method
 }
 
 // ExitInstance_method_declaration is called when production instance_method_declaration is exited.
-func (s *BaseObjCListener) ExitInstance_method_declaration(ctx *Instance_method_declarationContext) {}
+func (s *BaseObjCListener) ExitInstance_method_declaration(ctx *Instance_method_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMethod_declaration is called when production method_declaration is entered.
 func (s *BaseObjCListener) EnterMethod_declaration(ctx *Method_declarationContext) {
@@ -342,7 +411,10 @@ func (s *BaseObjCListener) EnterMethod_declaration(ctx *Method_declarationContex
 }
 
 // ExitMethod_declaration is called when production method_declaration is exited.
-func (s *BaseObjCListener) ExitMethod_declaration(ctx *Method_declarationContext) {}
+func (s *BaseObjCListener) ExitMethod_declaration(ctx *Method_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterImplementation_definition_list is called when production implementation_definition_list is entered.
 func (s *BaseObjCListener) EnterImplementation_definition_list(ctx *Implementation_definition_listContext) {
@@ -353,7 +425,10 @@ func (s *BaseObjCListener) EnterImplementation_definition_list(ctx *Implementati
 }
 
 // ExitImplementation_definition_list is called when production implementation_definition_list is exited.
-func (s *BaseObjCListener) ExitImplementation_definition_list(ctx *Implementation_definition_listContext) {}
+func (s *BaseObjCListener) ExitImplementation_definition_list(ctx *Implementation_definition_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterClass_method_definition is called when production class_method_definition is entered.
 func (s *BaseObjCListener) EnterClass_method_definition(ctx *Class_method_definitionContext) {
@@ -364,7 +439,10 @@ func (s *BaseObjCListener) EnterClass_method_definition(ctx *Class_method_defini
 }
 
 // ExitClass_method_definition is called when production class_method_definition is exited.
-func (s *BaseObjCListener) ExitClass_method_definition(ctx *Class_method_definitionContext) {}
+func (s *BaseObjCListener) ExitClass_method_definition(ctx *Class_method_definitionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInstance_method_definition is called when production instance_method_definition is entered.
 func (s *BaseObjCListener) EnterInstance_method_definition(ctx *Instance_method_definitionContext) {
@@ -375,7 +453,10 @@ func (s *BaseObjCListener) EnterInstance_method_definition(ctx *Instance_method_
 }
 
 // ExitInstance_method_definition is called when production instance_method_definition is exited.
-func (s *BaseObjCListener) ExitInstance_method_definition(ctx *Instance_method_definitionContext) {}
+func (s *BaseObjCListener) ExitInstance_method_definition(ctx *Instance_method_definitionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMethod_definition is called when production method_definition is entered.
 func (s *BaseObjCListener) EnterMethod_definition(ctx *Method_definitionContext) {
@@ -386,7 +467,10 @@ func (s *BaseObjCListener) EnterMethod_definition(ctx *Method_definitionContext)
 }
 
 // ExitMethod_definition is called when production method_definition is exited.
-func (s *BaseObjCListener) ExitMethod_definition(ctx *Method_definitionContext) {}
+func (s *BaseObjCListener) ExitMethod_definition(ctx *Method_definitionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMethod_selector is called when production method_selector is entered.
 func (s *BaseObjCListener) EnterMethod_selector(ctx *Method_selectorContext) {
@@ -397,7 +481,10 @@ func (s *BaseObjCListener) EnterMethod_selector(ctx *Method_selectorContext) {
 }
 
 // ExitMethod_selector is called when production method_selector is exited.
-func (s *BaseObjCListener) ExitMethod_selector(ctx *Method_selectorContext) {}
+func (s *BaseObjCListener) ExitMethod_selector(ctx *Method_selectorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterKeyword_declarator is called when production keyword_declarator is entered.
 func (s *BaseObjCListener) EnterKeyword_declarator(ctx *Keyword_declaratorContext) {
@@ -408,7 +495,10 @@ func (s *BaseObjCListener) EnterKeyword_declarator(ctx *Keyword_declaratorContex
 }
 
 // ExitKeyword_declarator is called when production keyword_declarator is exited.
-func (s *BaseObjCListener) ExitKeyword_declarator(ctx *Keyword_declaratorContext) {}
+func (s *BaseObjCListener) ExitKeyword_declarator(ctx *Keyword_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSelector is called when production selector is entered.
 func (s *BaseObjCListener) EnterSelector(ctx *SelectorContext) {
@@ -419,7 +509,10 @@ func (s *BaseObjCListener) EnterSelector(ctx *SelectorContext) {
 }
 
 // ExitSelector is called when production selector is exited.
-func (s *BaseObjCListener) ExitSelector(ctx *SelectorContext) {}
+func (s *BaseObjCListener) ExitSelector(ctx *SelectorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMethod_type is called when production method_type is entered.
 func (s *BaseObjCListener) EnterMethod_type(ctx *Method_typeContext) {
@@ -430,7 +523,10 @@ func (s *BaseObjCListener) EnterMethod_type(ctx *Method_typeContext) {
 }
 
 // ExitMethod_type is called when production method_type is exited.
-func (s *BaseObjCListener) ExitMethod_type(ctx *Method_typeContext) {}
+func (s *BaseObjCListener) ExitMethod_type(ctx *Method_typeContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_implementation is called when production property_implementation is entered.
 func (s *BaseObjCListener) EnterProperty_implementation(ctx *Property_implementationContext) {
@@ -441,7 +537,10 @@ func (s *BaseObjCListener) EnterProperty_implementation(ctx *Property_implementa
 }
 
 // ExitProperty_implementation is called when production property_implementation is exited.
-func (s *BaseObjCListener) ExitProperty_implementation(ctx *Property_implementationContext) {}
+func (s *BaseObjCListener) ExitProperty_implementation(ctx *Property_implementationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_synthesize_list is called when production property_synthesize_list is entered.
 func (s *BaseObjCListener) EnterProperty_synthesize_list(ctx *Property_synthesize_listContext) {
@@ -452,7 +551,10 @@ func (s *BaseObjCListener) EnterProperty_synthesize_list(ctx *Property_synthesiz
 }
 
 // ExitProperty_synthesize_list is called when production property_synthesize_list is exited.
-func (s *BaseObjCListener) ExitProperty_synthesize_list(ctx *Property_synthesize_listContext) {}
+func (s *BaseObjCListener) ExitProperty_synthesize_list(ctx *Property_synthesize_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProperty_synthesize_item is called when production property_synthesize_item is entered.
 func (s *BaseObjCListener) EnterProperty_synthesize_item(ctx *Property_synthesize_itemContext) {
@@ -463,7 +565,10 @@ func (s *BaseObjCListener) EnterProperty_synthesize_item(ctx *Property_synthesiz
 }
 
 // ExitProperty_synthesize_item is called when production property_synthesize_item is exited.
-func (s *BaseObjCListener) ExitProperty_synthesize_item(ctx *Property_synthesize_itemContext) {}
+func (s *BaseObjCListener) ExitProperty_synthesize_item(ctx *Property_synthesize_itemContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterBlock_type is called when production block_type is entered.
 func (s *BaseObjCListener) EnterBlock_type(ctx *Block_typeContext) {
@@ -474,7 +579,10 @@ func (s *BaseObjCListener) EnterBlock_type(ctx *Block_typeContext) {
 }
 
 // ExitBlock_type is called when production block_type is exited.
-func (s *BaseObjCListener) ExitBlock_type(ctx *Block_typeContext) {}
+func (s *BaseObjCListener) ExitBlock_type(ctx *Block_typeContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterType_specifier is called when production type_specifier is entered.
 func (s *BaseObjCListener) EnterType_specifier(ctx *Type_specifierContext) {
@@ -485,7 +593,10 @@ func (s *BaseObjCListener) EnterType_specifier(ctx *Type_specifierContext) {
 }
 
 // ExitType_specifier is called when production type_specifier is exited.
-func (s *BaseObjCListener) ExitType_specifier(ctx *Type_specifierContext) {}
+func (s *BaseObjCListener) ExitType_specifier(ctx *Type_specifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterType_qualifier is called when production type_qualifier is entered.
 func (s *BaseObjCListener) EnterType_qualifier(ctx *Type_qualifierContext) {
@@ -496,7 +607,10 @@ func (s *BaseObjCListener) EnterType_qualifier(ctx *Type_qualifierContext) {
 }
 
 // ExitType_qualifier is called when production type_qualifier is exited.
-func (s *BaseObjCListener) ExitType_qualifier(ctx *Type_qualifierContext) {}
+func (s *BaseObjCListener) ExitType_qualifier(ctx *Type_qualifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_qualifier is called when production protocol_qualifier is entered.
 func (s *BaseObjCListener) EnterProtocol_qualifier(ctx *Protocol_qualifierContext) {
@@ -507,7 +621,10 @@ func (s *BaseObjCListener) EnterProtocol_qualifier(ctx *Protocol_qualifierContex
 }
 
 // ExitProtocol_qualifier is called when production protocol_qualifier is exited.
-func (s *BaseObjCListener) ExitProtocol_qualifier(ctx *Protocol_qualifierContext) {}
+func (s *BaseObjCListener) ExitProtocol_qualifier(ctx *Protocol_qualifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterPrimary_expression is called when production primary_expression is entered.
 func (s *BaseObjCListener) EnterPrimary_expression(ctx *Primary_expressionContext) {
@@ -518,7 +635,10 @@ func (s *BaseObjCListener) EnterPrimary_expression(ctx *Primary_expressionContex
 }
 
 // ExitPrimary_expression is called when production primary_expression is exited.
-func (s *BaseObjCListener) ExitPrimary_expression(ctx *Primary_expressionContext) {}
+func (s *BaseObjCListener) ExitPrimary_expression(ctx *Primary_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDictionary_pair is called when production dictionary_pair is entered.
 func (s *BaseObjCListener) EnterDictionary_pair(ctx *Dictionary_pairContext) {
@@ -529,7 +649,10 @@ func (s *BaseObjCListener) EnterDictionary_pair(ctx *Dictionary_pairContext) {
 }
 
 // ExitDictionary_pair is called when production dictionary_pair is exited.
-func (s *BaseObjCListener) ExitDictionary_pair(ctx *Dictionary_pairContext) {}
+func (s *BaseObjCListener) ExitDictionary_pair(ctx *Dictionary_pairContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDictionary_expression is called when production dictionary_expression is entered.
 func (s *BaseObjCListener) EnterDictionary_expression(ctx *Dictionary_expressionContext) {
@@ -540,7 +663,10 @@ func (s *BaseObjCListener) EnterDictionary_expression(ctx *Dictionary_expression
 }
 
 // ExitDictionary_expression is called when production dictionary_expression is exited.
-func (s *BaseObjCListener) ExitDictionary_expression(ctx *Dictionary_expressionContext) {}
+func (s *BaseObjCListener) ExitDictionary_expression(ctx *Dictionary_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterArray_expression is called when production array_expression is entered.
 func (s *BaseObjCListener) EnterArray_expression(ctx *Array_expressionContext) {
@@ -551,7 +677,10 @@ func (s *BaseObjCListener) EnterArray_expression(ctx *Array_expressionContext) {
 }
 
 // ExitArray_expression is called when production array_expression is exited.
-func (s *BaseObjCListener) ExitArray_expression(ctx *Array_expressionContext) {}
+func (s *BaseObjCListener) ExitArray_expression(ctx *Array_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterBox_expression is called when production box_expression is entered.
 func (s *BaseObjCListener) EnterBox_expression(ctx *Box_expressionContext) {
@@ -562,7 +691,10 @@ func (s *BaseObjCListener) EnterBox_expression(ctx *Box_expressionContext) {
 }
 
 // ExitBox_expression is called when production box_expression is exited.
-func (s *BaseObjCListener) ExitBox_expression(ctx *Box_expressionContext) {}
+func (s *BaseObjCListener) ExitBox_expression(ctx *Box_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterBlock_parameters is called when production block_parameters is entered.
 func (s *BaseObjCListener) EnterBlock_parameters(ctx *Block_parametersContext) {
@@ -573,7 +705,10 @@ func (s *BaseObjCListener) EnterBlock_parameters(ctx *Block_parametersContext) {
 }
 
 // ExitBlock_parameters is called when production block_parameters is exited.
-func (s *BaseObjCListener) ExitBlock_parameters(ctx *Block_parametersContext) {}
+func (s *BaseObjCListener) ExitBlock_parameters(ctx *Block_parametersContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterBlock_expression is called when production block_expression is entered.
 func (s *BaseObjCListener) EnterBlock_expression(ctx *Block_expressionContext) {
@@ -584,7 +719,10 @@ func (s *BaseObjCListener) EnterBlock_expression(ctx *Block_expressionContext) {
 }
 
 // ExitBlock_expression is called when production block_expression is exited.
-func (s *BaseObjCListener) ExitBlock_expression(ctx *Block_expressionContext) {}
+func (s *BaseObjCListener) ExitBlock_expression(ctx *Block_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMessage_expression is called when production message_expression is entered.
 func (s *BaseObjCListener) EnterMessage_expression(ctx *Message_expressionContext) {
@@ -595,7 +733,10 @@ func (s *BaseObjCListener) EnterMessage_expression(ctx *Message_expressionContex
 }
 
 // ExitMessage_expression is called when production message_expression is exited.
-func (s *BaseObjCListener) ExitMessage_expression(ctx *Message_expressionContext) {}
+func (s *BaseObjCListener) ExitMessage_expression(ctx *Message_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterReceiver is called when production receiver is entered.
 func (s *BaseObjCListener) EnterReceiver(ctx *ReceiverContext) {
@@ -606,7 +747,10 @@ func (s *BaseObjCListener) EnterReceiver(ctx *ReceiverContext) {
 }
 
 // ExitReceiver is called when production receiver is exited.
-func (s *BaseObjCListener) ExitReceiver(ctx *ReceiverContext) {}
+func (s *BaseObjCListener) ExitReceiver(ctx *ReceiverContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMessage_selector is called when production message_selector is entered.
 func (s *BaseObjCListener) EnterMessage_selector(ctx *Message_selectorContext) {
@@ -617,7 +761,10 @@ func (s *BaseObjCListener) EnterMessage_selector(ctx *Message_selectorContext) {
 }
 
 // ExitMessage_selector is called when production message_selector is exited.
-func (s *BaseObjCListener) ExitMessage_selector(ctx *Message_selectorContext) {}
+func (s *BaseObjCListener) ExitMessage_selector(ctx *Message_selectorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterKeyword_argument is called when production keyword_argument is entered.
 func (s *BaseObjCListener) EnterKeyword_argument(ctx *Keyword_argumentContext) {
@@ -628,7 +775,10 @@ func (s *BaseObjCListener) EnterKeyword_argument(ctx *Keyword_argumentContext) {
 }
 
 // ExitKeyword_argument is called when production keyword_argument is exited.
-func (s *BaseObjCListener) ExitKeyword_argument(ctx *Keyword_argumentContext) {}
+func (s *BaseObjCListener) ExitKeyword_argument(ctx *Keyword_argumentContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSelector_expression is called when production selector_expression is entered.
 func (s *BaseObjCListener) EnterSelector_expression(ctx *Selector_expressionContext) {
@@ -639,7 +789,10 @@ func (s *BaseObjCListener) EnterSelector_expression(ctx *Selector_expressionCont
 }
 
 // ExitSelector_expression is called when production selector_expression is exited.
-func (s *BaseObjCListener) ExitSelector_expression(ctx *Selector_expressionContext) {}
+func (s *BaseObjCListener) ExitSelector_expression(ctx *Selector_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSelector_name is called when production selector_name is entered.
 func (s *BaseObjCListener) EnterSelector_name(ctx *Selector_nameContext) {
@@ -650,7 +803,10 @@ func (s *BaseObjCListener) EnterSelector_name(ctx *Selector_nameContext) {
 }
 
 // ExitSelector_name is called when production selector_name is exited.
-func (s *BaseObjCListener) ExitSelector_name(ctx *Selector_nameContext) {}
+func (s *BaseObjCListener) ExitSelector_name(ctx *Selector_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterProtocol_expression is called when production protocol_expression is entered.
 func (s *BaseObjCListener) EnterProtocol_expression(ctx *Protocol_expressionContext) {
@@ -661,7 +817,10 @@ func (s *BaseObjCListener) EnterProtocol_expression(ctx *Protocol_expressionCont
 }
 
 // ExitProtocol_expression is called when production protocol_expression is exited.
-func (s *BaseObjCListener) ExitProtocol_expression(ctx *Protocol_expressionContext) {}
+func (s *BaseObjCListener) ExitProtocol_expression(ctx *Protocol_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterEncode_expression is called when production encode_expression is entered.
 func (s *BaseObjCListener) EnterEncode_expression(ctx *Encode_expressionContext) {
@@ -672,7 +831,10 @@ func (s *BaseObjCListener) EnterEncode_expression(ctx *Encode_expressionContext)
 }
 
 // ExitEncode_expression is called when production encode_expression is exited.
-func (s *BaseObjCListener) ExitEncode_expression(ctx *Encode_expressionContext) {}
+func (s *BaseObjCListener) ExitEncode_expression(ctx *Encode_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterType_variable_declarator is called when production type_variable_declarator is entered.
 func (s *BaseObjCListener) EnterType_variable_declarator(ctx *Type_variable_declaratorContext) {
@@ -683,7 +845,10 @@ func (s *BaseObjCListener) EnterType_variable_declarator(ctx *Type_variable_decl
 }
 
 // ExitType_variable_declarator is called when production type_variable_declarator is exited.
-func (s *BaseObjCListener) ExitType_variable_declarator(ctx *Type_variable_declaratorContext) {}
+func (s *BaseObjCListener) ExitType_variable_declarator(ctx *Type_variable_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterTry_statement is called when production try_statement is entered.
 func (s *BaseObjCListener) EnterTry_statement(ctx *Try_statementContext) {
@@ -694,7 +859,10 @@ func (s *BaseObjCListener) EnterTry_statement(ctx *Try_statementContext) {
 }
 
 // ExitTry_statement is called when production try_statement is exited.
-func (s *BaseObjCListener) ExitTry_statement(ctx *Try_statementContext) {}
+func (s *BaseObjCListener) ExitTry_statement(ctx *Try_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCatch_statement is called when production catch_statement is entered.
 func (s *BaseObjCListener) EnterCatch_statement(ctx *Catch_statementContext) {
@@ -705,7 +873,10 @@ func (s *BaseObjCListener) EnterCatch_statement(ctx *Catch_statementContext) {
 }
 
 // ExitCatch_statement is called when production catch_statement is exited.
-func (s *BaseObjCListener) ExitCatch_statement(ctx *Catch_statementContext) {}
+func (s *BaseObjCListener) ExitCatch_statement(ctx *Catch_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterFinally_statement is called when production finally_statement is entered.
 func (s *BaseObjCListener) EnterFinally_statement(ctx *Finally_statementContext) {
@@ -716,7 +887,10 @@ func (s *BaseObjCListener) EnterFinally_statement(ctx *Finally_statementContext)
 }
 
 // ExitFinally_statement is called when production finally_statement is exited.
-func (s *BaseObjCListener) ExitFinally_statement(ctx *Finally_statementContext) {}
+func (s *BaseObjCListener) ExitFinally_statement(ctx *Finally_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterThrow_statement is called when production throw_statement is entered.
 func (s *BaseObjCListener) EnterThrow_statement(ctx *Throw_statementContext) {
@@ -727,7 +901,10 @@ func (s *BaseObjCListener) EnterThrow_statement(ctx *Throw_statementContext) {
 }
 
 // ExitThrow_statement is called when production throw_statement is exited.
-func (s *BaseObjCListener) ExitThrow_statement(ctx *Throw_statementContext) {}
+func (s *BaseObjCListener) ExitThrow_statement(ctx *Throw_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterTry_block is called when production try_block is entered.
 func (s *BaseObjCListener) EnterTry_block(ctx *Try_blockContext) {
@@ -738,7 +915,10 @@ func (s *BaseObjCListener) EnterTry_block(ctx *Try_blockContext) {
 }
 
 // ExitTry_block is called when production try_block is exited.
-func (s *BaseObjCListener) ExitTry_block(ctx *Try_blockContext) {}
+func (s *BaseObjCListener) ExitTry_block(ctx *Try_blockContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSynchronized_statement is called when production synchronized_statement is entered.
 func (s *BaseObjCListener) EnterSynchronized_statement(ctx *Synchronized_statementContext) {
@@ -749,7 +929,10 @@ func (s *BaseObjCListener) EnterSynchronized_statement(ctx *Synchronized_stateme
 }
 
 // ExitSynchronized_statement is called when production synchronized_statement is exited.
-func (s *BaseObjCListener) ExitSynchronized_statement(ctx *Synchronized_statementContext) {}
+func (s *BaseObjCListener) ExitSynchronized_statement(ctx *Synchronized_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAutorelease_statement is called when production autorelease_statement is entered.
 func (s *BaseObjCListener) EnterAutorelease_statement(ctx *Autorelease_statementContext) {
@@ -760,7 +943,10 @@ func (s *BaseObjCListener) EnterAutorelease_statement(ctx *Autorelease_statement
 }
 
 // ExitAutorelease_statement is called when production autorelease_statement is exited.
-func (s *BaseObjCListener) ExitAutorelease_statement(ctx *Autorelease_statementContext) {}
+func (s *BaseObjCListener) ExitAutorelease_statement(ctx *Autorelease_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterFunction_definition is called when production function_definition is entered.
 func (s *BaseObjCListener) EnterFunction_definition(ctx *Function_definitionContext) {
@@ -771,7 +957,10 @@ func (s *BaseObjCListener) EnterFunction_definition(ctx *Function_definitionCont
 }
 
 // ExitFunction_definition is called when production function_definition is exited.
-func (s *BaseObjCListener) ExitFunction_definition(ctx *Function_definitionContext) {}
+func (s *BaseObjCListener) ExitFunction_definition(ctx *Function_definitionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDeclaration is called when production declaration is entered.
 func (s *BaseObjCListener) EnterDeclaration(ctx *DeclarationContext) {
@@ -782,7 +971,10 @@ func (s *BaseObjCListener) EnterDeclaration(ctx *DeclarationContext) {
 }
 
 // ExitDeclaration is called when production declaration is exited.
-func (s *BaseObjCListener) ExitDeclaration(ctx *DeclarationContext) {}
+func (s *BaseObjCListener) ExitDeclaration(ctx *DeclarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDeclaration_specifiers is called when production declaration_specifiers is entered.
 func (s *BaseObjCListener) EnterDeclaration_specifiers(ctx *Declaration_specifiersContext) {
@@ -793,7 +985,10 @@ func (s *BaseObjCListener) EnterDeclaration_specifiers(ctx *Declaration_specifie
 }
 
 // ExitDeclaration_specifiers is called when production declaration_specifiers is exited.
-func (s *BaseObjCListener) ExitDeclaration_specifiers(ctx *Declaration_specifiersContext) {}
+func (s *BaseObjCListener) ExitDeclaration_specifiers(ctx *Declaration_specifiersContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterArc_behaviour_specifier is called when production arc_behaviour_specifier is entered.
 func (s *BaseObjCListener) EnterArc_behaviour_specifier(ctx *Arc_behaviour_specifierContext) {
@@ -804,7 +999,10 @@ func (s *BaseObjCListener) EnterArc_behaviour_specifier(ctx *Arc_behaviour_speci
 }
 
 // ExitArc_behaviour_specifier is called when production arc_behaviour_specifier is exited.
-func (s *BaseObjCListener) ExitArc_behaviour_specifier(ctx *Arc_behaviour_specifierContext) {}
+func (s *BaseObjCListener) ExitArc_behaviour_specifier(ctx *Arc_behaviour_specifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStorage_class_specifier is called when production storage_class_specifier is entered.
 func (s *BaseObjCListener) EnterStorage_class_specifier(ctx *Storage_class_specifierContext) {
@@ -815,7 +1013,10 @@ func (s *BaseObjCListener) EnterStorage_class_specifier(ctx *Storage_class_speci
 }
 
 // ExitStorage_class_specifier is called when production storage_class_specifier is exited.
-func (s *BaseObjCListener) ExitStorage_class_specifier(ctx *Storage_class_specifierContext) {}
+func (s *BaseObjCListener) ExitStorage_class_specifier(ctx *Storage_class_specifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInit_declarator_list is called when production init_declarator_list is entered.
 func (s *BaseObjCListener) EnterInit_declarator_list(ctx *Init_declarator_listContext) {
@@ -826,7 +1027,10 @@ func (s *BaseObjCListener) EnterInit_declarator_list(ctx *Init_declarator_listCo
 }
 
 // ExitInit_declarator_list is called when production init_declarator_list is exited.
-func (s *BaseObjCListener) ExitInit_declarator_list(ctx *Init_declarator_listContext) {}
+func (s *BaseObjCListener) ExitInit_declarator_list(ctx *Init_declarator_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInit_declarator is called when production init_declarator is entered.
 func (s *BaseObjCListener) EnterInit_declarator(ctx *Init_declaratorContext) {
@@ -837,7 +1041,10 @@ func (s *BaseObjCListener) EnterInit_declarator(ctx *Init_declaratorContext) {
 }
 
 // ExitInit_declarator is called when production init_declarator is exited.
-func (s *BaseObjCListener) ExitInit_declarator(ctx *Init_declaratorContext) {}
+func (s *BaseObjCListener) ExitInit_declarator(ctx *Init_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStruct_or_union_specifier is called when production struct_or_union_specifier is entered.
 func (s *BaseObjCListener) EnterStruct_or_union_specifier(ctx *Struct_or_union_specifierContext) {
@@ -848,7 +1055,10 @@ func (s *BaseObjCListener) EnterStruct_or_union_specifier(ctx *Struct_or_union_s
 }
 
 // ExitStruct_or_union_specifier is called when production struct_or_union_specifier is exited.
-func (s *BaseObjCListener) ExitStruct_or_union_specifier(ctx *Struct_or_union_specifierContext) {}
+func (s *BaseObjCListener) ExitStruct_or_union_specifier(ctx *Struct_or_union_specifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStruct_declaration is called when production struct_declaration is entered.
 func (s *BaseObjCListener) EnterStruct_declaration(ctx *Struct_declarationContext) {
@@ -859,7 +1069,10 @@ func (s *BaseObjCListener) EnterStruct_declaration(ctx *Struct_declarationContex
 }
 
 // ExitStruct_declaration is called when production struct_declaration is exited.
-func (s *BaseObjCListener) ExitStruct_declaration(ctx *Struct_declarationContext) {}
+func (s *BaseObjCListener) ExitStruct_declaration(ctx *Struct_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSpecifier_qualifier_list is called when production specifier_qualifier_list is entered.
 func (s *BaseObjCListener) EnterSpecifier_qualifier_list(ctx *Specifier_qualifier_listContext) {
@@ -870,7 +1083,10 @@ func (s *BaseObjCListener) EnterSpecifier_qualifier_list(ctx *Specifier_qualifie
 }
 
 // ExitSpecifier_qualifier_list is called when production specifier_qualifier_list is exited.
-func (s *BaseObjCListener) ExitSpecifier_qualifier_list(ctx *Specifier_qualifier_listContext) {}
+func (s *BaseObjCListener) ExitSpecifier_qualifier_list(ctx *Specifier_qualifier_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStruct_declarator_list is called when production struct_declarator_list is entered.
 func (s *BaseObjCListener) EnterStruct_declarator_list(ctx *Struct_declarator_listContext) {
@@ -881,7 +1097,10 @@ func (s *BaseObjCListener) EnterStruct_declarator_list(ctx *Struct_declarator_li
 }
 
 // ExitStruct_declarator_list is called when production struct_declarator_list is exited.
-func (s *BaseObjCListener) ExitStruct_declarator_list(ctx *Struct_declarator_listContext) {}
+func (s *BaseObjCListener) ExitStruct_declarator_list(ctx *Struct_declarator_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStruct_declarator is called when production struct_declarator is entered.
 func (s *BaseObjCListener) EnterStruct_declarator(ctx *Struct_declaratorContext) {
@@ -892,7 +1111,10 @@ func (s *BaseObjCListener) EnterStruct_declarator(ctx *Struct_declaratorContext)
 }
 
 // ExitStruct_declarator is called when production struct_declarator is exited.
-func (s *BaseObjCListener) ExitStruct_declarator(ctx *Struct_declaratorContext) {}
+func (s *BaseObjCListener) ExitStruct_declarator(ctx *Struct_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterEnum_specifier is called when production enum_specifier is entered.
 func (s *BaseObjCListener) EnterEnum_specifier(ctx *Enum_specifierContext) {
@@ -903,7 +1125,10 @@ func (s *BaseObjCListener) EnterEnum_specifier(ctx *Enum_specifierContext) {
 }
 
 // ExitEnum_specifier is called when production enum_specifier is exited.
-func (s *BaseObjCListener) ExitEnum_specifier(ctx *Enum_specifierContext) {}
+func (s *BaseObjCListener) ExitEnum_specifier(ctx *Enum_specifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterEnumerator_list is called when production enumerator_list is entered.
 func (s *BaseObjCListener) EnterEnumerator_list(ctx *Enumerator_listContext) {
@@ -914,7 +1139,10 @@ func (s *BaseObjCListener) EnterEnumerator_list(ctx *Enumerator_listContext) {
 }
 
 // ExitEnumerator_list is called when production enumerator_list is exited.
-func (s *BaseObjCListener) ExitEnumerator_list(ctx *Enumerator_listContext) {}
+func (s *BaseObjCListener) ExitEnumerator_list(ctx *Enumerator_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterEnumerator is called when production enumerator is entered.
 func (s *BaseObjCListener) EnterEnumerator(ctx *EnumeratorContext) {
@@ -925,7 +1153,10 @@ func (s *BaseObjCListener) EnterEnumerator(ctx *EnumeratorContext) {
 }
 
 // ExitEnumerator is called when production enumerator is exited.
-func (s *BaseObjCListener) ExitEnumerator(ctx *EnumeratorContext) {}
+func (s *BaseObjCListener) ExitEnumerator(ctx *EnumeratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterPointer is called when production pointer is entered.
 func (s *BaseObjCListener) EnterPointer(ctx *PointerContext) {
@@ -936,7 +1167,10 @@ func (s *BaseObjCListener) EnterPointer(ctx *PointerContext) {
 }
 
 // ExitPointer is called when production pointer is exited.
-func (s *BaseObjCListener) ExitPointer(ctx *PointerContext) {}
+func (s *BaseObjCListener) ExitPointer(ctx *PointerContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDeclarator is called when production declarator is entered.
 func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
@@ -947,7 +1181,10 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 }
 
 // ExitDeclarator is called when production declarator is exited.
-func (s *BaseObjCListener) ExitDeclarator(ctx *DeclaratorContext) {}
+func (s *BaseObjCListener) ExitDeclarator(ctx *DeclaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDirect_declarator is called when production direct_declarator is entered.
 func (s *BaseObjCListener) EnterDirect_declarator(ctx *Direct_declaratorContext) {
@@ -958,7 +1195,10 @@ func (s *BaseObjCListener) EnterDirect_declarator(ctx *Direct_declaratorContext)
 }
 
 // ExitDirect_declarator is called when production direct_declarator is exited.
-func (s *BaseObjCListener) ExitDirect_declarator(ctx *Direct_declaratorContext) {}
+func (s *BaseObjCListener) ExitDirect_declarator(ctx *Direct_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDeclarator_suffix is called when production declarator_suffix is entered.
 func (s *BaseObjCListener) EnterDeclarator_suffix(ctx *Declarator_suffixContext) {
@@ -969,7 +1209,10 @@ func (s *BaseObjCListener) EnterDeclarator_suffix(ctx *Declarator_suffixContext)
 }
 
 // ExitDeclarator_suffix is called when production declarator_suffix is exited.
-func (s *BaseObjCListener) ExitDeclarator_suffix(ctx *Declarator_suffixContext) {}
+func (s *BaseObjCListener) ExitDeclarator_suffix(ctx *Declarator_suffixContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterParameter_list is called when production parameter_list is entered.
 func (s *BaseObjCListener) EnterParameter_list(ctx *Parameter_listContext) {
@@ -980,7 +1223,10 @@ func (s *BaseObjCListener) EnterParameter_list(ctx *Parameter_listContext) {
 }
 
 // ExitParameter_list is called when production parameter_list is exited.
-func (s *BaseObjCListener) ExitParameter_list(ctx *Parameter_listContext) {}
+func (s *BaseObjCListener) ExitParameter_list(ctx *Parameter_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterParameter_declaration is called when production parameter_declaration is entered.
 func (s *BaseObjCListener) EnterParameter_declaration(ctx *Parameter_declarationContext) {
@@ -991,7 +1237,10 @@ func (s *BaseObjCListener) EnterParameter_declaration(ctx *Parameter_declaration
 }
 
 // ExitParameter_declaration is called when production parameter_declaration is exited.
-func (s *BaseObjCListener) ExitParameter_declaration(ctx *Parameter_declarationContext) {}
+func (s *BaseObjCListener) ExitParameter_declaration(ctx *Parameter_declarationContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInitializer is called when production initializer is entered.
 func (s *BaseObjCListener) EnterInitializer(ctx *InitializerContext) {
@@ -1002,7 +1251,10 @@ func (s *BaseObjCListener) EnterInitializer(ctx *InitializerContext) {
 }
 
 // ExitInitializer is called when production initializer is exited.
-func (s *BaseObjCListener) ExitInitializer(ctx *InitializerContext) {}
+func (s *BaseObjCListener) ExitInitializer(ctx *InitializerContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterType_name is called when production type_name is entered.
 func (s *BaseObjCListener) EnterType_name(ctx *Type_nameContext) {
@@ -1013,7 +1265,10 @@ func (s *BaseObjCListener) EnterType_name(ctx *Type_nameContext) {
 }
 
 // ExitType_name is called when production type_name is exited.
-func (s *BaseObjCListener) ExitType_name(ctx *Type_nameContext) {}
+func (s *BaseObjCListener) ExitType_name(ctx *Type_nameContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAbstract_declarator is called when production abstract_declarator is entered.
 func (s *BaseObjCListener) EnterAbstract_declarator(ctx *Abstract_declaratorContext) {
@@ -1024,7 +1279,10 @@ func (s *BaseObjCListener) EnterAbstract_declarator(ctx *Abstract_declaratorCont
 }
 
 // ExitAbstract_declarator is called when production abstract_declarator is exited.
-func (s *BaseObjCListener) ExitAbstract_declarator(ctx *Abstract_declaratorContext) {}
+func (s *BaseObjCListener) ExitAbstract_declarator(ctx *Abstract_declaratorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAbstract_declarator_suffix is called when production abstract_declarator_suffix is entered.
 func (s *BaseObjCListener) EnterAbstract_declarator_suffix(ctx *Abstract_declarator_suffixContext) {
@@ -1035,7 +1293,10 @@ func (s *BaseObjCListener) EnterAbstract_declarator_suffix(ctx *Abstract_declara
 }
 
 // ExitAbstract_declarator_suffix is called when production abstract_declarator_suffix is exited.
-func (s *BaseObjCListener) ExitAbstract_declarator_suffix(ctx *Abstract_declarator_suffixContext) {}
+func (s *BaseObjCListener) ExitAbstract_declarator_suffix(ctx *Abstract_declarator_suffixContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterParameter_declaration_list is called when production parameter_declaration_list is entered.
 func (s *BaseObjCListener) EnterParameter_declaration_list(ctx *Parameter_declaration_listContext) {
@@ -1046,7 +1307,10 @@ func (s *BaseObjCListener) EnterParameter_declaration_list(ctx *Parameter_declar
 }
 
 // ExitParameter_declaration_list is called when production parameter_declaration_list is exited.
-func (s *BaseObjCListener) ExitParameter_declaration_list(ctx *Parameter_declaration_listContext) {}
+func (s *BaseObjCListener) ExitParameter_declaration_list(ctx *Parameter_declaration_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStatement_list is called when production statement_list is entered.
 func (s *BaseObjCListener) EnterStatement_list(ctx *Statement_listContext) {
@@ -1057,7 +1321,10 @@ func (s *BaseObjCListener) EnterStatement_list(ctx *Statement_listContext) {
 }
 
 // ExitStatement_list is called when production statement_list is exited.
-func (s *BaseObjCListener) ExitStatement_list(ctx *Statement_listContext) {}
+func (s *BaseObjCListener) ExitStatement_list(ctx *Statement_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterStatement is called when production statement is entered.
 func (s *BaseObjCListener) EnterStatement(ctx *StatementContext) {
@@ -1068,7 +1335,10 @@ func (s *BaseObjCListener) EnterStatement(ctx *StatementContext) {
 }
 
 // ExitStatement is called when production statement is exited.
-func (s *BaseObjCListener) ExitStatement(ctx *StatementContext) {}
+func (s *BaseObjCListener) ExitStatement(ctx *StatementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterLabeled_statement is called when production labeled_statement is entered.
 func (s *BaseObjCListener) EnterLabeled_statement(ctx *Labeled_statementContext) {
@@ -1079,7 +1349,10 @@ func (s *BaseObjCListener) EnterLabeled_statement(ctx *Labeled_statementContext)
 }
 
 // ExitLabeled_statement is called when production labeled_statement is exited.
-func (s *BaseObjCListener) ExitLabeled_statement(ctx *Labeled_statementContext) {}
+func (s *BaseObjCListener) ExitLabeled_statement(ctx *Labeled_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCompound_statement is called when production compound_statement is entered.
 func (s *BaseObjCListener) EnterCompound_statement(ctx *Compound_statementContext) {
@@ -1090,7 +1363,10 @@ func (s *BaseObjCListener) EnterCompound_statement(ctx *Compound_statementContex
 }
 
 // ExitCompound_statement is called when production compound_statement is exited.
-func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext) {}
+func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterSelection_statement is called when production selection_statement is entered.
 func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementContext) {
@@ -1101,7 +1377,10 @@ func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementCont
 }
 
 // ExitSelection_statement is called when production selection_statement is exited.
-func (s *BaseObjCListener) ExitSelection_statement(ctx *Selection_statementContext) {}
+func (s *BaseObjCListener) ExitSelection_statement(ctx *Selection_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterFor_in_statement is called when production for_in_statement is entered.
 func (s *BaseObjCListener) EnterFor_in_statement(ctx *For_in_statementContext) {
@@ -1112,7 +1391,10 @@ func (s *BaseObjCListener) EnterFor_in_statement(ctx *For_in_statementContext) {
 }
 
 // ExitFor_in_statement is called when production for_in_statement is exited.
-func (s *BaseObjCListener) ExitFor_in_statement(ctx *For_in_statementContext) {}
+func (s *BaseObjCListener) ExitFor_in_statement(ctx *For_in_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterFor_statement is called when production for_statement is entered.
 func (s *BaseObjCListener) EnterFor_statement(ctx *For_statementContext) {
@@ -1123,7 +1405,10 @@ func (s *BaseObjCListener) EnterFor_statement(ctx *For_statementContext) {
 }
 
 // ExitFor_statement is called when production for_statement is exited.
-func (s *BaseObjCListener) ExitFor_statement(ctx *For_statementContext) {}
+func (s *BaseObjCListener) ExitFor_statement(ctx *For_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterWhile_statement is called when production while_statement is entered.
 func (s *BaseObjCListener) EnterWhile_statement(ctx *While_statementContext) {
@@ -1134,7 +1419,10 @@ func (s *BaseObjCListener) EnterWhile_statement(ctx *While_statementContext) {
 }
 
 // ExitWhile_statement is called when production while_statement is exited.
-func (s *BaseObjCListener) ExitWhile_statement(ctx *While_statementContext) {}
+func (s *BaseObjCListener) ExitWhile_statement(ctx *While_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterDo_statement is called when production do_statement is entered.
 func (s *BaseObjCListener) EnterDo_statement(ctx *Do_statementContext) {
@@ -1145,7 +1433,10 @@ func (s *BaseObjCListener) EnterDo_statement(ctx *Do_statementContext) {
 }
 
 // ExitDo_statement is called when production do_statement is exited.
-func (s *BaseObjCListener) ExitDo_statement(ctx *Do_statementContext) {}
+func (s *BaseObjCListener) ExitDo_statement(ctx *Do_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterIteration_statement is called when production iteration_statement is entered.
 func (s *BaseObjCListener) EnterIteration_statement(ctx *Iteration_statementContext) {
@@ -1156,7 +1447,10 @@ func (s *BaseObjCListener) EnterIteration_statement(ctx *Iteration_statementCont
 }
 
 // ExitIteration_statement is called when production iteration_statement is exited.
-func (s *BaseObjCListener) ExitIteration_statement(ctx *Iteration_statementContext) {}
+func (s *BaseObjCListener) ExitIteration_statement(ctx *Iteration_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterJump_statement is called when production jump_statement is entered.
 func (s *BaseObjCListener) EnterJump_statement(ctx *Jump_statementContext) {
@@ -1167,7 +1461,10 @@ func (s *BaseObjCListener) EnterJump_statement(ctx *Jump_statementContext) {
 }
 
 // ExitJump_statement is called when production jump_statement is exited.
-func (s *BaseObjCListener) ExitJump_statement(ctx *Jump_statementContext) {}
+func (s *BaseObjCListener) ExitJump_statement(ctx *Jump_statementContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterExpression is called when production expression is entered.
 func (s *BaseObjCListener) EnterExpression(ctx *ExpressionContext) {
@@ -1178,7 +1475,10 @@ func (s *BaseObjCListener) EnterExpression(ctx *ExpressionContext) {
 }
 
 // ExitExpression is called when production expression is exited.
-func (s *BaseObjCListener) ExitExpression(ctx *ExpressionContext) {}
+func (s *BaseObjCListener) ExitExpression(ctx *ExpressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAssignment_expression is called when production assignment_expression is entered.
 func (s *BaseObjCListener) EnterAssignment_expression(ctx *Assignment_expressionContext) {
@@ -1189,7 +1489,10 @@ func (s *BaseObjCListener) EnterAssignment_expression(ctx *Assignment_expression
 }
 
 // ExitAssignment_expression is called when production assignment_expression is exited.
-func (s *BaseObjCListener) ExitAssignment_expression(ctx *Assignment_expressionContext) {}
+func (s *BaseObjCListener) ExitAssignment_expression(ctx *Assignment_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAssignment_operator is called when production assignment_operator is entered.
 func (s *BaseObjCListener) EnterAssignment_operator(ctx *Assignment_operatorContext) {
@@ -1200,7 +1503,10 @@ func (s *BaseObjCListener) EnterAssignment_operator(ctx *Assignment_operatorCont
 }
 
 // ExitAssignment_operator is called when production assignment_operator is exited.
-func (s *BaseObjCListener) ExitAssignment_operator(ctx *Assignment_operatorContext) {}
+func (s *BaseObjCListener) ExitAssignment_operator(ctx *Assignment_operatorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterConditional_expression is called when production conditional_expression is entered.
 func (s *BaseObjCListener) EnterConditional_expression(ctx *Conditional_expressionContext) {
@@ -1211,7 +1517,10 @@ func (s *BaseObjCListener) EnterConditional_expression(ctx *Conditional_expressi
 }
 
 // ExitConditional_expression is called when production conditional_expression is exited.
-func (s *BaseObjCListener) ExitConditional_expression(ctx *Conditional_expressionContext) {}
+func (s *BaseObjCListener) ExitConditional_expression(ctx *Conditional_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterConstant_expression is called when production constant_expression is entered.
 func (s *BaseObjCListener) EnterConstant_expression(ctx *Constant_expressionContext) {
@@ -1222,7 +1531,10 @@ func (s *BaseObjCListener) EnterConstant_expression(ctx *Constant_expressionCont
 }
 
 // ExitConstant_expression is called when production constant_expression is exited.
-func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionContext) {}
+func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterLogical_or_expression is called when production logical_or_expression is entered.
 func (s *BaseObjCListener) EnterLogical_or_expression(ctx *Logical_or_expressionContext) {
@@ -1233,7 +1545,10 @@ func (s *BaseObjCListener) EnterLogical_or_expression(ctx *Logical_or_expression
 }
 
 // ExitLogical_or_expression is called when production logical_or_expression is exited.
-func (s *BaseObjCListener) ExitLogical_or_expression(ctx *Logical_or_expressionContext) {}
+func (s *BaseObjCListener) ExitLogical_or_expression(ctx *Logical_or_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterLogical_and_expression is called when production logical_and_expression is entered.
 func (s *BaseObjCListener) EnterLogical_and_expression(ctx *Logical_and_expressionContext) {
@@ -1244,7 +1559,10 @@ func (s *BaseObjCListener) EnterLogical_and_expression(ctx *Logical_and_expressi
 }
 
 // ExitLogical_and_expression is called when production logical_and_expression is exited.
-func (s *BaseObjCListener) ExitLogical_and_expression(ctx *Logical_and_expressionContext) {}
+func (s *BaseObjCListener) ExitLogical_and_expression(ctx *Logical_and_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterInclusive_or_expression is called when production inclusive_or_expression is entered.
 func (s *BaseObjCListener) EnterInclusive_or_expression(ctx *Inclusive_or_expressionContext) {
@@ -1255,7 +1573,10 @@ func (s *BaseObjCListener) EnterInclusive_or_expression(ctx *Inclusive_or_expres
 }
 
 // ExitInclusive_or_expression is called when production inclusive_or_expression is exited.
-func (s *BaseObjCListener) ExitInclusive_or_expression(ctx *Inclusive_or_expressionContext) {}
+func (s *BaseObjCListener) ExitInclusive_or_expression(ctx *Inclusive_or_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterExclusive_or_expression is called when production exclusive_or_expression is entered.
 func (s *BaseObjCListener) EnterExclusive_or_expression(ctx *Exclusive_or_expressionContext) {
@@ -1266,7 +1587,10 @@ func (s *BaseObjCListener) EnterExclusive_or_expression(ctx *Exclusive_or_expres
 }
 
 // ExitExclusive_or_expression is called when production exclusive_or_expression is exited.
-func (s *BaseObjCListener) ExitExclusive_or_expression(ctx *Exclusive_or_expressionContext) {}
+func (s *BaseObjCListener) ExitExclusive_or_expression(ctx *Exclusive_or_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAnd_expression is called when production and_expression is entered.
 func (s *BaseObjCListener) EnterAnd_expression(ctx *And_expressionContext) {
@@ -1277,7 +1601,10 @@ func (s *BaseObjCListener) EnterAnd_expression(ctx *And_expressionContext) {
 }
 
 // ExitAnd_expression is called when production and_expression is exited.
-func (s *BaseObjCListener) ExitAnd_expression(ctx *And_expressionContext) {}
+func (s *BaseObjCListener) ExitAnd_expression(ctx *And_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterEquality_expression is called when production equality_expression is entered.
 func (s *BaseObjCListener) EnterEquality_expression(ctx *Equality_expressionContext) {
@@ -1288,7 +1615,10 @@ func (s *BaseObjCListener) EnterEquality_expression(ctx *Equality_expressionCont
 }
 
 // ExitEquality_expression is called when production equality_expression is exited.
-func (s *BaseObjCListener) ExitEquality_expression(ctx *Equality_expressionContext) {}
+func (s *BaseObjCListener) ExitEquality_expression(ctx *Equality_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterRelational_expression is called when production relational_expression is entered.
 func (s *BaseObjCListener) EnterRelational_expression(ctx *Relational_expressionContext) {
@@ -1299,7 +1629,10 @@ func (s *BaseObjCListener) EnterRelational_expression(ctx *Relational_expression
 }
 
 // ExitRelational_expression is called when production relational_expression is exited.
-func (s *BaseObjCListener) ExitRelational_expression(ctx *Relational_expressionContext) {}
+func (s *BaseObjCListener) ExitRelational_expression(ctx *Relational_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterShift_expression is called when production shift_expression is entered.
 func (s *BaseObjCListener) EnterShift_expression(ctx *Shift_expressionContext) {
@@ -1310,7 +1643,10 @@ func (s *BaseObjCListener) EnterShift_expression(ctx *Shift_expressionContext) {
 }
 
 // ExitShift_expression is called when production shift_expression is exited.
-func (s *BaseObjCListener) ExitShift_expression(ctx *Shift_expressionContext) {}
+func (s *BaseObjCListener) ExitShift_expression(ctx *Shift_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterAdditive_expression is called when production additive_expression is entered.
 func (s *BaseObjCListener) EnterAdditive_expression(ctx *Additive_expressionContext) {
@@ -1321,7 +1657,10 @@ func (s *BaseObjCListener) EnterAdditive_expression(ctx *Additive_expressionCont
 }
 
 // ExitAdditive_expression is called when production additive_expression is exited.
-func (s *BaseObjCListener) ExitAdditive_expression(ctx *Additive_expressionContext) {}
+func (s *BaseObjCListener) ExitAdditive_expression(ctx *Additive_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterMultiplicative_expression is called when production multiplicative_expression is entered.
 func (s *BaseObjCListener) EnterMultiplicative_expression(ctx *Multiplicative_expressionContext) {
@@ -1332,7 +1671,10 @@ func (s *BaseObjCListener) EnterMultiplicative_expression(ctx *Multiplicative_ex
 }
 
 // ExitMultiplicative_expression is called when production multiplicative_expression is exited.
-func (s *BaseObjCListener) ExitMultiplicative_expression(ctx *Multiplicative_expressionContext) {}
+func (s *BaseObjCListener) ExitMultiplicative_expression(ctx *Multiplicative_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterCast_expression is called when production cast_expression is entered.
 func (s *BaseObjCListener) EnterCast_expression(ctx *Cast_expressionContext) {
@@ -1343,7 +1685,10 @@ func (s *BaseObjCListener) EnterCast_expression(ctx *Cast_expressionContext) {
 }
 
 // ExitCast_expression is called when production cast_expression is exited.
-func (s *BaseObjCListener) ExitCast_expression(ctx *Cast_expressionContext) {}
+func (s *BaseObjCListener) ExitCast_expression(ctx *Cast_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterUnary_expression is called when production unary_expression is entered.
 func (s *BaseObjCListener) EnterUnary_expression(ctx *Unary_expressionContext) {
@@ -1354,7 +1699,10 @@ func (s *BaseObjCListener) EnterUnary_expression(ctx *Unary_expressionContext) {
 }
 
 // ExitUnary_expression is called when production unary_expression is exited.
-func (s *BaseObjCListener) ExitUnary_expression(ctx *Unary_expressionContext) {}
+func (s *BaseObjCListener) ExitUnary_expression(ctx *Unary_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterUnary_operator is called when production unary_operator is entered.
 func (s *BaseObjCListener) EnterUnary_operator(ctx *Unary_operatorContext) {
@@ -1365,7 +1713,10 @@ func (s *BaseObjCListener) EnterUnary_operator(ctx *Unary_operatorContext) {
 }
 
 // ExitUnary_operator is called when production unary_operator is exited.
-func (s *BaseObjCListener) ExitUnary_operator(ctx *Unary_operatorContext) {}
+func (s *BaseObjCListener) ExitUnary_operator(ctx *Unary_operatorContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterPostfix_expression is called when production postfix_expression is entered.
 func (s *BaseObjCListener) EnterPostfix_expression(ctx *Postfix_expressionContext) {
@@ -1376,7 +1727,10 @@ func (s *BaseObjCListener) EnterPostfix_expression(ctx *Postfix_expressionContex
 }
 
 // ExitPostfix_expression is called when production postfix_expression is exited.
-func (s *BaseObjCListener) ExitPostfix_expression(ctx *Postfix_expressionContext) {}
+func (s *BaseObjCListener) ExitPostfix_expression(ctx *Postfix_expressionContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterArgument_expression_list is called when production argument_expression_list is entered.
 func (s *BaseObjCListener) EnterArgument_expression_list(ctx *Argument_expression_listContext) {
@@ -1387,7 +1741,10 @@ func (s *BaseObjCListener) EnterArgument_expression_list(ctx *Argument_expressio
 }
 
 // ExitArgument_expression_list is called when production argument_expression_list is exited.
-func (s *BaseObjCListener) ExitArgument_expression_list(ctx *Argument_expression_listContext) {}
+func (s *BaseObjCListener) ExitArgument_expression_list(ctx *Argument_expression_listContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterIdentifier is called when production identifier is entered.
 func (s *BaseObjCListener) EnterIdentifier(ctx *IdentifierContext) {
@@ -1398,7 +1755,10 @@ func (s *BaseObjCListener) EnterIdentifier(ctx *IdentifierContext) {
 }
 
 // ExitIdentifier is called when production identifier is exited.
-func (s *BaseObjCListener) ExitIdentifier(ctx *IdentifierContext) {}
+func (s *BaseObjCListener) ExitIdentifier(ctx *IdentifierContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
 
 // EnterConstant is called when production constant is entered.
 func (s *BaseObjCListener) EnterConstant(ctx *ConstantContext) {
@@ -1409,4 +1769,7 @@ func (s *BaseObjCListener) EnterConstant(ctx *ConstantContext) {
 }
 
 // ExitConstant is called when production constant is exited.
-func (s *BaseObjCListener) ExitConstant(ctx *ConstantContext) {}
+func (s *BaseObjCListener) ExitConstant(ctx *ConstantContext) {
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
+}
