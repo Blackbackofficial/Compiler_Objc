@@ -11,9 +11,9 @@ import (
 )
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/2.txt")
+	is, err := antlr.NewFileStream("./test/factorial.txt")
 	if err != nil {
-		fmt.Printf("no input file provided")
+		fmt.Printf("No input file provided")
 	}
 
 	//TODO: сделать информационную таблицу
@@ -21,13 +21,18 @@ func main()  {
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 	p := parser.NewObjCParser(stream)
 	listener := parser.NewBaseListener()
+	global := parser.NewGlobalInfo()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit() )
+	log.Printf("%v\n", global)
 
 	root := listener.Root
 	graph := charts.NewTree()
 	graph.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
-		Orient: "TB", Roam: true, Layout: "orthogonal",
+		Orient: "TB", Roam: true, Layout: "orthogonal", Left: "0%", Right: "0%",
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
+
+	maps := charts.NewMap()
+	maps.AddSeries("Maps", []opts.MapData{global})
 
 	f, err := os.Create("graph.html")
 	if err != nil {
@@ -35,6 +40,6 @@ func main()  {
 	}
 	err = graph.Render(f)
 	if err != nil {
-		return 
+		return
 	}
 }
