@@ -11,7 +11,7 @@ import (
 )
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/factorial.txt")
+	is, err := antlr.NewFileStream("./test/5.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -22,7 +22,7 @@ func main()  {
 	p := parser.NewObjCParser(stream)
 	listener := parser.NewBaseListener()
 	global := parser.NewGlobalInfo()
-	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit() )
+	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
 	log.Printf("%v\n", global)
 
 	root := listener.Root
@@ -30,9 +30,6 @@ func main()  {
 	graph.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
 		Orient: "TB", Roam: true, Layout: "orthogonal", Left: "0%", Right: "0%",
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
-
-	maps := charts.NewMap()
-	maps.AddSeries("Maps", []opts.MapData{global})
 
 	f, err := os.Create("graph.html")
 	if err != nil {

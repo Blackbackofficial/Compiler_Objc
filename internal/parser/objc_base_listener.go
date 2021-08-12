@@ -25,7 +25,7 @@ type BaseObjCListener struct {
 	nodes []*opts.TreeData
 	current *opts.TreeData
 	flag bool
-	local bool
+	local int
 }
 
 func NewBaseListener() *BaseObjCListener {
@@ -48,8 +48,10 @@ var ne = true
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
-	if !s.local {
+	if s.local == 0 {
+		//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 		var m = NewGlobalInfo()
+
 		if node.GetSymbol().GetTokenType() == 125 || node.GetSymbol().GetTokenType() == 47 || node.GetSymbol().GetTokenType() == 9 || node.GetSymbol().GetTokenType() == 8 {
 			if ne {
 				e, ok := m["key"+strconv.Itoa(count)]
@@ -97,7 +99,9 @@ func (s *BaseObjCListener) ExitTranslation_unit(ctx *Translation_unitContext) {}
 
 // EnterExternal_declaration is called when production external_declaration is entered. вход
 func (s *BaseObjCListener) EnterExternal_declaration(ctx *External_declarationContext) {
-	s.Root = opts.TreeData{Name: "Start"}
+	if s.Root.Children == nil {
+		s.Root = opts.TreeData{Name: "Start"}
+	}
 	s.current = &s.Root
 	s.nodes = append(s.nodes, &s.Root)
 }
@@ -377,12 +381,14 @@ func (s *BaseObjCListener) EnterInstance_variables(ctx *Instance_variablesContex
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.local++
 }
 
 // ExitInstance_variables is called when production instance_variables is exited.
 func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.local--
 }
 
 // EnterVisibility_specification is called when production visibility_specification is entered.
@@ -1401,12 +1407,14 @@ func (s *BaseObjCListener) EnterCompound_statement(ctx *Compound_statementContex
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.local++
 }
 
 // ExitCompound_statement is called when production compound_statement is exited.
 func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.local--
 }
 
 // EnterSelection_statement is called when production selection_statement is entered.
@@ -1415,14 +1423,14 @@ func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementCont
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.local = true
+	s.local++
 }
 
 // ExitSelection_statement is called when production selection_statement is exited.
 func (s *BaseObjCListener) ExitSelection_statement(ctx *Selection_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.local = false
+	s.local--
 }
 
 // EnterFor_in_statement is called when production for_in_statement is entered.
