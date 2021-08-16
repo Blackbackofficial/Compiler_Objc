@@ -19,19 +19,19 @@
 }
 
 @end
-//
-// #import <Foundation/Foundation.h>
-// #import "Person.h"
-//
-// int main(int argc, const char * argv[]) {
-//
-//     @autoreleasepool {
-//
-//         Person *yong = [[Person alloc] init];
-//         yong.firstName = @"Yong";
-//         yong.lastName = @"Bakos";
-//
-//         NSLog(@"Hello there, %@", yong);
-//     }
-//     return 0;
-// }
+
+#import <Foundation/Foundation.h>
+#import "Person.h"
+
+int main(int argc, const char * argv[]) {
+
+    @autoreleasepool {
+
+        Person *yong = [[Person alloc] init];
+        yong.firstName = @"Yong";
+        yong.lastName = @"Bakos";
+
+        NSLog(@"Hello there, %@", yong);
+    }
+    return 0;
+}

@@ -6,7 +6,9 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
+	"html/template"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -25,18 +27,32 @@ func main()  {
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
 	log.Printf("%v\n", global)
 
+	// Graph
 	root := listener.Root
 	graph := charts.NewTree()
 	graph.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
 		Orient: "TB", Roam: true, Layout: "orthogonal", Left: "0%", Right: "0%",
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
 
+	// Table global & local
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, _ := template.ParseFiles("templates/index.html")
+		err := tmpl.Execute(w, global)
+		if err != nil {
+			log.Println(err)
+		}
+	}),
+	fmt.Println("Server is listening...")
+	err = http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Println(err)
+	}
 	f, err := os.Create("graph.html")
 	if err != nil {
 		log.Println(err)
 	}
 	err = graph.Render(f)
 	if err != nil {
-		return
+		log.Println(err)
 	}
 }
