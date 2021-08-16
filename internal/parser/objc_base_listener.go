@@ -1,6 +1,7 @@
 package parser // Package parser ObjC
 
 import (
+	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
@@ -1064,16 +1065,16 @@ func (s *BaseObjCListener) ExitFunction_definition(ctx *Function_definitionConte
 
 // EnterDeclaration is called when production declaration is entered.
 func (s *BaseObjCListener) EnterDeclaration(ctx *DeclarationContext) {
-	node := opts.TreeData{Name: ctx.GetStart().GetText()}
-	s.current.Children = append(s.current.Children, &node)
-	s.current = &node
-	s.nodes = append(s.nodes, &node)
+
 }
 
 // ExitDeclaration is called when production declaration is exited.
 func (s *BaseObjCListener) ExitDeclaration(ctx *DeclarationContext) {
-	s.nodes = s.nodes[:len(s.nodes)-1]
-	s.current = s.nodes[len(s.nodes)-1]
+	node := opts.TreeData{Name: "Declaration"}
+	left := opts.TreeData{Name: fmt.Sprintf("Type: %s", ctx.GetChild(0).GetChild(0))}
+	right := opts.TreeData{Name: fmt.Sprintf("ID: %s", ctx.GetChild(1))}
+	node.Children = []*opts.TreeData{&left, &right}
+	s.current.Children = append(s.current.Children, &node)
 }
 
 // EnterDeclaration_specifiers is called when production declaration_specifiers is entered.
@@ -1576,16 +1577,22 @@ func (s *BaseObjCListener) ExitJump_statement(ctx *Jump_statementContext) {
 
 // EnterExpression is called when production expression is entered.
 func (s *BaseObjCListener) EnterExpression(ctx *ExpressionContext) {
-	node := opts.TreeData{Name: "Expression"}
-	s.current.Children = append(s.current.Children, &node)
-	s.current = &node
-	s.nodes = append(s.nodes, &node)
 }
 
 // ExitExpression is called when production expression is exited.
 func (s *BaseObjCListener) ExitExpression(ctx *ExpressionContext) {
-	s.nodes = s.nodes[:len(s.nodes)-1]
-	s.current = s.nodes[len(s.nodes)-1]
+	log.Print(ctx.GetText())
+	childs := ctx.GetChildCount()
+	if childs == 3 {
+		md := opts.TreeData{Name: fmt.Sprintf("Assigment: %s", ctx.GetText())}
+		left := opts.TreeData{Name: fmt.Sprintf("LValue: %s", ctx.GetText())}
+		right := opts.TreeData{Name: fmt.Sprintf("RValue: %s",
+			ctx.GetStart().GetText())}
+
+		md.Children = append(md.Children, &left)
+		md.Children = append(md.Children, &right)
+		s.current.Children = append(s.current.Children, &md)
+	}
 }
 
 // EnterAssignment_expression is called when production assignment_expression is entered.

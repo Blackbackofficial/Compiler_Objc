@@ -20,7 +20,7 @@ translation_unit: external_declaration+ EOF;
 external_declaration:
 COMMENT | LINE_COMMENT | preprocessor_declaration
 | function_definition
-| declaration 
+| declaration
 | class_interface
 | class_implementation
 | category_interface
@@ -320,9 +320,9 @@ struct_declarator_list : struct_declarator (',' struct_declarator)* ;
 
 struct_declarator : declarator | declarator? ':' constant;
 
-enum_specifier : 'enum' (':' type_name)? 
-  ( identifier ('{' enumerator_list '}')? 
-  | '{' enumerator_list '}') 
+enum_specifier : 'enum' (':' type_name)?
+  ( identifier ('{' enumerator_list '}')?
+  | '{' enumerator_list '}')
   | 'NS_OPTIONS' '(' type_name ',' identifier ')' '{' enumerator_list '}'
   | 'NS_ENUM' '(' type_name ',' identifier ')' '{' enumerator_list '}' ;
 
@@ -333,13 +333,13 @@ enumerator : identifier ('=' constant_expression)?;
 pointer
     :   '*' declaration_specifiers?
     |   '*' declaration_specifiers? pointer;
-    
+
 
 
 declarator : pointer ? direct_declarator ;
 
 direct_declarator : identifier declarator_suffix*
-                  | '(' declarator ')' declarator_suffix* 
+                  | '(' declarator ')' declarator_suffix*
                   | '(''^' identifier? ')' block_parameters;
 
 
@@ -348,16 +348,16 @@ declarator_suffix : '[' constant_expression? ']'
 
 parameter_list : parameter_declaration_list ( ',' '...' )? ;
 
-parameter_declaration 
+parameter_declaration
   : declaration_specifiers (declarator? | abstract_declarator) ;
 
 initializer : assignment_expression
 	    | '{' initializer (',' initializer)* ','? '}' ;
 
-type_name : specifier_qualifier_list abstract_declarator 
+type_name : specifier_qualifier_list abstract_declarator
           | block_type;
 
-abstract_declarator : pointer abstract_declarator 
+abstract_declarator : pointer abstract_declarator
   | '(' abstract_declarator ')' abstract_declarator_suffix+
   | ('[' constant_expression? ']')+
   | ;
@@ -371,7 +371,7 @@ parameter_declaration_list
 
 statement_list : statement+ ;
 
-statement 
+statement
   : labeled_statement
   | expression ';'
   | compound_statement
@@ -409,7 +409,7 @@ jump_statement
   : 'goto' identifier ';'
   | 'continue' ';'
   | 'break' ';'
-  | 'return' expression? ';' 
+  | 'return' expression? ';'
   ;
 
 expression : assignment_expression (',' assignment_expression)* ;
@@ -419,28 +419,28 @@ assignment_expression
     |   unary_expression assignment_operator assignment_expression
     ;
 
-assignment_operator: 
+assignment_operator:
   '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '&=' | '^=' | '|=';
 
-conditional_expression : logical_or_expression 
+conditional_expression : logical_or_expression
   ('?' conditional_expression ':' conditional_expression)? ;
 
 constant_expression : conditional_expression ;
 
-logical_or_expression :	logical_and_expression 
+logical_or_expression :	logical_and_expression
   ('||' logical_and_expression)* ;
 
-logical_and_expression : inclusive_or_expression 
+logical_and_expression : inclusive_or_expression
   ('&&' inclusive_or_expression)* ;
 
-inclusive_or_expression : exclusive_or_expression 
+inclusive_or_expression : exclusive_or_expression
   ('|' exclusive_or_expression)* ;
 
 exclusive_or_expression : and_expression ('^' and_expression)* ;
 
 and_expression : equality_expression ('&' equality_expression)* ;
 
-equality_expression : relational_expression 
+equality_expression : relational_expression
   (('!=' | '==') relational_expression)* ;
 
 relational_expression : shift_expression
@@ -451,12 +451,12 @@ shift_expression : additive_expression (('<<' | '>>') additive_expression)* ;
 additive_expression : multiplicative_expression
   (('+' | '-') multiplicative_expression)* ;
 
-multiplicative_expression : cast_expression 
+multiplicative_expression : cast_expression
   (('*' | '/' | '%') cast_expression)* ;
 
 cast_expression : '(' type_name ')' cast_expression | unary_expression ;
 
-unary_expression 
+unary_expression
   : postfix_expression
   | '++' unary_expression
   | '--' unary_expression
@@ -466,7 +466,7 @@ unary_expression
 unary_operator : '&' | '*' | '-' | '~' | '!' ;
 
 postfix_expression : primary_expression
-  ('[' expression ']' 
+  ('[' expression ']'
   | '(' argument_expression_list? ')'
   | '.' identifier
   | '->' identifier
@@ -629,7 +629,7 @@ WEAK            : 'weak';
 IDENTIFIER
 	:	LETTER (LETTER|'0'..'9')*
 	;
-	
+
 fragment
 LETTER
 	:	'$'

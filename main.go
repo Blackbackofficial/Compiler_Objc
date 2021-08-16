@@ -34,6 +34,15 @@ func main()  {
 		Orient: "TB", Roam: true, Layout: "orthogonal", Left: "0%", Right: "0%",
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
 
+	f, err := os.Create("graph.html")
+	if err != nil {
+		log.Println(err)
+	}
+	err = graph.Render(f)
+	if err != nil {
+		log.Println(err)
+	}
+
 	// Table global & local
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, _ := template.ParseFiles("templates/index.html")
@@ -44,14 +53,6 @@ func main()  {
 	})
 	fmt.Println("Server is listening...")
 	err = http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.Println(err)
-	}
-	f, err := os.Create("graph.html")
-	if err != nil {
-		log.Println(err)
-	}
-	err = graph.Render(f)
 	if err != nil {
 		log.Println(err)
 	}
