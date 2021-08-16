@@ -44,14 +44,21 @@ func main()  {
 	}
 
 	// Table global & local
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/global", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, _ := template.ParseFiles("templates/index.html")
 		err := tmpl.Execute(w, global)
 		if err != nil {
 			log.Println(err)
 		}
 	})
-	fmt.Println("Server is listening...")
+	http.HandleFunc("/local", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, _ := template.ParseFiles("templates/index.html")
+		err := tmpl.Execute(w, global)
+		if err != nil {
+			log.Println(err)
+		}
+	})
+	fmt.Println("Server is listening at http://localhost:8080...")
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Println(err)

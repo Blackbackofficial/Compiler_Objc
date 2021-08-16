@@ -19,25 +19,29 @@ type InfoType struct {
 	Scope string
 }
 
+type Flags struct {
+	local int // local {...}
+	declaratorSuffix bool // function parameter (...)
+	typeSpecifier bool // for int long int char e.t.c.
+	classInterface bool // @interface
+	superclassName bool // ignore NSObject
+	categoryName bool // ignore CategorizedComplex
+	specifierQualifierList bool
+}
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
 type BaseObjCListener struct {
 	Tree Tree
 	Root opts.TreeData
 	nodes []*opts.TreeData
 	current *opts.TreeData
-	local int // local {...}
-	declaratorSuffix bool // function parameter (...)
-	typeSpecifier bool // for int long int char e.t.c..
-	classInterface bool // @interface
-	superclassName bool // ignore NSObject
-	categoryName bool // ignore CategorizedComplex
-	specifierQualifierList bool
+	Flags Flags
 }
 
 func NewBaseListener() *BaseObjCListener {
 	l := BaseObjCListener{
 		Tree:  Tree{},
 		nodes: []*opts.TreeData{},
+		Flags: Flags{},
 	}
 	return &l
 }
@@ -60,12 +64,12 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		e = InfoType{}
 	}
 
-	// GLOBAL
-	if s.local == 0 && !s.superclassName && !s.categoryName && !s.classInterface {
+	// GLOBAL VARS & CLASS
+	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
 		if node.GetSymbol().GetTokenType() == 125 {
-			if s.declaratorSuffix {
+			if s.Flags.declaratorSuffix {
 				e.Scope = "FunctionParameter"
-			} else if s.classInterface {
+			} else if s.Flags.classInterface {
 				e.Scope = "classInterface"
 			} else {
 				e.Scope = "global"
@@ -74,7 +78,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 			m["key"+strconv.Itoa(count)] = e
 			count++
-		} else if s.typeSpecifier {
+		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
 		} else if node.GetSymbol().GetTokenType() == 69 {
@@ -87,27 +91,26 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			m["key"+strconv.Itoa(count-1)] = e
 
 		}
-	} else if s.local == 0 && !s.superclassName && s.classInterface && !s.categoryName {
+	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
 		//log.Println(node.GetSymbol().GetText(), node.GetSymbol().GetTokenType())
 		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
-		} else if s.specifierQualifierList {
+		} else if s.Flags.specifierQualifierList {
 				e.DataType = node.GetText()
 				m["key"+strconv.Itoa(count)] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
-			if s.classInterface {
+			if s.Flags.classInterface {
 				e.Scope = "global class"
 			}
 			e.Name = node.GetText()
 
 			m["key"+strconv.Itoa(count)] = e
 			count++
-		} else if s.typeSpecifier {
+		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
 		}
-
 	}
 }
 
@@ -158,14 +161,14 @@ func (s *BaseObjCListener) EnterClass_interface(ctx *Class_interfaceContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitClass_interface is called when production class_interface is exited.
 func (s *BaseObjCListener) ExitClass_interface(ctx *Class_interfaceContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterCategory_interface is called when production category_interface is entered.
@@ -174,14 +177,14 @@ func (s *BaseObjCListener) EnterCategory_interface(ctx *Category_interfaceContex
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitCategory_interface is called when production category_interface is exited.
 func (s *BaseObjCListener) ExitCategory_interface(ctx *Category_interfaceContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterClass_implementation is called when production class_implementation is entered.
@@ -190,14 +193,14 @@ func (s *BaseObjCListener) EnterClass_implementation(ctx *Class_implementationCo
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitClass_implementation is called when production class_implementation is exited.
 func (s *BaseObjCListener) ExitClass_implementation(ctx *Class_implementationContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterCategory_implementation is called when production category_implementation is entered.
@@ -206,14 +209,14 @@ func (s *BaseObjCListener) EnterCategory_implementation(ctx *Category_implementa
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitCategory_implementation is called when production category_implementation is exited.
 func (s *BaseObjCListener) ExitCategory_implementation(ctx *Category_implementationContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterProtocol_declaration is called when production protocol_declaration is entered.
@@ -222,7 +225,7 @@ func (s *BaseObjCListener) EnterProtocol_declaration(ctx *Protocol_declarationCo
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 	// добавить
 }
 
@@ -230,7 +233,7 @@ func (s *BaseObjCListener) EnterProtocol_declaration(ctx *Protocol_declarationCo
 func (s *BaseObjCListener) ExitProtocol_declaration(ctx *Protocol_declarationContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterProtocol_declaration_list is called when production protocol_declaration_list is entered.
@@ -239,14 +242,14 @@ func (s *BaseObjCListener) EnterProtocol_declaration_list(ctx *Protocol_declarat
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitProtocol_declaration_list is called when production protocol_declaration_list is exited.
 func (s *BaseObjCListener) ExitProtocol_declaration_list(ctx *Protocol_declaration_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterClass_declaration_list is called when production class_declaration_list is entered.
@@ -255,14 +258,14 @@ func (s *BaseObjCListener) EnterClass_declaration_list(ctx *Class_declaration_li
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.classInterface = true
+	s.Flags.classInterface = true
 }
 
 // ExitClass_declaration_list is called when production class_declaration_list is exited.
 func (s *BaseObjCListener) ExitClass_declaration_list(ctx *Class_declaration_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.classInterface = false
+	s.Flags.classInterface = false
 }
 
 // EnterClass_list is called when production class_list is entered.
@@ -383,14 +386,14 @@ func (s *BaseObjCListener) EnterSuperclass_name(ctx *Superclass_nameContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.superclassName = true
+	s.Flags.superclassName = true
 }
 
 // ExitSuperclass_name is called when production superclass_name is exited.
 func (s *BaseObjCListener) ExitSuperclass_name(ctx *Superclass_nameContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.superclassName = false
+	s.Flags.superclassName = false
 }
 
 // EnterCategory_name is called when production category_name is entered.
@@ -399,14 +402,14 @@ func (s *BaseObjCListener) EnterCategory_name(ctx *Category_nameContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.categoryName = true
+	s.Flags.categoryName = true
 }
 
 // ExitCategory_name is called when production category_name is exited.
 func (s *BaseObjCListener) ExitCategory_name(ctx *Category_nameContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.categoryName = false
+	s.Flags.categoryName = false
 }
 
 // EnterProtocol_name is called when production protocol_name is entered.
@@ -429,14 +432,14 @@ func (s *BaseObjCListener) EnterInstance_variables(ctx *Instance_variablesContex
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.local++
+	s.Flags.local++
 }
 
 // ExitInstance_variables is called when production instance_variables is exited.
 func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.local--
+	s.Flags.local--
 }
 
 // EnterVisibility_specification is called when production visibility_specification is entered.
@@ -683,14 +686,14 @@ func (s *BaseObjCListener) EnterType_specifier(ctx *Type_specifierContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.typeSpecifier = true
+	s.Flags.typeSpecifier = true
 }
 
 // ExitType_specifier is called when production type_specifier is exited.
 func (s *BaseObjCListener) ExitType_specifier(ctx *Type_specifierContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.typeSpecifier = false
+	s.Flags.typeSpecifier = false
 }
 
 // EnterType_qualifier is called when production type_qualifier is entered.
@@ -1175,14 +1178,14 @@ func (s *BaseObjCListener) EnterSpecifier_qualifier_list(ctx *Specifier_qualifie
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.specifierQualifierList = true
+	s.Flags.specifierQualifierList = true
 }
 
 // ExitSpecifier_qualifier_list is called when production specifier_qualifier_list is exited.
 func (s *BaseObjCListener) ExitSpecifier_qualifier_list(ctx *Specifier_qualifier_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.specifierQualifierList = false
+	s.Flags.specifierQualifierList = false
 }
 
 // EnterStruct_declarator_list is called when production struct_declarator_list is entered.
@@ -1303,14 +1306,14 @@ func (s *BaseObjCListener) EnterDeclarator_suffix(ctx *Declarator_suffixContext)
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.declaratorSuffix = true
+	s.Flags.declaratorSuffix = true
 }
 
 // ExitDeclarator_suffix is called when production declarator_suffix is exited.
 func (s *BaseObjCListener) ExitDeclarator_suffix(ctx *Declarator_suffixContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.declaratorSuffix = false
+	s.Flags.declaratorSuffix = false
 }
 
 // EnterParameter_list is called when production parameter_list is entered.
@@ -1459,14 +1462,14 @@ func (s *BaseObjCListener) EnterCompound_statement(ctx *Compound_statementContex
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.local++
+	s.Flags.local++
 }
 
 // ExitCompound_statement is called when production compound_statement is exited.
 func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.local--
+	s.Flags.local--
 }
 
 // EnterSelection_statement is called when production selection_statement is entered.
@@ -1475,14 +1478,14 @@ func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementCont
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.local++
+	s.Flags.local++
 }
 
 // ExitSelection_statement is called when production selection_statement is exited.
 func (s *BaseObjCListener) ExitSelection_statement(ctx *Selection_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.local--
+	s.Flags.local--
 }
 
 // EnterFor_in_statement is called when production for_in_statement is entered.
