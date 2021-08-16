@@ -41,7 +41,7 @@ func main()  {
 		if err != nil {
 			log.Println(err)
 		}
-	}),
+	})
 	fmt.Println("Server is listening...")
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
