@@ -3,7 +3,7 @@
 #import "Fellow.h"
 
 // import Foundation
-int i =8;
+int i = 8;
 // declare a (C-style) function
 int add(int num1, int num2) {
   return num1 + num2;
