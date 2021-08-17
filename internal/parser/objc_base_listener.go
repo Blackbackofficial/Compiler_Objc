@@ -19,6 +19,11 @@ type InfoType struct {
 	Scope string
 }
 
+type Arr struct {
+	Name string
+	Level int
+}
+
 type Flags struct {
 	local int // local {...}
 	declaratorSuffix bool // function parameter (...)
@@ -28,6 +33,7 @@ type Flags struct {
 	categoryName bool // ignore CategorizedComplex
 	specifierQualifierList bool
 }
+
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
 type BaseObjCListener struct {
 	Tree Tree
@@ -50,6 +56,7 @@ func NewGlobalInfo() map[string]InfoType {
 	return globalHash
 }
 
+var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
 var globalHash = make(map[string]InfoType)
 var count = 0
@@ -111,7 +118,11 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
 		}
+	} else if s.Flags.local > 0 {
+
+
 	}
+
 }
 
 // VisitErrorNode is called when an error node is visited.
@@ -1278,6 +1289,12 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	// for function
+	if ctx.GetStop().GetTokenType() == 70 {
+		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
+		log.Println("------------------------------------\n")
+	}
 }
 
 // ExitDeclarator is called when production declarator is exited.
@@ -1470,6 +1487,12 @@ func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.local--
+	log.Println(s.Flags.local)
+	// DROP LEVEL
+	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local{
+		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		log.Println(arrDeep)
+	}
 }
 
 // EnterSelection_statement is called when production selection_statement is entered.
