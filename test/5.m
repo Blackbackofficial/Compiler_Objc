@@ -12,8 +12,8 @@ int add(int num1, int num2) {
 int main(int argc, const char * argv[]) {
   @autoreleasepool {
     for (NSString * language in programmingStacks) {
-      if ([language isEqual: @ "Swift"]) {
-        NSLog(@ "%@ is the best language ever!!!!!", language);
+      if ([language isEqual: @"Swift"]) {
+        NSLog(@"%@ is the best language ever!!!!!", language);
       } else {
         int el = 5;
       }
@@ -27,25 +27,25 @@ int main(int argc, const char * argv[]) {
     // var raceTypes = [String]()
     // raceTypes.append("Marathon")
 
-    [raceTypes addObject: @ "Marathon"];
-    [raceTypes addObject: @ "10k"];
-    [raceTypes addObject: @ "Half marathon"];
-    [raceTypes addObject: @ "Triathlon"];
+    [raceTypes addObject: @"Marathon"];
+    [raceTypes addObject: @"10k"];
+    [raceTypes addObject: @"Half marathon"];
+    [raceTypes addObject: @"Triathlon"];
 
     for (NSString * raceType in raceTypes) {
-      NSLog(@ "race type is %@", raceType);
+      NSLog(@"race type is %@", raceType);
     }
 
     // NSDictionary
     NSDictionary * placesDict = @ {
-      @ "New York": @ "Brooklyn", @ "Sweden": @ "Malmo"
+      @"New York": @"Brooklyn", @"Sweden": @"Malmo"
     };
 
     // let placesDict = ["New York": "Brooklyn", "Sweden": "Malmo"]
 
     for (NSString * placeKey in placesDict) {
       NSString * placeValue = placesDict[placeKey];
-      NSLog(@ "The place key is %@ and the value is %@", placeKey, placeValue);
+      NSLog(@"The place key is %@ and the value is %@", placeKey, placeValue);
     }
 
     for (int i = 1; i <= 10; i++) {
@@ -54,25 +54,25 @@ int main(int argc, const char * argv[]) {
 
     if (people.count > 0) {
       Person * firstPerson = people[0];
-      NSLog(@ "The first person is %@", firstPerson.name);
+      NSLog(@"The first person is %@", firstPerson.name);
     }
 
     char grade = 'B';
     switch (grade) {
     case 'A': {
       int qwerty = 5;
-      NSLog(@ "Excellent!\n");
+      NSLog(@"Excellent!\n");
       break;
     }
     case 'B':
     case 'C':
-      NSLog(@ "Well done\n");
+      NSLog(@"Well done\n");
       break;
     case 'D':
-      NSLog(@ "You passed\n");
+      NSLog(@"You passed\n");
       break;
     default:
-      NSLog(@ "Invalid grade\n");
+      NSLog(@"Invalid grade\n");
     }
 
     int i = 1;
@@ -81,10 +81,10 @@ int main(int argc, const char * argv[]) {
       int j = i;
       j++;
       if ((i % 2) != 0) {
-        NSLog(@ "i = %i", i);
+        NSLog(@"i = %i", i);
       }
 
-      NSLog(@ "i = %i", i);
+      NSLog(@"i = %i", i);
     }
 
     int foo = 10;
@@ -92,8 +92,7 @@ int main(int argc, const char * argv[]) {
       int razr = foo;
       razr--;
       foo = razr;
-    } while (i > 0)
-
+    } while (i > 0);
   }
   return 0;
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/5.m")
+	is, err := antlr.NewFileStream("./test/1.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}

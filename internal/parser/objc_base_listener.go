@@ -63,15 +63,29 @@ var globalHash = make(map[string]InfoType)
 var count = 0
 var ne = true
 
+// gluing string
+func gluing() string {
+	var result = ""
+	var c = 0
+	for _, v := range arrDeep {
+		if c == 0 {
+			result += v.Name
+			c++
+		} else {
+			result += "." + v.Name
+		}
+	}
+	return result
+}
+
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
-	//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
 	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
 		node.GetSymbol().GetTokenType() == 37 || node.GetSymbol().GetTokenType() == 64 || node.GetSymbol().GetTokenType() == 35{
 		arrDeep = append(arrDeep, Arr{node.GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 
 	var m = NewGlobalInfo()
@@ -107,7 +121,6 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			m["key"+strconv.Itoa(count-1)] = e
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
-		//log.Println(node.GetSymbol().GetText(), node.GetSymbol().GetTokenType())
 		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
@@ -126,15 +139,10 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
 		}
+	// LOCAL VARS & CLASS
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
 		if node.GetSymbol().GetTokenType() == 125 {
-			if s.Flags.declaratorSuffix {
-				e.Scope = "FunctionParameter"
-			} else if s.Flags.classInterface {
-				e.Scope = "classInterface"
-			} else {
-				e.Scope = "global"
-			}
+			e.Scope = gluing()
 			e.Name = node.GetText()
 
 			m["key"+strconv.Itoa(count)] = e
@@ -142,20 +150,8 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
-		} else if node.GetSymbol().GetTokenType() == 69 {
-			e, ok := m["key"+strconv.Itoa(count-1)]
-			if !ok {
-				log.Fatal("No match key!")
-				os.Exit(1)
-			}
-			e.DataType = "function"
-			m["key"+strconv.Itoa(count-1)] = e
-
 		}
-
-
 	}
-
 }
 
 // VisitErrorNode is called when an error node is visited.
@@ -1325,7 +1321,6 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	// for function
 	if ctx.GetStop().GetTokenType() == 70 {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1501,7 +1496,6 @@ func (s *BaseObjCListener) EnterLabeled_statement(ctx *Labeled_statementContext)
 		s.Flags.labeledStatement = ctx.GetStart().GetTokenType()
 	}else if ctx.GetStart().GetTokenType() == 34 {
 		arrDeep = append(arrDeep, Arr{"default", s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1514,7 +1508,6 @@ func (s *BaseObjCListener) ExitLabeled_statement(ctx *Labeled_statementContext) 
 	} else if ctx.GetStart().GetTokenType() == 34 {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
 		s.Flags.labeledStatement = 0
-		log.Println(arrDeep)
 	}
 }
 
@@ -1535,7 +1528,6 @@ func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext
 	// DROP LEVEL
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local{
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
-		log.Println(arrDeep)
 	}
 }
 
@@ -1563,7 +1555,6 @@ func (s *BaseObjCListener) EnterFor_in_statement(ctx *For_in_statementContext) {
 	s.nodes = append(s.nodes, &node)
 	if ctx.GetStart().GetTokenType() == 41 {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1571,10 +1562,6 @@ func (s *BaseObjCListener) EnterFor_in_statement(ctx *For_in_statementContext) {
 func (s *BaseObjCListener) ExitFor_in_statement(ctx *For_in_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	//if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
-	//	arrDeep = append(arrDeep[:len(arrDeep)-1])
-	//	log.Println(arrDeep)
-	//}
 }
 
 // EnterFor_statement is called when production for_statement is entered.
@@ -1585,7 +1572,6 @@ func (s *BaseObjCListener) EnterFor_statement(ctx *For_statementContext) {
 	s.nodes = append(s.nodes, &node)
 	if ctx.GetStart().GetTokenType() == 41 {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1593,10 +1579,6 @@ func (s *BaseObjCListener) EnterFor_statement(ctx *For_statementContext) {
 func (s *BaseObjCListener) ExitFor_statement(ctx *For_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	//if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
-	//	arrDeep = append(arrDeep[:len(arrDeep)-1])
-	//	log.Println(arrDeep)
-	//}
 }
 
 // EnterWhile_statement is called when production while_statement is entered.
@@ -1719,7 +1701,6 @@ func (s *BaseObjCListener) EnterConstant_expression(ctx *Constant_expressionCont
 	s.nodes = append(s.nodes, &node)
 	if s.Flags.labeledStatement == 30 {
 		arrDeep = append(arrDeep, Arr{"case "+ ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1729,7 +1710,6 @@ func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionConte
 	s.current = s.nodes[len(s.nodes)-1]
 	if s.Flags.labeledStatement > 0 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
-		log.Println(arrDeep)
 	}
 }
 
