@@ -66,6 +66,14 @@ var ne = true
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+
+	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
+	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
+		node.GetSymbol().GetTokenType() == 37 || node.GetSymbol().GetTokenType() == 64 || node.GetSymbol().GetTokenType() == 35{
+		arrDeep = append(arrDeep, Arr{node.GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
+
 	var m = NewGlobalInfo()
 	e, ok := m["key"+strconv.Itoa(count)]
 	if !ok {
@@ -97,7 +105,6 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			}
 			e.DataType = "function"
 			m["key"+strconv.Itoa(count-1)] = e
-
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
 		//log.Println(node.GetSymbol().GetText(), node.GetSymbol().GetTokenType())
@@ -119,7 +126,32 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
 		}
-	} else if s.Flags.local > 0 {
+	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
+		if node.GetSymbol().GetTokenType() == 125 {
+			if s.Flags.declaratorSuffix {
+				e.Scope = "FunctionParameter"
+			} else if s.Flags.classInterface {
+				e.Scope = "classInterface"
+			} else {
+				e.Scope = "global"
+			}
+			e.Name = node.GetText()
+
+			m["key"+strconv.Itoa(count)] = e
+			count++
+		} else if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m["key"+strconv.Itoa(count)] = e
+		} else if node.GetSymbol().GetTokenType() == 69 {
+			e, ok := m["key"+strconv.Itoa(count-1)]
+			if !ok {
+				log.Fatal("No match key!")
+				os.Exit(1)
+			}
+			e.DataType = "function"
+			m["key"+strconv.Itoa(count-1)] = e
+
+		}
 
 
 	}
@@ -1500,7 +1532,6 @@ func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.local--
-	log.Println(s.Flags.local)
 	// DROP LEVEL
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local{
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
@@ -1515,10 +1546,6 @@ func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementCont
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.local++
-	if ctx.GetStart().GetTokenType() == 43 || ctx.GetStart().GetTokenType() == 58 {
-		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
-	}
 }
 
 // ExitSelection_statement is called when production selection_statement is exited.
