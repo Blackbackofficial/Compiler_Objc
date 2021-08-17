@@ -32,6 +32,7 @@ type Flags struct {
 	superclassName bool // ignore NSObject
 	categoryName bool // ignore CategorizedComplex
 	specifierQualifierList bool
+	labeledStatement int // case & default
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -1293,7 +1294,6 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	if ctx.GetStop().GetTokenType() == 70 {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
 		log.Println(arrDeep)
-		log.Println("------------------------------------\n")
 	}
 }
 
@@ -1465,12 +1465,25 @@ func (s *BaseObjCListener) EnterLabeled_statement(ctx *Labeled_statementContext)
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if ctx.GetStart().GetTokenType() == 30 {
+		s.Flags.labeledStatement = ctx.GetStart().GetTokenType()
+	}else if ctx.GetStart().GetTokenType() == 34 {
+		arrDeep = append(arrDeep, Arr{"default", s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitLabeled_statement is called when production labeled_statement is exited.
 func (s *BaseObjCListener) ExitLabeled_statement(ctx *Labeled_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	if ctx.GetStart().GetTokenType() == 30 {
+		s.Flags.labeledStatement = ctx.GetStart().GetTokenType()
+	} else if ctx.GetStart().GetTokenType() == 34 {
+		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		s.Flags.labeledStatement = 0
+		log.Println(arrDeep)
+	}
 }
 
 // EnterCompound_statement is called when production compound_statement is entered.
@@ -1502,6 +1515,10 @@ func (s *BaseObjCListener) EnterSelection_statement(ctx *Selection_statementCont
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.local++
+	if ctx.GetStart().GetTokenType() == 43 || ctx.GetStart().GetTokenType() == 58 {
+		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitSelection_statement is called when production selection_statement is exited.
@@ -1517,12 +1534,20 @@ func (s *BaseObjCListener) EnterFor_in_statement(ctx *For_in_statementContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if ctx.GetStart().GetTokenType() == 41 {
+		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitFor_in_statement is called when production for_in_statement is exited.
 func (s *BaseObjCListener) ExitFor_in_statement(ctx *For_in_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	//if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
+	//	arrDeep = append(arrDeep[:len(arrDeep)-1])
+	//	log.Println(arrDeep)
+	//}
 }
 
 // EnterFor_statement is called when production for_statement is entered.
@@ -1531,12 +1556,20 @@ func (s *BaseObjCListener) EnterFor_statement(ctx *For_statementContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if ctx.GetStart().GetTokenType() == 41 {
+		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitFor_statement is called when production for_statement is exited.
 func (s *BaseObjCListener) ExitFor_statement(ctx *For_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	//if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
+	//	arrDeep = append(arrDeep[:len(arrDeep)-1])
+	//	log.Println(arrDeep)
+	//}
 }
 
 // EnterWhile_statement is called when production while_statement is entered.
@@ -1657,12 +1690,20 @@ func (s *BaseObjCListener) EnterConstant_expression(ctx *Constant_expressionCont
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if s.Flags.labeledStatement == 30 {
+		arrDeep = append(arrDeep, Arr{"case "+ ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitConstant_expression is called when production constant_expression is exited.
 func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	if s.Flags.labeledStatement > 0 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
+		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		log.Println(arrDeep)
+	}
 }
 
 // EnterLogical_or_expression is called when production logical_or_expression is entered.
