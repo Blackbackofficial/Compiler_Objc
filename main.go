@@ -10,7 +10,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 )
+
+type InfoType struct {
+	Name string
+	DataType string
+	Scope string
+}
 
 func main()  {
 	is, err := antlr.NewFileStream("./test/5.m")
@@ -43,21 +50,26 @@ func main()  {
 		log.Println(err)
 	}
 
+	// sort key
+	keys := make([]int, 0, len(global))
+	for name := range global {
+		keys = append(keys, name)
+	}
+	sort.Ints(keys) //sort by key
+	var tableGlobal = make(map[int]InfoType)
+	for q := 0; q < len(global); q++ {
+		tableGlobal[q] = InfoType(global[keys[q]])
+	}
+
 	// Table global & local
-	http.HandleFunc("/global", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, _ := template.ParseFiles("templates/index.html")
 		err := tmpl.Execute(w, global)
 		if err != nil {
 			log.Println(err)
 		}
 	})
-	http.HandleFunc("/local", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, _ := template.ParseFiles("templates/index.html")
-		err := tmpl.Execute(w, global)
-		if err != nil {
-			log.Println(err)
-		}
-	})
+
 	fmt.Println("Server is listening at http://localhost:8080")
 	err = http.ListenAndServe(":8080", nil)
 	if err != nil {

@@ -6,7 +6,6 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"log"
 	"os"
-	"strconv"
 )
 
 type Tree struct {
@@ -46,7 +45,7 @@ type BaseObjCListener struct {
 }
 
 func NewBaseListener() *BaseObjCListener {
-	l := BaseObjCListener{
+	l := BaseObjCListener {
 		Tree:  Tree{},
 		nodes: []*opts.TreeData{},
 		Flags: Flags{},
@@ -54,13 +53,13 @@ func NewBaseListener() *BaseObjCListener {
 	return &l
 }
 
-func NewGlobalInfo() map[string]InfoType {
+func NewGlobalInfo() map[int]InfoType {
 	return globalHash
 }
 
 var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
-var globalHash = make(map[string]InfoType)
+var globalHash = make(map[int]InfoType)
 var count = 0
 var ne = 0
 
@@ -114,7 +113,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	}
 
 	var m = NewGlobalInfo()
-	e, ok := m["key"+strconv.Itoa(count)]
+	e, ok := m[count]
 	if !ok {
 		e = InfoType{}
 	}
@@ -131,37 +130,37 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			}
 			e.Name = node.GetText()
 
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 			count++
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 70 {
-			e, ok := m["key"+strconv.Itoa(count-1)]
+			e, ok := m[count-1]
 			if !ok {
 				log.Fatal("No match key!")
 				os.Exit(1)
 			}
 			e.DataType = "function"
-			m["key"+strconv.Itoa(count-1)] = e
+			m[count-1] = e
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
 		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 {
 			e.DataType = node.GetText()
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 		} else if s.Flags.specifierQualifierList {
 				e.DataType = node.GetText()
-				m["key"+strconv.Itoa(count)] = e
+				m[count] = e
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.classInterface {
 				e.Scope = "global class"
 			}
 			e.Name = node.GetText()
 
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 			count++
 		}
 	// GLOBAL VARS & CLASS
@@ -169,12 +168,12 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			log.Println(e.DataType)
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 
-			m["key"+strconv.Itoa(count)] = e
+			m[count] = e
 			count++
 		}
 	}
