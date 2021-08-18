@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// STRUCTS
 type Tree struct {
 	charts.BaseConfiguration
 }
@@ -44,6 +45,13 @@ type BaseObjCListener struct {
 	Flags Flags
 }
 
+// VARS
+var arrDeep []Arr
+var _ ObjCListener = &BaseObjCListener{}
+var globalHash = make(map[int]InfoType)
+var count = 0
+var ne = 0
+
 func NewBaseListener() *BaseObjCListener {
 	l := BaseObjCListener {
 		Tree:  Tree{},
@@ -57,28 +65,20 @@ func NewGlobalInfo() map[int]InfoType {
 	return globalHash
 }
 
-var arrDeep []Arr
-var _ ObjCListener = &BaseObjCListener{}
-var globalHash = make(map[int]InfoType)
-var count = 0
-var ne = 0
-
 // gluing string
 func gluing() string {
 	result := ""
-	c := 0
-	for _, v := range arrDeep {
-		if c == 0 {
+	for key, v := range arrDeep {
+		if key == 0 {
 			result += v.Name
-			c++
-		} else {
-			result += "." + v.Name
+			continue
 		}
+		result += "." + v.Name
 	}
 	return result
 }
 
-func typeSpecifier(s *BaseObjCListener)  {
+func typeSpecifier(s *BaseObjCListener) {
 	if s.Flags.typeSpecifier == true {
 		ne = ne + 2
 	} else if ne > 0 && !s.Flags.pointer {
@@ -93,12 +93,6 @@ func deleteUnused(str string) {
 		}
 	}
 }
-//func findTheSame()  {
-//	for key, p := range globalHash {
-//		globalHash
-//		if p.Name ==
-//	}
-//}
 
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
@@ -159,7 +153,6 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 				e.Scope = "global class"
 			}
 			e.Name = node.GetText()
-
 			m[count] = e
 			count++
 		}
@@ -167,12 +160,10 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
 		if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
-			log.Println(e.DataType)
 			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
 			e.Scope = gluing()
 			e.Name = node.GetText()
-
 			m[count] = e
 			count++
 		}
@@ -291,7 +282,6 @@ func (s *BaseObjCListener) EnterProtocol_declaration(ctx *Protocol_declarationCo
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.classInterface = true
-	// добавить
 }
 
 // ExitProtocol_declaration is called when production protocol_declaration is exited.
