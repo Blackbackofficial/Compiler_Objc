@@ -10,7 +10,6 @@ int add(int num1, int num2) {
 }
 
 int main(int argc, const char * argv[]) {
-  @autoreleasepool {
     for (NSString * language in programmingStacks) {
       if ([language isEqual: @"Swift"]) {
         NSLog(@"%@ is the best language ever!!!!!", language);
@@ -48,7 +47,7 @@ int main(int argc, const char * argv[]) {
       NSLog(@"The place key is %@ and the value is %@", placeKey, placeValue);
     }
 
-    for (int i = 1; i <= 10; i++) {
+    for (int asd = 1; asd <= 10; asd++) {
       NSString * placeValue = placesDict[placeKey];
     }
 
@@ -93,6 +92,5 @@ int main(int argc, const char * argv[]) {
       razr--;
       foo = razr;
     } while (i > 0);
-  }
   return 0;
 }

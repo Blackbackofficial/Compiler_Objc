@@ -33,6 +33,7 @@ type Flags struct {
 	categoryName bool // ignore CategorizedComplex
 	specifierQualifierList bool
 	labeledStatement int // case & default
+	pointer bool // *
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -61,12 +62,12 @@ var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
 var globalHash = make(map[string]InfoType)
 var count = 0
-var ne = true
+var ne = 0
 
 // gluing string
 func gluing() string {
-	var result = ""
-	var c = 0
+	result := ""
+	c := 0
 	for _, v := range arrDeep {
 		if c == 0 {
 			result += v.Name
@@ -78,9 +79,33 @@ func gluing() string {
 	return result
 }
 
+func typeSpecifier(s *BaseObjCListener)  {
+	if s.Flags.typeSpecifier == true {
+		ne = ne + 2
+	} else if ne > 0 && !s.Flags.pointer {
+		ne--
+	}
+}
+
+func deleteUnused(str string) {
+	for key, t := range globalHash {
+		if t.DataType == str {
+			delete(globalHash, key)
+		}
+	}
+}
+//func findTheSame()  {
+//	for key, p := range globalHash {
+//		globalHash
+//		if p.Name ==
+//	}
+//}
+
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+	typeSpecifier(s)
+	deleteUnused("")
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
 	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
@@ -94,7 +119,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		e = InfoType{}
 	}
 
-	// GLOBAL VARS & CLASS
+	// LOCAL VARS & CLASS
 	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
 		if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
@@ -111,7 +136,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m["key"+strconv.Itoa(count)] = e
-		} else if node.GetSymbol().GetTokenType() == 69 {
+		} else if node.GetSymbol().GetTokenType() == 70 {
 			e, ok := m["key"+strconv.Itoa(count-1)]
 			if !ok {
 				log.Fatal("No match key!")
@@ -127,6 +152,9 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		} else if s.Flags.specifierQualifierList {
 				e.DataType = node.GetText()
 				m["key"+strconv.Itoa(count)] = e
+		} else if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m["key"+strconv.Itoa(count)] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.classInterface {
 				e.Scope = "global class"
@@ -135,21 +163,19 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 			m["key"+strconv.Itoa(count)] = e
 			count++
-		} else if s.Flags.typeSpecifier {
-			e.DataType = node.GetText()
-			m["key"+strconv.Itoa(count)] = e
 		}
-	// LOCAL VARS & CLASS
-	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
-		if node.GetSymbol().GetTokenType() == 125 {
+	// GLOBAL VARS & CLASS
+	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
+		if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			log.Println(e.DataType)
+			m["key"+strconv.Itoa(count)] = e
+		} else if node.GetSymbol().GetTokenType() == 125 {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 
 			m["key"+strconv.Itoa(count)] = e
 			count++
-		} else if s.Flags.typeSpecifier {
-			e.DataType = node.GetText()
-			m["key"+strconv.Itoa(count)] = e
 		}
 	}
 }
@@ -722,7 +748,7 @@ func (s *BaseObjCListener) ExitBlock_type(ctx *Block_typeContext) {
 
 // EnterType_specifier is called when production type_specifier is entered.
 func (s *BaseObjCListener) EnterType_specifier(ctx *Type_specifierContext) {
-	node := opts.TreeData{Name: ctx.GetStop().GetText()}
+	node := opts.TreeData{Name: "Type_specifier: " + ctx.GetStop().GetText()}
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
@@ -1300,21 +1326,23 @@ func (s *BaseObjCListener) ExitEnumerator(ctx *EnumeratorContext) {
 
 // EnterPointer is called when production pointer is entered.
 func (s *BaseObjCListener) EnterPointer(ctx *PointerContext) {
-	node := opts.TreeData{Name: "Pointer"}
+	node := opts.TreeData{Name: "Pointer: " + ctx.GetStart().GetText()}
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.pointer = true
 }
 
 // ExitPointer is called when production pointer is exited.
 func (s *BaseObjCListener) ExitPointer(ctx *PointerContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.pointer = false
 }
 
 // EnterDeclarator is called when production declarator is entered.
 func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
-	node := opts.TreeData{Name: ctx.GetStart().GetText()}
+	node := opts.TreeData{Name: "Declarator " + ctx.GetStart().GetText()}
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
