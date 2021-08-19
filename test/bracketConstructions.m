@@ -1,5 +1,5 @@
-#import < Foundation / Foundation.h >
-  #import "Person.h"
+#import <Foundation/Foundation.h>
+#import "Person.h"
 #import "Fellow.h"
 
 // import Foundation

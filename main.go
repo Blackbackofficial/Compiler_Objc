@@ -20,19 +20,17 @@ type InfoType struct {
 }
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/5.m")
+	is, err := antlr.NewFileStream("./test/2.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
 
-	//TODO: сделать информационную таблицу
 	lexer := parser.NewObjCLexer(is)
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 	p := parser.NewObjCParser(stream)
 	listener := parser.NewBaseListener()
 	global := parser.NewGlobalInfo()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
-	log.Printf("%v\n", global)
 
 	// Graph
 	root := listener.Root

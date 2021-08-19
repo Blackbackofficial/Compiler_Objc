@@ -5,7 +5,6 @@ import (
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"log"
-	"os"
 )
 
 // STRUCTS
@@ -114,7 +113,10 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 	// LOCAL VARS & CLASS
 	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
-		if node.GetSymbol().GetTokenType() == 125 {
+		if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
+		} else if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
 				e.Scope = "FunctionParameter"
 			} else if s.Flags.classInterface {
@@ -126,14 +128,10 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 			m[count] = e
 			count++
-		} else if s.Flags.typeSpecifier {
-			e.DataType = node.GetText()
-			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 70 {
 			e, ok := m[count-1]
 			if !ok {
 				log.Fatal("No match key!")
-				os.Exit(1)
 			}
 			e.DataType = "function"
 			m[count-1] = e
@@ -1543,6 +1541,7 @@ func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.local--
 	// DROP LEVEL
+	// TODO: править
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local{
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
 	}
