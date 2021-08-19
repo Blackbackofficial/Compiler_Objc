@@ -1334,9 +1334,9 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	// for function
-	if ctx.GetStop().GetTokenType() == 70 {
+
+	if ctx.GetStop().GetTokenType() == 70 && !(ctx.GetStart().GetTokenType() == 69) {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1511,7 +1511,7 @@ func (s *BaseObjCListener) EnterLabeled_statement(ctx *Labeled_statementContext)
 	s.nodes = append(s.nodes, &node)
 	if ctx.GetStart().GetTokenType() == 30 {
 		s.Flags.labeledStatement = ctx.GetStart().GetTokenType()
-	}else if ctx.GetStart().GetTokenType() == 34 {
+	} else if ctx.GetStart().GetTokenType() == 34 {
 		arrDeep = append(arrDeep, Arr{"default", s.Flags.local})
 	}
 }
