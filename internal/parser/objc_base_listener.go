@@ -33,6 +33,8 @@ type Flags struct {
 	specifierQualifierList bool
 	labeledStatement int // case & default
 	pointer bool // *
+	function bool
+	iterationStatement bool
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -85,19 +87,10 @@ func typeSpecifier(s *BaseObjCListener) {
 	}
 }
 
-func deleteUnused(str string) {
-	for key, t := range globalHash {
-		if t.DataType == str {
-			delete(globalHash, key)
-		}
-	}
-}
-
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 	typeSpecifier(s)
-	deleteUnused("")
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
 	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
@@ -113,10 +106,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 	// LOCAL VARS & CLASS
 	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
-		if s.Flags.typeSpecifier {
-			e.DataType = node.GetText()
-			m[count] = e
-		} else if node.GetSymbol().GetTokenType() == 125 {
+		if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
 				e.Scope = "FunctionParameter"
 			} else if s.Flags.classInterface {
@@ -128,13 +118,16 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 
 			m[count] = e
 			count++
-		} else if node.GetSymbol().GetTokenType() == 70 {
+		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
 				log.Fatal("No match key!")
 			}
 			e.DataType = "function"
 			m[count-1] = e
+		} else if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
 		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 {
@@ -156,14 +149,21 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		}
 	// GLOBAL VARS & CLASS
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
-		if s.Flags.typeSpecifier {
-			e.DataType = node.GetText()
-			m[count] = e
-		} else if node.GetSymbol().GetTokenType() == 125 {
+		if node.GetSymbol().GetTokenType() == 125 {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 			m[count] = e
 			count++
+		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
+			e, ok := m[count-1]
+			if !ok {
+				log.Fatal("No match key!")
+			}
+			e.DataType = "function"
+			m[count-1] = e
+		} else if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
 		}
 	}
 }
@@ -1336,6 +1336,7 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	// for function
 	if ctx.GetStop().GetTokenType() == 70 {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+		log.Println(arrDeep)
 	}
 }
 
@@ -1343,6 +1344,7 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 func (s *BaseObjCListener) ExitDeclarator(ctx *DeclaratorContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.function = false
 }
 
 // EnterDirect_declarator is called when production direct_declarator is entered.
@@ -1631,12 +1633,14 @@ func (s *BaseObjCListener) EnterIteration_statement(ctx *Iteration_statementCont
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.iterationStatement = true
 }
 
 // ExitIteration_statement is called when production iteration_statement is exited.
 func (s *BaseObjCListener) ExitIteration_statement(ctx *Iteration_statementContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.iterationStatement = false
 }
 
 // EnterJump_statement is called when production jump_statement is entered.

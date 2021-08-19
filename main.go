@@ -19,8 +19,10 @@ type InfoType struct {
 	Scope string
 }
 
+var global = parser.NewGlobalInfo()
+
 func main()  {
-	is, err := antlr.NewFileStream("./test/2.m")
+	is, err := antlr.NewFileStream("./test/functions.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -29,8 +31,8 @@ func main()  {
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 	p := parser.NewObjCParser(stream)
 	listener := parser.NewBaseListener()
-	global := parser.NewGlobalInfo()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
+	//deleteUnused("")
 
 	// Graph
 	root := listener.Root
@@ -74,3 +76,11 @@ func main()  {
 		log.Println(err)
 	}
 }
+
+//func deleteUnused(dataType string) {
+//	for key, t := range global {
+//		if t.DataType == dataType {
+//			delete(global, key)
+//		}
+//	}
+//}
