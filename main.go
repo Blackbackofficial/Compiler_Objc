@@ -22,7 +22,7 @@ type InfoType struct {
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/functions.m")
+	is, err := antlr.NewFileStream("./test/bracketConstructions.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -32,7 +32,7 @@ func main()  {
 	p := parser.NewObjCParser(stream)
 	listener := parser.NewBaseListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
-	//deleteUnused("")
+	deleteUnused("")
 
 	// Graph
 	root := listener.Root
@@ -77,10 +77,10 @@ func main()  {
 	}
 }
 
-//func deleteUnused(dataType string) {
-//	for key, t := range global {
-//		if t.DataType == dataType {
-//			delete(global, key)
-//		}
-//	}
-//}
+func deleteUnused(dataType string) {
+	for key, t := range global {
+		if t.DataType == dataType {
+			delete(global, key)
+		}
+	}
+}

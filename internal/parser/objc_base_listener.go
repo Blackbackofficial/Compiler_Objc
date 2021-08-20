@@ -149,7 +149,16 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		}
 	// GLOBAL VARS & CLASS
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
-		if node.GetSymbol().GetTokenType() == 125 {
+		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
+		} else if s.Flags.function {
+			e.Name = e.DataType
+			e.DataType = "function"
+			e.Scope = gluing()
+			m[count] = e
+			count++
+		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 			m[count] = e
@@ -1334,9 +1343,10 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	// for function
-
 	if ctx.GetStop().GetTokenType() == 70 && !(ctx.GetStart().GetTokenType() == 69) {
 		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+	} else if ctx.GetStop().GetTokenType() == 70 && ctx.GetStart().GetTokenType() == 69 {
+		s.Flags.function = true
 	}
 }
 
@@ -1344,7 +1354,9 @@ func (s *BaseObjCListener) EnterDeclarator(ctx *DeclaratorContext) {
 func (s *BaseObjCListener) ExitDeclarator(ctx *DeclaratorContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.Flags.function = false
+	if s.Flags.function {
+		s.Flags.function = false
+	}
 }
 
 // EnterDirect_declarator is called when production direct_declarator is entered.
