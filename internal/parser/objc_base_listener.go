@@ -35,6 +35,10 @@ type Flags struct {
 	pointer bool // *
 	function bool
 	iterationStatement bool
+	instanceVariables bool
+	methodType bool
+	methodSelector bool
+	property bool
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -91,10 +95,11 @@ func typeSpecifier(s *BaseObjCListener) {
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 	typeSpecifier(s)
+	log.Println(arrDeep)
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
 	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
-		node.GetSymbol().GetTokenType() == 37 || node.GetSymbol().GetTokenType() == 64 || node.GetSymbol().GetTokenType() == 35{
+		node.GetSymbol().GetTokenType() == 37 || node.GetSymbol().GetTokenType() == 64 || node.GetSymbol().GetTokenType() == 35 {
 		arrDeep = append(arrDeep, Arr{node.GetText(), s.Flags.local})
 	}
 
@@ -104,11 +109,11 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		e = InfoType{}
 	}
 
-	// LOCAL VARS & CLASS
+	// GLOBAL VARS & CLASS
 	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
 		if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
-				e.Scope = "FunctionParameter"
+				e.Scope = arrDeep[0].Name  + "(FunctionParameter)"
 			} else if s.Flags.classInterface {
 				e.Scope = "classInterface"
 			} else {
@@ -130,7 +135,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			m[count] = e
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
-		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 {
+		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 && node.GetSymbol().GetTokenType() != 2 && node.GetSymbol().GetTokenType() != 7 && node.GetSymbol().GetTokenType() != 21 && node.GetSymbol().GetTokenType() != 18 && node.GetSymbol().GetTokenType() != 19 {
 			e.DataType = node.GetText()
 			m[count] = e
 		} else if s.Flags.specifierQualifierList {
@@ -140,24 +145,49 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			e.DataType = node.GetText()
 			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 125 {
-			if s.Flags.classInterface {
+			if s.Flags.classInterface && !s.Flags.methodSelector && !s.Flags.property {
 				e.Scope = "global class"
+			} else if s.Flags.methodSelector {
+				e.Scope = arrDeep[0].Name + "(Method)"
+			} else if s.Flags.classInterface && s.Flags.property {
+				e.Scope = arrDeep[0].Name + "(Property)"
+				s.Flags.property = false
 			}
 			e.Name = node.GetText()
 			m[count] = e
 			count++
 		}
-	// GLOBAL VARS & CLASS
+	// LOCAL VARS & CLASS
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
 		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m[count] = e
-		} else if s.Flags.function {
+		} else if s.Flags.function { // for func1(); func2(); func3()...
 			e.Name = e.DataType
 			e.DataType = "function"
 			e.Scope = gluing()
 			m[count] = e
 			count++
+		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function {
+			e.Scope = gluing()
+			e.Name = node.GetText()
+			m[count] = e
+			count++
+		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
+			e, ok := m[count-1]
+			if !ok {
+				log.Fatal("No match key!")
+			}
+			e.DataType = "function"
+			m[count-1] = e
+		} else if s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
+		}
+	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && s.Flags.classInterface && ne > 0  {
+		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
+			e.DataType = node.GetText()
+			m[count] = e
 		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function {
 			e.Scope = gluing()
 			e.Name = node.GetText()
@@ -232,6 +262,7 @@ func (s *BaseObjCListener) ExitClass_interface(ctx *Class_interfaceContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.classInterface = false
+	arrDeep = nil
 }
 
 // EnterCategory_interface is called when production category_interface is entered.
@@ -248,6 +279,7 @@ func (s *BaseObjCListener) ExitCategory_interface(ctx *Category_interfaceContext
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.classInterface = false
+	arrDeep = nil
 }
 
 // EnterClass_implementation is called when production class_implementation is entered.
@@ -264,6 +296,7 @@ func (s *BaseObjCListener) ExitClass_implementation(ctx *Class_implementationCon
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.classInterface = false
+	arrDeep = nil
 }
 
 // EnterCategory_implementation is called when production category_implementation is entered.
@@ -280,6 +313,7 @@ func (s *BaseObjCListener) ExitCategory_implementation(ctx *Category_implementat
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.classInterface = false
+	//arrDeep = nil
 }
 
 // EnterProtocol_declaration is called when production protocol_declaration is entered.
@@ -320,14 +354,12 @@ func (s *BaseObjCListener) EnterClass_declaration_list(ctx *Class_declaration_li
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.Flags.classInterface = true
 }
 
 // ExitClass_declaration_list is called when production class_declaration_list is exited.
 func (s *BaseObjCListener) ExitClass_declaration_list(ctx *Class_declaration_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.Flags.classInterface = false
 }
 
 // EnterClass_list is called when production class_list is entered.
@@ -378,6 +410,8 @@ func (s *BaseObjCListener) EnterProperty_declaration(ctx *Property_declarationCo
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.property = true
+	log.Println("---------------------------------------")
 }
 
 // ExitProperty_declaration is called when production property_declaration is exited.
@@ -434,6 +468,10 @@ func (s *BaseObjCListener) EnterClass_name(ctx *Class_nameContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if ctx.GetStart().GetTokenType() == 125 && s.Flags.classInterface && !s.Flags.methodType && !s.Flags.typeSpecifier{
+		arrDeep = append(arrDeep, Arr{ctx.GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitClass_name is called when production class_name is exited.
@@ -495,6 +533,7 @@ func (s *BaseObjCListener) EnterInstance_variables(ctx *Instance_variablesContex
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.local++
+	s.Flags.instanceVariables = true
 }
 
 // ExitInstance_variables is called when production instance_variables is exited.
@@ -502,6 +541,11 @@ func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.local--
+	s.Flags.instanceVariables = false
+	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local && !s.Flags.classInterface {
+		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		log.Println(arrDeep)
+	}
 }
 
 // EnterVisibility_specification is called when production visibility_specification is entered.
@@ -636,12 +680,18 @@ func (s *BaseObjCListener) EnterMethod_selector(ctx *Method_selectorContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.methodSelector = true
+	if ctx.GetStart().GetTokenType() == 125 && s.Flags.classInterface {
+		arrDeep = append(arrDeep, Arr{ctx.GetText(), s.Flags.local})
+		log.Println(arrDeep)
+	}
 }
 
 // ExitMethod_selector is called when production method_selector is exited.
 func (s *BaseObjCListener) ExitMethod_selector(ctx *Method_selectorContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.methodSelector = false
 }
 
 // EnterKeyword_declarator is called when production keyword_declarator is entered.
@@ -660,7 +710,7 @@ func (s *BaseObjCListener) ExitKeyword_declarator(ctx *Keyword_declaratorContext
 
 // EnterSelector is called when production selector is entered.
 func (s *BaseObjCListener) EnterSelector(ctx *SelectorContext) {
-	node := opts.TreeData{Name: "Selector"}
+	node := opts.TreeData{Name: "Selector: " + ctx.GetStart().GetText()}
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
@@ -678,12 +728,14 @@ func (s *BaseObjCListener) EnterMethod_type(ctx *Method_typeContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.methodType = true
 }
 
 // ExitMethod_type is called when production method_type is exited.
 func (s *BaseObjCListener) ExitMethod_type(ctx *Method_typeContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.methodType = false
 }
 
 // EnterProperty_implementation is called when production property_implementation is entered.
@@ -1120,6 +1172,7 @@ func (s *BaseObjCListener) EnterFunction_definition(ctx *Function_definitionCont
 func (s *BaseObjCListener) ExitFunction_definition(ctx *Function_definitionContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	arrDeep = nil
 }
 
 // EnterDeclaration is called when production declaration is entered.
@@ -1379,14 +1432,12 @@ func (s *BaseObjCListener) EnterDeclarator_suffix(ctx *Declarator_suffixContext)
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
-	s.Flags.declaratorSuffix = true
 }
 
 // ExitDeclarator_suffix is called when production declarator_suffix is exited.
 func (s *BaseObjCListener) ExitDeclarator_suffix(ctx *Declarator_suffixContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
-	s.Flags.declaratorSuffix = false
 }
 
 // EnterParameter_list is called when production parameter_list is entered.
@@ -1479,12 +1530,14 @@ func (s *BaseObjCListener) EnterParameter_declaration_list(ctx *Parameter_declar
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.declaratorSuffix = true
 }
 
 // ExitParameter_declaration_list is called when production parameter_declaration_list is exited.
 func (s *BaseObjCListener) ExitParameter_declaration_list(ctx *Parameter_declaration_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.declaratorSuffix = false
 }
 
 // EnterStatement_list is called when production statement_list is entered.

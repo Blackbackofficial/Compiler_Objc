@@ -22,7 +22,7 @@ type InfoType struct {
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/bracketConstructions.m")
+	is, err := antlr.NewFileStream("./test/functions.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -79,7 +79,7 @@ func main()  {
 
 func deleteUnused(dataType string) {
 	for key, t := range global {
-		if t.DataType == dataType {
+		if t.DataType == dataType || (t.Name == "" && t.Scope == "") {
 			delete(global, key)
 		}
 	}

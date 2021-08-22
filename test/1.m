@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) // или же просто main()
               NSLog(@"i = %i", i);
             }
     }
+    int qwerty = 89;
     [pool drain]; //освобождаем пул и все объекты, помещенные в него вызовами autorelease
     return retVal;
 }

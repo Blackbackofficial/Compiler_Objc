@@ -5,8 +5,7 @@
 }
 @end
 
-@interface example : NSObject
-{
+@interface example : NSObject {
     @public NSString* name;
 }
 
@@ -14,7 +13,7 @@
 
 @implementation example @end
 
-int main(int argc)
+int main(int argc, char *argv[])
 {
     example* me;
     if (example) {
