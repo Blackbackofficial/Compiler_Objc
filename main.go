@@ -22,7 +22,7 @@ type InfoType struct {
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/functions.m")
+	is, err := antlr.NewFileStream("./test/stack.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}

@@ -2,7 +2,7 @@
     NSMutableArray* m_array;
     int count;
 }
-- (void)push:(id)anObject;
+- (void)push;
 - (id)pop;
 - (void)clear;
 @property (nonatomic, readonly) int count;
@@ -11,8 +11,7 @@
 
 #import "HsuStack.h"
 @implementation HsuStack
-- (id)init
-{
+- (id)init {
     if( self=[super init] )
     {
         m_array = [[NSMutableArray alloc] init];
@@ -20,18 +19,18 @@
     }
     return self;
 }
+
 - (void)dealloc {
     [m_array release];
     [self dealloc];
     [super dealloc];
 }
-- (void)push:(id)anObject
-{
+
+- (void)push {
     [m_array addObject:anObject];
     count = m_array.count;
 }
-- (id)pop
-{
+- (id)pop {
     id obj = nil;
     if(m_array.count > 0)
     {
@@ -41,9 +40,9 @@
     }
     return obj;
 }
-- (void)clear
-{
-    [m_array removeAllObjects];
-    count = 0;
-}
+// TODO нужно подумать
+// - (void)clear {
+//     [m_array removeAllObjects];
+//     count = 0;
+// }
 @end

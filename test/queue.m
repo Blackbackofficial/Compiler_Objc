@@ -24,8 +24,7 @@
 
 #pragma mark NSObject
 
-- (id)init
-{
+- (id)init {
     if (self = [super init]) {
         _storage = [NSMutableArray array];
     }
@@ -34,33 +33,27 @@
 
 #pragma mark StdQueue
 
-- (BOOL)empty
-{
+- (BOOL)empty {
     return self.storage.count == 0;
 }
 
-- (NSUInteger)size
-{
+- (NSUInteger)size {
     return self.storage.count;
 }
 
-- (id)front
-{
+- (id)front {
     return self.storage.firstObject;
 }
 
-- (id)back
-{
+- (id)back {
     return self.storage.lastObject;
 }
 
-- (void)enqueue:(id)object
-{
+- (void)enqueue:(id)object {
     [self.storage addObject:object];
 }
 
-- (id)dequeue
-{
+- (id)dequeue {
     id firstObject = nil;
     if (!self.empty) {
         firstObject  = self.storage.firstObject;
@@ -68,5 +61,4 @@
     }
     return firstObject;
 }
-
 @end
