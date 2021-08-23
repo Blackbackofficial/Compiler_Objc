@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Compiler_Objc/internal"
 	"Compiler_Objc/internal/parser"
 	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -13,16 +14,10 @@ import (
 	"sort"
 )
 
-type InfoType struct {
-	Name string
-	DataType string
-	Scope string
-}
-
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/stack.m")
+	is, err := antlr.NewFileStream("./test/functions.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -33,6 +28,7 @@ func main()  {
 	listener := parser.NewBaseListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
 	deleteUnused("")
+
 
 	// Graph
 	root := listener.Root
@@ -50,16 +46,33 @@ func main()  {
 		log.Println(err)
 	}
 
+
 	// sort key
 	keys := make([]int, 0, len(global))
 	for name := range global {
 		keys = append(keys, name)
 	}
 	sort.Ints(keys) //sort by key
-	var tableGlobal = make(map[int]InfoType)
+	var tableGlobal = make(map[int]parser.InfoType)
 	for q := 0; q < len(global); q++ {
-		tableGlobal[q] = InfoType(global[keys[q]])
+		tableGlobal[q] = global[keys[q]]
 	}
+
+
+	// function call graph
+	globalFunc := make(map[int]parser.InfoType)
+	allFuncArr := make(map[int]parser.InfoType)
+	for key, t := range global {
+		if t.DataType == "function" {
+			allFuncArr[key] = parser.InfoType{Name: t.Name, DataType: t.DataType, Scope: t.Scope}
+		}
+		if  t.DataType == "function" && t.Scope == "global" {
+			globalFunc[key] = parser.InfoType{Name: t.Name, DataType: t.DataType, Scope: t.Scope}
+		}
+	}
+
+	internal.ParseGraph(globalFunc, allFuncArr)
+
 
 	// Table global & local
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {

@@ -2,8 +2,8 @@
 
 void func1(int count) {
     int j = 0;
-    int i;
-    for(i = count; i <= 1; i++) {
+    int i = count;
+    for(i; i <= 1; i++) {
         NSLog(@"func1");
         j = i;
     }
@@ -12,8 +12,8 @@ void func1(int count) {
 
 void func2(int count) {
     int j = 0;
-    int i;
-    for (i = count; i <= 1; i++) {
+    int i = count;
+    for (i; i <= 1; i++) {
         NSLog(@"func2");
         j = i;
     }
@@ -22,8 +22,8 @@ void func2(int count) {
 
 void func3(int count) {
     int j = 0;
-    int i;
-    for (i = count; i <= 1; i++) {
+    int i = count;
+    for (i; i <= 1; i++) {
         NSLog(@"func3");
         j = i;
     }
@@ -33,6 +33,7 @@ void func3(int count) {
 void func4(int count) {
     int i = 0;
     if (count != 0) {
+        int y = 89;
         for (i; i <= 1; i++) {
             NSLog(@"func4");
             func4(0);
@@ -43,8 +44,8 @@ void func4(int count) {
 int main(int argc, char *argv[]) {
     int start = 1;
     func1(start);
-    func2(start);
-    func3(start);
+//     func2(start);
+//     func3(start);
     NSLog(@"End");
     return 0;
 }

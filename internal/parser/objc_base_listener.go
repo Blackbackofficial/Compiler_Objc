@@ -33,12 +33,13 @@ type Flags struct {
 	specifierQualifierList bool
 	labeledStatement int // case & default
 	pointer bool // *
-	function bool
+	function bool // for functions
 	iterationStatement bool
 	instanceVariables bool
-	methodType bool
+	methodType bool // for -(int) print
 	methodSelector bool
-	property bool
+	property bool // @property
+	functionIn bool // for functions in {...}
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -93,9 +94,8 @@ func typeSpecifier(s *BaseObjCListener) {
 
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
-	log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+	//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 	typeSpecifier(s)
-	log.Println(arrDeep)
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
 	if node.GetSymbol().GetTokenType() == 43 || node.GetSymbol().GetTokenType() == 58 ||
@@ -158,7 +158,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			count++
 		}
 	// LOCAL VARS & CLASS
-	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && ne > 0 {
+	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && (ne > 0 || s.Flags.functionIn) {
 		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
 			m[count] = e
@@ -168,11 +168,19 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			e.Scope = gluing()
 			m[count] = e
 			count++
-		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function {
+		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function && !s.Flags.functionIn {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 			m[count] = e
 			count++
+		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && s.Flags.functionIn {
+			e.Scope = gluing()
+			e.Name = node.GetText()
+			e.DataType = "function"
+			m[count] = e
+			count++
+			s.Flags.functionIn = false
+			arrDeep = append(arrDeep[:len(arrDeep)-1])
 		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
@@ -411,7 +419,6 @@ func (s *BaseObjCListener) EnterProperty_declaration(ctx *Property_declarationCo
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.property = true
-	log.Println("---------------------------------------")
 }
 
 // ExitProperty_declaration is called when production property_declaration is exited.
@@ -470,7 +477,6 @@ func (s *BaseObjCListener) EnterClass_name(ctx *Class_nameContext) {
 	s.nodes = append(s.nodes, &node)
 	if ctx.GetStart().GetTokenType() == 125 && s.Flags.classInterface && !s.Flags.methodType && !s.Flags.typeSpecifier{
 		arrDeep = append(arrDeep, Arr{ctx.GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -544,7 +550,6 @@ func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext
 	s.Flags.instanceVariables = false
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local && !s.Flags.classInterface {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
-		log.Println(arrDeep)
 	}
 }
 
@@ -683,7 +688,6 @@ func (s *BaseObjCListener) EnterMethod_selector(ctx *Method_selectorContext) {
 	s.Flags.methodSelector = true
 	if ctx.GetStart().GetTokenType() == 125 && s.Flags.classInterface {
 		arrDeep = append(arrDeep, Arr{ctx.GetText(), s.Flags.local})
-		log.Println(arrDeep)
 	}
 }
 
@@ -1860,6 +1864,10 @@ func (s *BaseObjCListener) EnterAnd_expression(ctx *And_expressionContext) {
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	if ctx.GetStart().GetTokenType() == 125 && ctx.GetStop().GetTokenType() == 70 {
+		s.Flags.functionIn = true
+		arrDeep = append(arrDeep, Arr{ctx.GetStart().GetText(), s.Flags.local})
+	}
 }
 
 // ExitAnd_expression is called when production and_expression is exited.
