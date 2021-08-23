@@ -1,8 +1,8 @@
 package main
 
 import (
-	"Compiler_Objc/internal"
 	"Compiler_Objc/internal/parser"
+	"Compiler_Objc/internal/visualization"
 	"fmt"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/go-echarts/go-echarts/v2/charts"
@@ -30,18 +30,18 @@ func main()  {
 	deleteUnused("")
 
 
-	// Graph
+	// Tree
 	root := listener.Root
-	graph := charts.NewTree()
-	graph.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
+	tree := charts.NewTree()
+	tree.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
 		Orient: "TB", Roam: true, Layout: "orthogonal", Left: "0%", Right: "0%",
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
 
-	f, err := os.Create("graph.html")
+	f, err := os.Create("./result/tree.html")
 	if err != nil {
 		log.Println(err)
 	}
-	err = graph.Render(f)
+	err = tree.Render(f)
 	if err != nil {
 		log.Println(err)
 	}
@@ -71,7 +71,7 @@ func main()  {
 		}
 	}
 
-	internal.ParseGraph(globalFunc, allFuncArr)
+	visualization.ParseGraph(globalFunc, allFuncArr)
 
 
 	// Table global & local

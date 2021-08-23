@@ -1,4 +1,4 @@
-package internal
+package visualization
 
 import (
 	"Compiler_Objc/internal/parser"
@@ -73,7 +73,7 @@ func ParseGraph(globalFunc, allFuncArr map[int]parser.InfoType) {
 	}
 
 	// 3. write to file directly
-	if err := g.RenderFilename(graph, graphviz.PNG, "/Users/ivanchernov/go/src/Compiler_Objc/graph.png"); err != nil {
+	if err := g.RenderFilename(graph, graphviz.PNG, "./result/graph.png"); err != nil {
 		log.Fatal(err)
 	}
 }
