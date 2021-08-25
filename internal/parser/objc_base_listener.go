@@ -301,14 +301,14 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		node.GetSymbol().GetText() != "alloc" && node.GetSymbol().GetText() != "init" && node.GetSymbol().GetText() != "drain"{
 		log.Println("LOCAL: ", visHash)
 		log.Println(node.GetText(), node.GetSymbol().GetTokenType())
-		error := false
+		er := false
 		for v, _ := range visHash {
 			if node.GetText() == visHash[v].Name {
-				error = true
+				er = true
 				break
 			}
 		}
-		if !error {
+		if !er {
 			log.Fatal("Fatal error compilation in: " + node.GetText())
 		}
 	}
