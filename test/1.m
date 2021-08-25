@@ -3,9 +3,9 @@
 int main(int argc, char *argv[]) // или же просто main()
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; //создаем пул, он автоматически становится текущим
-    int retVal;
+    int retVal = 5;
     int i = 6;
-    if (true) {
+    if (i = 6) {
         int j = 6;
         j++;
         i--;

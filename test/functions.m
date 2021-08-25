@@ -36,7 +36,9 @@ void func4(int count) {
         int y = 89;
         for (i; i <= 1; i++) {
             NSLog(@"func4");
-            func4(0);
+            int qwerty = 0;
+            func4(qwerty);
+            qwerty = 89;
         }
     }
 }

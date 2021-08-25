@@ -40,6 +40,7 @@ type Flags struct {
 	methodSelector bool
 	property bool // @property
 	functionIn bool // for functions in {...}
+	initDeclaratorList bool
 }
 
 // BaseObjCListener is a complete listener for a parse tree produced by ObjCParser.
@@ -55,6 +56,7 @@ type BaseObjCListener struct {
 var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
 var globalHash = make(map[int]InfoType)
+var visHash = make(map[int]InfoType)
 var count = 0
 var ne = 0
 
@@ -95,6 +97,8 @@ func typeSpecifier(s *BaseObjCListener) {
 // VisitTerminal is called when a terminal node is visited.
 func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+	//log.Println("GLOBAL: ", globalHash)
+	//log.Println("LOCAL: ", visHash)
 	typeSpecifier(s)
 
 	// while_statement | do_statement | for_statement | for_in_statement | if | switch case;
@@ -103,10 +107,15 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		arrDeep = append(arrDeep, Arr{node.GetText(), s.Flags.local})
 	}
 
+
 	var m = NewGlobalInfo()
 	e, ok := m[count]
 	if !ok {
 		e = InfoType{}
+	}
+	hash, ok := visHash[count]
+	if !ok {
+		hash = InfoType{}
 	}
 
 	// GLOBAL VARS & CLASS
@@ -114,103 +123,193 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 		if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
 				e.Scope = arrDeep[0].Name  + "(FunctionParameter)"
+				hash.Scope = arrDeep[0].Name
 			} else if s.Flags.classInterface {
 				e.Scope = "classInterface"
+				hash.Scope = gluing()
 			} else {
 				e.Scope = "global"
+				hash.Scope = "global" // функции всегда глобальны
 			}
 			e.Name = node.GetText()
+			hash.Name = node.GetText()
 
 			m[count] = e
+			visHash[count] = hash
 			count++
 		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
 				log.Fatal("No match key!")
 			}
+			hash, ok := visHash[count-1]
+			if !ok {
+				log.Fatal("No match key in hash!")
+			}
 			e.DataType = "function"
+			hash.DataType = "function"
 			m[count-1] = e
+			visHash[count-1] = hash
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		}
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
-		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 && node.GetSymbol().GetTokenType() != 2 && node.GetSymbol().GetTokenType() != 7 && node.GetSymbol().GetTokenType() != 21 && node.GetSymbol().GetTokenType() != 18 && node.GetSymbol().GetTokenType() != 19 {
+		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 && node.GetSymbol().GetTokenType() != 2 &&
+			node.GetSymbol().GetTokenType() != 7 && node.GetSymbol().GetTokenType() != 21 && node.GetSymbol().GetTokenType() != 18 &&
+			node.GetSymbol().GetTokenType() != 19 {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		} else if s.Flags.specifierQualifierList {
-				e.DataType = node.GetText()
-				m[count] = e
+			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
+			m[count] = e
+			visHash[count] = hash
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		} else if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.classInterface && !s.Flags.methodSelector && !s.Flags.property {
 				e.Scope = "global class"
+				hash.Scope = "global"
 			} else if s.Flags.methodSelector {
 				e.Scope = arrDeep[0].Name + "(Method)"
+				hash.Scope = arrDeep[0].Name
 			} else if s.Flags.classInterface && s.Flags.property {
 				e.Scope = arrDeep[0].Name + "(Property)"
+				hash.Scope = arrDeep[0].Name
 				s.Flags.property = false
 			}
 			e.Name = node.GetText()
+			hash.Name = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 			count++
 		}
 	// LOCAL VARS & CLASS
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && (ne > 0 || s.Flags.functionIn) {
 		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		} else if s.Flags.function { // for func1(); func2(); func3()...
 			e.Name = e.DataType
 			e.DataType = "function"
 			e.Scope = gluing()
+			hash.Name = e.DataType
+			hash.DataType = "function"
+			hash.Scope = gluing()
 			m[count] = e
+			visHash[count] = hash
 			count++
 		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function && !s.Flags.functionIn {
 			e.Scope = gluing()
 			e.Name = node.GetText()
+			hash.Scope = gluing()
+			hash.Name = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 			count++
 		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && s.Flags.functionIn {
 			e.Scope = gluing()
 			e.Name = node.GetText()
 			e.DataType = "function"
+			hash.Scope = gluing()
+			hash.Name = node.GetText()
+			hash.DataType = "function"
 			m[count] = e
+			visHash[count] = hash
 			count++
 			s.Flags.functionIn = false
 			arrDeep = append(arrDeep[:len(arrDeep)-1])
+			//var last = 0
+			//for e := count; 0 <= e; e-- {
+			//	_, ok := visHash[e]
+			//	if ok {
+			//		last = e
+			//		break
+			//	}
+			//}
+			//
+			//var str = visHash[last].Scope
+			//for i := last; visHash[i].Scope == str; i-- {
+			//	delete(visHash, i)
+			//}
 		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
-				log.Fatal("No match key!")
+				log.Fatal("No match key in global hash!")
+			}
+			hash, ok := visHash[count-1]
+			if !ok {
+				log.Fatal("No match key in visHash !")
 			}
 			e.DataType = "function"
+			hash.DataType = "function"
 			m[count-1] = e
+			visHash[count-1] = hash
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		}
 	} else if s.Flags.local > 0 && !s.Flags.superclassName && !s.Flags.categoryName && s.Flags.classInterface && ne > 0  {
 		if node.GetSymbol().GetTokenType() == 125 && s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 		} else if node.GetSymbol().GetTokenType() == 125 && !s.Flags.typeSpecifier && !s.Flags.function {
 			e.Scope = gluing()
 			e.Name = node.GetText()
+			hash.Scope = gluing()
+			hash.Name = node.GetText()
 			m[count] = e
+			visHash[count] = hash
 			count++
 		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
 				log.Fatal("No match key!")
 			}
+			hash, ok := visHash[count-1]
+			if !ok {
+				log.Fatal("No match key!")
+			}
 			e.DataType = "function"
+			hash.DataType = "function"
 			m[count-1] = e
+			visHash[count-1] = hash
 		} else if s.Flags.typeSpecifier {
 			e.DataType = node.GetText()
+			hash.DataType = node.GetText()
 			m[count] = e
+			visHash[count] = hash
+		}
+	}
+
+	// ERROR NODE
+	if node.GetSymbol().GetTokenType() == 125 && !s.Flags.superclassName && !s.Flags.typeSpecifier && !s.Flags.initDeclaratorList &&
+		node.GetSymbol().GetText() != "alloc" && node.GetSymbol().GetText() != "init" && node.GetSymbol().GetText() != "drain"{
+		log.Println("LOCAL: ", visHash)
+		log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+		error := false
+		for v, _ := range visHash {
+			if node.GetText() == visHash[v].Name {
+				error = true
+				break
+			}
+		}
+		if !error {
+			log.Fatal("Fatal error compilation in: " + node.GetText())
 		}
 	}
 }
@@ -550,6 +649,19 @@ func (s *BaseObjCListener) ExitInstance_variables(ctx *Instance_variablesContext
 	s.Flags.instanceVariables = false
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local && !s.Flags.classInterface {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		var last = 0
+		for e := count; 0 <= e; e-- {
+			_, ok := visHash[e]
+			if ok {
+				last = e
+				break
+			}
+		}
+
+		var str = visHash[last].Scope
+		for i := last; visHash[i].Scope == str; i-- {
+			delete(visHash, i)
+		}
 	}
 }
 
@@ -1241,12 +1353,14 @@ func (s *BaseObjCListener) EnterInit_declarator_list(ctx *Init_declarator_listCo
 	s.current.Children = append(s.current.Children, &node)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
+	s.Flags.initDeclaratorList = true
 }
 
 // ExitInit_declarator_list is called when production init_declarator_list is exited.
 func (s *BaseObjCListener) ExitInit_declarator_list(ctx *Init_declarator_listContext) {
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
+	s.Flags.initDeclaratorList = false
 }
 
 // EnterInit_declarator is called when production init_declarator is entered.
@@ -1593,6 +1707,19 @@ func (s *BaseObjCListener) ExitLabeled_statement(ctx *Labeled_statementContext) 
 		s.Flags.labeledStatement = ctx.GetStart().GetTokenType()
 	} else if ctx.GetStart().GetTokenType() == 34 {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		var last = 0
+		for e := count; 0 <= e; e-- {
+			_, ok := visHash[e]
+			if ok {
+				last = e
+				break
+			}
+		}
+
+		var str = visHash[last].Scope
+		for i := last; visHash[i].Scope == str; i-- {
+			delete(visHash, i)
+		}
 		s.Flags.labeledStatement = 0
 	}
 }
@@ -1615,6 +1742,19 @@ func (s *BaseObjCListener) ExitCompound_statement(ctx *Compound_statementContext
 	// TODO: править
 	if ctx.GetStop().GetTokenType() == 72 && arrDeep[len(arrDeep)-1].Level == s.Flags.local{
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		var last = 0
+		for e := count; 0 <= e; e-- {
+			_, ok := visHash[e]
+			if ok {
+				last = e
+				break
+			}
+		}
+
+		var str = visHash[last].Scope
+		for i := last; visHash[i].Scope == str; i-- {
+			delete(visHash, i)
+		}
 	}
 }
 
@@ -1799,6 +1939,19 @@ func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionConte
 	s.current = s.nodes[len(s.nodes)-1]
 	if s.Flags.labeledStatement > 0 && arrDeep[len(arrDeep)-1].Level == s.Flags.local {
 		arrDeep = append(arrDeep[:len(arrDeep)-1])
+		var last = 0
+		for e := count; 0 <= e; e-- {
+			_, ok := visHash[e]
+			if ok {
+				last = e
+				break
+			}
+		}
+
+		var str = visHash[last].Scope
+		for i := last; visHash[i].Scope == str; i-- {
+			delete(visHash, i)
+		}
 	}
 }
 
