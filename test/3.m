@@ -1,23 +1,37 @@
-#import "Foundation/Foundation.h"
-@class Foo;
-@interface Bar : NSObject {
-    Foo *someFoo;
-}
+#import <Foundation/Foundation.h>
+
+@interface Person : NSObject
+
+@property (strong) Person *bestFriend;
+
+@property id firstName;
+@property NSString *lastName;
+@property (readonly) int age;
+
 @end
 
-@interface example : NSObject {
-    @public NSString* name;
+#import "Person.h"
+
+@implementation Person
+
+- (NSString *) description {
+    return self.firstName;
 }
 
 @end
 
-@implementation example @end
+#import <Foundation/Foundation.h>
+#import "Person.h"
 
-int main(int argc, char *argv[])
-{
-    example* me;
-    if (example) {
-        return me;
+int main(int argc, const char * argv[]) {
+
+    @autoreleasepool {
+
+        Person *yong = [[Person alloc] init];
+        yong.firstName = @"Yong";
+        yong.lastName = @"Bakos";
+
+        NSLog(@"Hello there, %@", yong);
     }
-    me->name = @"World";
+    return 0;
 }

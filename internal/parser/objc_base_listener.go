@@ -53,6 +53,7 @@ type BaseObjCListener struct {
 }
 
 // VARS
+var debug = true // debug
 var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
 var globalHash = make(map[int]InfoType)
@@ -229,19 +230,6 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 			count++
 			s.Flags.functionIn = false
 			arrDeep = append(arrDeep[:len(arrDeep)-1])
-			//var last = 0
-			//for e := count; 0 <= e; e-- {
-			//	_, ok := visHash[e]
-			//	if ok {
-			//		last = e
-			//		break
-			//	}
-			//}
-			//
-			//var str = visHash[last].Scope
-			//for i := last; visHash[i].Scope == str; i-- {
-			//	delete(visHash, i)
-			//}
 		} else if node.GetSymbol().GetTokenType() == 69 && !s.Flags.iterationStatement {
 			e, ok := m[count-1]
 			if !ok {
@@ -297,8 +285,9 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	}
 
 	// ERROR NODE
-	if node.GetSymbol().GetTokenType() == 125 && !s.Flags.superclassName && !s.Flags.typeSpecifier && !s.Flags.initDeclaratorList &&
-		node.GetSymbol().GetText() != "alloc" && node.GetSymbol().GetText() != "init" && node.GetSymbol().GetText() != "drain"{
+	if debug && node.GetSymbol().GetTokenType() == 125 && !s.Flags.superclassName && !s.Flags.typeSpecifier && !s.Flags.initDeclaratorList &&
+		node.GetSymbol().GetText() != "alloc" && node.GetSymbol().GetText() != "init" && node.GetSymbol().GetText() != "drain" &&
+		node.GetSymbol().GetText() != "complexWithRe" && node.GetSymbol().GetText() != "NSMutableArray" {
 		log.Println("LOCAL: ", visHash)
 		log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 		er := false

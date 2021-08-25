@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "Person.h"
 #import "Fellow.h"
+// debug false
 
 // import Foundation
 int i = 8;
@@ -10,7 +11,7 @@ int add(int num1, int num2) {
 }
 
 int main(int argc, const char * argv[]) {
-    for (NSString * language in programmingStacks) {
+    for (NSString * language in programmingStacks) { // debug
       if ([language isEqual: @"Swift"]) {
         NSLog(@"%@ is the best language ever!!!!!", language);
       } else {

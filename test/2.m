@@ -10,19 +10,19 @@
 
 @implementation Complex
     - (Complex *) mul {
-        return [Complex complexWithRe: _re * other->_re - _im * other->_im andIm: _re * other->_im + _im * other->_re];
+        return [[Complex alloc] init]];
     }
     - (Complex *) div {
-        double retRe = 0.0;
-        double retIm = 0.0;
-        double denominator = 0.0;
-        denominator = other->_re * other->_re + other->_im * other->_im;
+        double retRe = 6.0;
+        double retIm = 3.0;
+        double denominator = 7.0;
+        denominator = retRe * retIm;
         if (!denominator) {
             double reQr = retIm;
-            return nil;
+            return 0;
         }
-        retRe = (_re * other->_re + _im * other->_im) / denominator;
-        retIm = (_im * other->_re - _re * other->_im) / denominator;
-        return [Complex complexWithRe: retRe andIm: retIm];
+        retRe = (retRe + retIm) / denominator;
+        retIm = (retRe - retIm) / denominator;
+        return [Complex complexWithRe: retRe: retIm];
     }
 @end

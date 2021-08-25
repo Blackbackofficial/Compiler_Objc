@@ -1,4 +1,5 @@
 package main
+// debug false
 
 import (
 	"Compiler_Objc/internal/parser"
@@ -17,7 +18,7 @@ import (
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/4.m")
+	is, err := antlr.NewFileStream("./test/1.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
