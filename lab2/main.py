@@ -5,7 +5,6 @@ from Compiler_Objc.lab2.useless.delete import *
 
 def start():
     grammar = Grammar()
-    print("DEWDWDEWDWDEWED")
 
     grammar.Nonterms = ["E", "T", "F"]
     rule = Rule()

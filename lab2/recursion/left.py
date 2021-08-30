@@ -11,7 +11,7 @@ def LeftRecursion(g: Grammar):
     return
 
 
-def FindRecusive(g :Grammar):
+def FindRecusive(g: Grammar):
     letters = []
     for i in range(len(g.Nonterms)):
         a, b = SortRules(g, g.Nonterms[i])
@@ -20,7 +20,8 @@ def FindRecusive(g :Grammar):
                 letters.append(a[j].Left)
     return set(letters)
 
-def MakeIndirectRecursion(g :Grammar, letter: str):
+
+def MakeIndirectRecursion(g: Grammar, letter: str):
     rules = []
 
     a, b = SortRules(g, letter)
@@ -28,7 +29,7 @@ def MakeIndirectRecursion(g :Grammar, letter: str):
 
     for i in range(len(b)):
         rule = b[i]
-        if rule.Right[len(rule.Right)-1] != "eps":
+        if rule.Right[len(rule.Right) - 1] != "eps":
             rule.Right.append(newLetter)
 
     for i in range(len(a)):
@@ -52,6 +53,7 @@ def MakeIndirectRecursion(g :Grammar, letter: str):
     g.Rules = rules
     return
 
+
 def CheckDirectRecursion(g: Grammar):
     for i in range(len(g.Nonterms)):
         a, b = SortRules(g, g.Nonterms[i])
@@ -60,8 +62,8 @@ def CheckDirectRecursion(g: Grammar):
                 return True
     return False
 
-def MakeUndirectRecursive(g :Grammar):
 
+def MakeUndirectRecursive(g: Grammar):
     rules = []
     for i in range(len(g.Nonterms)):
         ai, bi = SortRules(g, g.Nonterms[i])
@@ -80,7 +82,7 @@ def MakeUndirectRecursive(g :Grammar):
     return rules
 
 
-def ReplaceRules(rule1, rule2, letter:str):
+def ReplaceRules(rule1, rule2, letter: str):
     rules3 = []
     for i in range(len(rule1)):
         if letter == (rule1[i]).Right[0]:
@@ -99,7 +101,7 @@ def SortRules(g: Grammar, letter: str):
     a, b = [], []
     for i in range(len(g.Rules)):
         rule = g.Rules[i]
-        if  rule.Left == letter:
+        if rule.Left == letter:
             if rule.Left == rule.Right[0] and len(rule.Right) != 1:
                 a.append(rule)
             else:
@@ -121,12 +123,13 @@ def SetRules(g: Grammar):
 def FindFactor(g: Grammar):
     letters = set()
     for i in range(len(g.Rules)):
-        for j in range(i+1, len(g.Rules)):
-            if g.Rules[i].Left ==  g.Rules[j].Left:
+        for j in range(i + 1, len(g.Rules)):
+            if g.Rules[i].Left == g.Rules[j].Left:
                 if g.Rules[i].Right[0] == g.Rules[j].Right[0]:
                     letters.add(g.Rules[i].Left)
 
     return letters
+
 
 def DeleteFactor(g: Grammar, letter: str):
     a, b = SortRules(g, letter)
@@ -154,10 +157,8 @@ def DeleteFactor(g: Grammar, letter: str):
             replace[j].Right = replace[j].Right[mx:]
             replace[j].Left = replace[j].Left + '^'
 
-
-
     for i in range(len(g.Rules)):
-        if g.Rules[i].Left != letter and g.Rules[i].Left != letter +'^':
+        if g.Rules[i].Left != letter and g.Rules[i].Left != letter + '^':
             rules.append(g.Rules[i])
     rules.extend(a)
 
@@ -166,6 +167,7 @@ def DeleteFactor(g: Grammar, letter: str):
     g.Rules = rules
 
     return
+
 
 def FindMax(rules):
     mx = len(rules[0])
