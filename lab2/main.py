@@ -1,6 +1,6 @@
-from models.grammar import Grammar, Rule
-from recursion.left import *
-from useless.delete import *
+from Compiler_Objc.lab2.models.grammar import Grammar, Rule
+from Compiler_Objc.lab2.recursion.left import *
+from Compiler_Objc.lab2.useless.delete import *
 
 
 def start():
