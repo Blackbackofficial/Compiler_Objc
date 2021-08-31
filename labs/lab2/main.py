@@ -1,12 +1,12 @@
-from Compiler_Objc.lab2.models.grammar import Grammar, Rule
-from Compiler_Objc.lab2.recursion.left import *
-from Compiler_Objc.lab2.useless.delete import *
+from Compiler_Objc.labs.lab2.recursion.left import *
+from Compiler_Objc.labs.lab2.useless.delete import *
 
 
 def start():
     grammar = Grammar()
 
     grammar.Nonterms = ["E", "T", "F"]
+
     rule = Rule()
     rule.Left = "E"
     rule.Right = ["E", "+", "T"]
@@ -35,7 +35,9 @@ def start():
     LeftRecursion(grammar)
     SetRules(grammar)
     DeleteUseless(grammar)
-    print("%v", grammar)
+    print("No Terms:", grammar.Nonterms)
+    for rul in grammar.Rules:
+        print(rul)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from Compiler_Objc.lab2.models.grammar import *
+from Compiler_Objc.labs.lab2.models.grammar import *
 
 
 def LeftRecursion(g: Grammar):

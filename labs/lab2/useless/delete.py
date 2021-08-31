@@ -1,8 +1,7 @@
-from Compiler_Objc.lab2.models.grammar import *
+from Compiler_Objc.labs.lab2.models.grammar import *
 
 
 def FindUseless(g: Grammar):
-
     usefull = set()
     for i in range(len(g.Rules)):
         flag = True
@@ -27,6 +26,7 @@ def FindUseless(g: Grammar):
 
     return usefull
 
+
 def DeleteUseless(g: Grammar):
     symb = FindUseless(g)
 
@@ -50,6 +50,7 @@ def DeleteUseless(g: Grammar):
             newRules.append(g.Rules[i])
     g.Rules = newRules
     return
+
 
 def isTerm(letter: str):
     return letter.lower() == letter
