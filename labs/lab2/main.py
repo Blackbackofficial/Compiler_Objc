@@ -2,7 +2,7 @@ from Compiler_Objc.labs.lab2.recursion.left import *
 from Compiler_Objc.labs.lab2.useless.delete import *
 
 
-def start():
+def main():
     grammar = Grammar()
 
     grammar.Nonterms = ["E", "T", "F"]
@@ -41,4 +41,4 @@ def start():
 
 
 if __name__ == '__main__':
-    start()
+    main()
