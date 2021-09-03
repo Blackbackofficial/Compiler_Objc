@@ -1,7 +1,4 @@
 digraph finite_state_machine {
-	q0
-	q2
-	q3 [shape=doublecircle]
-	q0 -> q2 [label=a]
-	q2 -> q3 [label=b]
+	q0 [shape=doublecircle]
+	q0 -> q0 [label=a]
 }

@@ -2,16 +2,16 @@ from Compiler_Objc.labs.lab2.models.grammar import *
 
 
 def LeftRecursion(g: Grammar):
-    MakeUndirectRecursive(g)
+    IndirectRecursion(g)
 
     setsss = FindRecusive(g)
     for i in range(len(g.Nonterms)):
         if g.Nonterms[i] in setsss:
-            MakeIndirectRecursion(g, g.Nonterms[i])
+            UndirectRecursion(g, g.Nonterms[i])
     return
 
 
-def FindRecusive(g: Grammar):
+def FindRecusive(g: Grammar):  # ищем рекурсию
     letters = []
     for i in range(len(g.Nonterms)):
         a, b = SortRules(g, g.Nonterms[i])
@@ -21,7 +21,7 @@ def FindRecusive(g: Grammar):
     return set(letters)
 
 
-def MakeIndirectRecursion(g: Grammar, letter: str):
+def UndirectRecursion(g: Grammar, letter: str):
     rules = []
 
     a, b = SortRules(g, letter)
@@ -54,7 +54,7 @@ def MakeIndirectRecursion(g: Grammar, letter: str):
     return
 
 
-def CheckDirectRecursion(g: Grammar):
+def CheckDirectRecursion(g: Grammar):  # не используется
     for i in range(len(g.Nonterms)):
         a, b = SortRules(g, g.Nonterms[i])
         for j in range(len(a)):
@@ -63,7 +63,7 @@ def CheckDirectRecursion(g: Grammar):
     return False
 
 
-def MakeUndirectRecursive(g: Grammar):
+def IndirectRecursion(g: Grammar):  # Привести к непрямой рекурсивным
     rules = []
     for i in range(len(g.Nonterms)):
         ai, bi = SortRules(g, g.Nonterms[i])
@@ -97,7 +97,7 @@ def ReplaceRules(rule1, rule2, letter: str):
     return rules3
 
 
-def SortRules(g: Grammar, letter: str):
+def SortRules(g: Grammar, letter: str):  # a - где есть этот нетерминал, b - где нет этого не терминала
     a, b = [], []
     for i in range(len(g.Rules)):
         rule = g.Rules[i]
@@ -120,7 +120,7 @@ def SetRules(g: Grammar):
     g.Rules = newRules
 
 
-def FindFactor(g: Grammar):
+def FindFactor(g: Grammar):  # не используется
     letters = set()
     for i in range(len(g.Rules)):
         for j in range(i + 1, len(g.Rules)):
@@ -128,10 +128,13 @@ def FindFactor(g: Grammar):
                 if g.Rules[i].Right[0] == g.Rules[j].Right[0]:
                     letters.add(g.Rules[i].Left)
 
-    return letters
+    if len(letters) == 0:
+        return False, None
+
+    return True, letters
 
 
-def DeleteFactor(g: Grammar, letter: str):
+def DeleteFactor(g: Grammar, letter: str):  # не используется
     a, b = SortRules(g, letter)
 
     b.sort(key=lambda x: x.Right[0])
@@ -144,16 +147,21 @@ def DeleteFactor(g: Grammar, letter: str):
             replace.append(b[i])
         else:
             mx = FindMax(replace)
-            for j in range(replace):
+            for j in range(len(replace)):
                 replace[j].Right = replace[j].Right[mx:]
                 replace[j].Left = replace[j].Left + '^'
-            g.Nonterms = replace[0].Left + "^"
+            g.Nonterms.append(replace[0].Left + "^")
             rules.extend(replace)
             replace = []
 
     if len(replace) != 1:
         mx = FindMax(replace)
-        for j in range(replace):
+        rel = Rule()
+        rel.Left = replace[0].Left
+        rel.Right = replace[0].Right[:mx]
+        rel.Right.append(rel.Left + '^')
+        rules.append(rel)
+        for j in range(len(replace)):
             replace[j].Right = replace[j].Right[mx:]
             replace[j].Left = replace[j].Left + '^'
 
@@ -162,21 +170,33 @@ def DeleteFactor(g: Grammar, letter: str):
             rules.append(g.Rules[i])
     rules.extend(a)
 
-    g.Nonterms = replace[0].Left + "^"
+    g.Nonterms.append(replace[0].Left)
 
-    g.Rules = rules
+    g.Rules.extend(rules)
 
     return
 
 
 def FindMax(rules):
-    mx = len(rules[0])
+    mx = len(rules[0].Right)
 
     for i in range(len(rules)):
         if mx > len(rules[i].Right):
             mx = rules[i].Right
-        for j in range(max):
+        for j in range(mx):
             if rules[i].Right[j] != rules[0].Right[j]:
                 mx = j
                 break
     return mx
+
+
+def MakeUnfactored(g: Grammar):
+    a, symbols = FindFactor(g)
+    if not a:
+        print("Грамматика не факторизирована\n")
+    else:
+        print("Грамматика факторизирована\n")
+        #тогда удаляем прямую рекурсию
+        for key in symbols:
+            DeleteFactor(g, key)
+
