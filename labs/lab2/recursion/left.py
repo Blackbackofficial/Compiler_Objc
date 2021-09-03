@@ -4,14 +4,14 @@ from Compiler_Objc.labs.lab2.models.grammar import *
 def LeftRecursion(g: Grammar):
     IndirectRecursion(g)
 
-    setsss = FindRecusive(g)
+    setsss = FindRecursion(g)
     for i in range(len(g.Nonterms)):
         if g.Nonterms[i] in setsss:
             UndirectRecursion(g, g.Nonterms[i])
     return
 
 
-def FindRecusive(g: Grammar):  # ищем рекурсию
+def FindRecursion(g: Grammar):  # ищем рекурсию
     letters = []
     for i in range(len(g.Nonterms)):
         a, b = SortRules(g, g.Nonterms[i])
@@ -150,7 +150,7 @@ def DeleteFactor(g: Grammar, letter: str):  # не используется
             for j in range(len(replace)):
                 replace[j].Right = replace[j].Right[mx:]
                 replace[j].Left = replace[j].Left + '^'
-            g.Nonterms.append(replace[0].Left + "^")
+            g.Nonterms.append(replace[0].Left + '^')
             rules.extend(replace)
             replace = []
 
@@ -193,10 +193,9 @@ def FindMax(rules):
 def MakeUnfactored(g: Grammar):
     a, symbols = FindFactor(g)
     if not a:
-        print("Грамматика не факторизирована\n")
-    else:
         print("Грамматика факторизирована\n")
-        #тогда удаляем прямую рекурсию
+    else:
+        print("Грамматика не факторизирована, факторизуем...\n")
+        # тогда удаляем прямую рекурсию
         for key in symbols:
             DeleteFactor(g, key)
-
