@@ -34,7 +34,7 @@
 
     +(NSString) print {
        double string = 234;
-       return string
+       return string;
     }
 
 @end
