@@ -288,8 +288,8 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	if debug && node.GetSymbol().GetTokenType() == 125 && !s.Flags.superclassName && !s.Flags.typeSpecifier && !s.Flags.initDeclaratorList &&
 		node.GetSymbol().GetText() != "alloc" && node.GetSymbol().GetText() != "init" && node.GetSymbol().GetText() != "drain" &&
 		node.GetSymbol().GetText() != "complexWithRe" && node.GetSymbol().GetText() != "NSMutableArray" {
-		//log.Println("LOCAL: ", visHash)
-		//log.Println(node.GetText(), node.GetSymbol().GetTokenType())
+		log.Println("LOCAL: ", visHash)
+		log.Println(node.GetText(), node.GetSymbol().GetTokenType())
 		er := false
 		for v, _ := range visHash {
 			if node.GetText() == visHash[v].Name {
