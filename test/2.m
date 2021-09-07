@@ -1,7 +1,7 @@
 #import "Complex.h"
 @interface Complex : NSObject {
-    - (Complex *)mul;
-    - (Complex *)div;
+    - (oneway Complex *)mul;
+    - (out Complex *)div;
 }
 @end
 
@@ -17,6 +17,10 @@
         double retIm = 3.0;
         double denominator = 7.0;
         denominator = retRe * retIm;
+        mul:
+
+        int retRe = 7.0;
+        goto mul;
         if (!denominator) {
             double reQr = retIm;
             return 0;

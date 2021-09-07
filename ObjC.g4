@@ -486,7 +486,7 @@ constant : DECIMAL_LITERAL | HEX_LITERAL | OCTAL_LITERAL | CHARACTER_LITERAL | F
 // §3.9 Keywords
 
 
-AUTORELEASEPOOL : '@autoreleasepool';
+AUTORELEASEPOOL : '@autoreleasepool'; //+
 CATCH           : '@catch';
 CLASS           : '@class';
 DYNAMIC         : '@dynamic';

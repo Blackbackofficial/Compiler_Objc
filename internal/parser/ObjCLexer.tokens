@@ -122,146 +122,146 @@ RETAIN=121
 READONLY=122
 READWRITE=123
 WEAK=124
-IDENTIFIER=125
-CHARACTER_LITERAL=126
-STRING_LITERAL=127
-HEX_LITERAL=128
-DECIMAL_LITERAL=129
-OCTAL_LITERAL=130
-FLOATING_POINT_LITERAL=131
-IMPORT=132
-INCLUDE=133
-PRAGMA=134
-WS=135
-COMMENT=136
-LINE_COMMENT=137
-HDEFINE=138
-HIF=139
-HELSE=140
-HUNDEF=141
-HIFNDEF=142
-HENDIF=143
-'@autoreleasepool'=1
-'@catch'=2
-'@class'=3
-'@dynamic'=4
-'@encode'=5
-'@end'=6
-'@finally'=7
-'@implementation'=8
-'@interface'=9
-'@package'=10
-'@protocol'=11
-'@optional'=12
-'@private'=13
-'@property'=14
-'@protected'=15
-'@public'=16
-'@selector'=17
-'@synchronized'=18
-'@synthesize'=19
-'@throw'=20
-'@try'=21
-'super'=22
-'self'=23
-'abstract'=24
-'auto'=25
-'boolean'=26
-'break'=27
-'bycopy'=28
-'byref'=29
-'case'=30
-'char'=31
-'const'=32
-'continue'=33
-'default'=34
-'do'=35
-'double'=36
-'else'=37
-'enum'=38
-'extern'=39
-'float'=40
-'for'=41
-'id'=42
-'if'=43
-'in'=44
-'inout'=45
-'goto'=46
-'int'=47
-'long'=48
-'oneway'=49
-'out'=50
-'register'=51
-'return'=52
-'short'=53
-'signed'=54
-'sizeof'=55
-'static'=56
-'struct'=57
-'switch'=58
-'typedef'=59
-'union'=60
-'unsigned'=61
-'void'=62
-'volatile'=63
-'while'=64
-'NS_OPTIONS'=65
-'NS_ENUM'=66
-'__weak'=67
-'__unsafe_unretained'=68
-'('=69
-')'=70
-'{'=71
-'}'=72
-'['=73
-']'=74
-';'=75
-','=76
-'.'=77
-'->'=78
-'@'=79
-'='=80
-'>'=81
-'<'=82
-'!'=83
-'~'=84
-'?'=85
-':'=86
-'=='=87
-'<='=88
-'>='=89
-'!='=90
-'&&'=91
-'||'=92
-'++'=93
-'--'=94
-'+'=95
-'-'=96
-'*'=97
-'/'=98
-'&'=99
-'|'=100
-'^'=101
-'%'=102
-'>>'=103
-'<<'=104
-'+='=105
-'-='=106
-'*='=107
-'/='=108
-'&='=109
-'|='=110
-'^='=111
-'%='=112
-'<<='=113
-'>>='=114
-'...'=115
-'assign'=116
-'getter'=117
-'nonatomic'=118
-'setter'=119
-'strong'=120
-'retain'=121
-'readonly'=122
-'readwrite'=123
-'weak'=124
+IDENTIFIER=125 // d
+CHARACTER_LITERAL=126 // d
+STRING_LITERAL=127 // d
+HEX_LITERAL=128 // d
+DECIMAL_LITERAL=129 // d
+OCTAL_LITERAL=130 // d
+FLOATING_POINT_LITERAL=131 // d
+IMPORT=132 // d
+INCLUDE=133 // d
+PRAGMA=134 // d
+WS=135 // d
+COMMENT=136 // d
+LINE_COMMENT=137 // d
+HDEFINE=138 // d
+HIF=139 // d
+HELSE=140 // d
+HUNDEF=141 // d
+HIFNDEF=142 // d
+HENDIF=143 // d
+'@autoreleasepool'=1 // d
+'@catch'=2 // d
+'@class'=3 // d
+'@dynamic'=4 // d
+'@encode'=5 // d
+'@end'=6 // d
+'@finally'=7 // d
+'@implementation'=8 // d
+'@interface'=9 // d
+'@package'=10 // d
+'@protocol'=11 // d
+'@optional'=12 // d
+'@private'=13 // d
+'@property'=14 // d
+'@protected'=15 // d
+'@public'=16 // d
+'@selector'=17 // d
+'@synchronized'=18 // d
+'@synthesize'=19 // d
+'@throw'=20 // none
+'@try'=21 // d
+'super'=22 // d
+'self'=23 // d
+'abstract'=24 // n
+'auto'=25 // d
+'boolean'=26 // n
+'break'=27 // d
+'bycopy'=28 // d
+'byref'=29 // d
+'case'=30 // d
+'char'=31 // d
+'const'=32 // d
+'continue'=33 // d
+'default'=34 // d
+'do'=35 // d
+'double'=36 // d
+'else'=37 // d
+'enum'=38 // d
+'extern'=39 // d
+'float'=40 // d
+'for'=41 // d
+'id'=42 // d
+'if'=43 // d
+'in'=44 // d
+'inout'=45 // d
+'goto'=46 // d
+'int'=47 // d
+'long'=48 // d
+'oneway'=49 // d
+'out'=50 // d
+'register'=51 // d
+'return'=52 // d
+'short'=53 // d
+'signed'=54 // d
+'sizeof'=55 // d
+'static'=56 // d
+'struct'=57 // d
+'switch'=58 // d
+'typedef'=59 // d
+'union'=60 // d
+'unsigned'=61 // d
+'void'=62 // d
+'volatile'=63 // d
+'while'=64 // d
+'NS_OPTIONS'=65 // d
+'NS_ENUM'=66 // d
+'__weak'=67 // d
+'__unsafe_unretained'=68 // d
+'('=69 // d
+')'=70 // d
+'{'=71 // d
+'}'=72 // d
+'['=73 // d
+']'=74 // d
+';'=75 // d
+','=76 // d
+'.'=77 // d
+'->'=78 // d
+'@'=79 // d
+'='=80 // d
+'>'=81 // d
+'<'=82 // d
+'!'=83 // d
+'~'=84 // d
+'?'=85 // d
+':'=86 // d
+'=='=87 // d
+'<='=88 // d
+'>='=89 // d
+'!='=90 // d
+'&&'=91 // d
+'||'=92 // d
+'++'=93 // d
+'--'=94 // d
+'+'=95 // d
+'-'=96 // d
+'*'=97 // d
+'/'=98 // d
+'&'=99 // d
+'|'=100 // d
+'^'=101 // d
+'%'=102 // d
+'>>'=103 // d
+'<<'=104 // d
+'+='=105 // d
+'-='=106 // d
+'*='=107 // d
+'/='=108 // d
+'&='=109 // d
+'|='=110 // d
+'^='=111 // d
+'%='=112 // d
+'<<='=113 // d
+'>>='=114 // d
+'...'=115 // n
+'assign'=116 // d
+'getter'=117 // d
+'nonatomic'=118 // d
+'setter'=119 // d
+'strong'=120 // d
+'retain'=121 // d
+'readonly'=122 // d
+'readwrite'=123 // d
+'weak'=124 // d

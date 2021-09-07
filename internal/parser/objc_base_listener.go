@@ -120,7 +120,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	}
 
 	// GLOBAL VARS & CLASS
-	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface {
+	if s.Flags.local == 0 && !s.Flags.superclassName && !s.Flags.categoryName && !s.Flags.classInterface && node.GetSymbol().GetTokenType() != 67 {
 		if node.GetSymbol().GetTokenType() == 125 {
 			if s.Flags.declaratorSuffix {
 				e.Scope = arrDeep[0].Name  + "(FunctionParameter)"
@@ -160,7 +160,7 @@ func (s *BaseObjCListener) VisitTerminal(node antlr.TerminalNode) {
 	} else if s.Flags.local == 0 && !s.Flags.superclassName && s.Flags.classInterface && !s.Flags.categoryName {
 		if node.GetSymbol().GetTokenType() > 0 && node.GetSymbol().GetTokenType() < 22 && node.GetSymbol().GetTokenType() != 2 &&
 			node.GetSymbol().GetTokenType() != 7 && node.GetSymbol().GetTokenType() != 21 && node.GetSymbol().GetTokenType() != 18 &&
-			node.GetSymbol().GetTokenType() != 19 {
+			node.GetSymbol().GetTokenType() != 19  {
 			e.DataType = node.GetText()
 			hash.DataType = node.GetText()
 			m[count] = e

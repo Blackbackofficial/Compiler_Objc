@@ -8,11 +8,10 @@
 
 @property(nonatomic, readwrite) double height;  // Property
 
--(double) volume;
-+(NSString) print;
+-(byref double) volume;
++(bycopy NSString) print;
 
 @end
-
 
 @implementation Box
 
@@ -23,6 +22,9 @@
        int j = 0;
        self = [super init];
        length = 1.0;
+       if(length == 1.0){
+          continue;
+       }
        breadth = 1.0;
        return self;
     }
@@ -36,10 +38,11 @@
        double string = 234;
        return string;
     }
-
 @end
 
 int main(int argc, char *argv[]) {
+   SEL sel = @selector(lowercaseString);
+   auto a = [NSString new];
    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
    Box *box1 = [[Box alloc]init];    // Create box1 object of type Box
    Box *box2 = [[Box alloc]init];    // Create box2 object of type Box
@@ -64,3 +67,39 @@ int main(int argc, char *argv[]) {
    return 0;
 }
 int qwerty = 89;
+
+@protocol TestProtocol
+-(void) test;
+-(void) testWithName;
+@end
+
+@interface Worker : NSObject
+{
+    @private struct Data data;
+}
+@end
+
+@interface Worker2 : NSObject
+{
+    @package struct Data1 data1;
+}
+@end
+
+@interface Worker3 : NSObject
+{
+    @protected struct Data2 data2;
+}
+@end
+
+@interface Worker4 : NSObject
+{
+    @private
+    struct Data2 data2;
+}
+@end
+
+@protocol myProtocol
+- (void)myMandatoryMethod;
+@optional
+- (void)myOptionalMethod;
+@end

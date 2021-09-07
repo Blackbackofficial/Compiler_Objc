@@ -18,7 +18,7 @@ import (
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/0.m")
+	is, err := antlr.NewFileStream("./test/4.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -29,6 +29,9 @@ func main()  {
 	listener := parser.NewBaseListener()
 	antlr.ParseTreeWalkerDefault.Walk(listener, p.Translation_unit())
 	deleteUnused("")
+	deleteUnused("{")
+	deleteUnused("}")
+	deleteUnused(",")
 
 
 	// Tree

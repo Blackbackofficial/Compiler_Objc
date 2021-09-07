@@ -14,7 +14,7 @@
 
 @implementation Person
 
-- (NSString *) description {
+- (inout NSString *) description {
     return self.firstName;
 }
 
