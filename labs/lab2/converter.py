@@ -121,7 +121,6 @@ class GrammarConverter:
     @staticmethod
     def delete_useless(g: Grammar) -> Grammar:
         symb = GrammarConverter.FindUseless(g)
-
         newNonterms = []
 
         for i in range(len(g.non_terminals)):
@@ -141,6 +140,8 @@ class GrammarConverter:
             if flag:
                 newRules.append(g.productions[i])
         g.productions = newRules
+        g.non_terminals.clear()
+        g.non_terminals.extend(symb)
         return g
 
     def FindUseless(g: Grammar):
