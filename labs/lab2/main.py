@@ -20,6 +20,10 @@ def start(filename):
         GrammarFile.save_grammar_to_file(grammar, 'out.json')
         print("\nWithout useless:\n{}".format(grammar))
 
+        grammar = GrammarConverter.delete_useless(grammar)
+        GrammarFile.save_grammar_to_file(grammar, 'out.json')
+        print("\nWithout useless:\n{}".format(grammar))
+
 
 if __name__ == "__main__":
-    start('test/gramfactor.json')
+    start('test/gr2.json')
