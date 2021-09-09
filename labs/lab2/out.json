@@ -1,1 +1,1 @@
-{"non_term": ["A", "S"], "term": ["s", "a", "f"], "start": "S", "productions": [{"l": "S", "r": ["A", "S"]}, {"l": "S", "r": ["s"]}, {"l": "A", "r": ["a"]}]}
+{"non_term": ["S"], "term": ["a", "b", "c", "d", "EPS"], "start": "S", "productions": [{"l": "S", "r": ["b"]}]}

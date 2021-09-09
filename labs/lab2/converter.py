@@ -69,7 +69,7 @@ class GrammarConverter:
         return letters
 
     @staticmethod
-    def delete_factor(g: Grammar, letter: str):
+    def delete_factor(g: Grammar, letter: str) -> None:
         b = GrammarConverter.SortRules(g, letter)
         for i in range(len(b)):  # удаляем правила не участвующие в факторе
             for j in range(i + 1, len(b)):
@@ -165,7 +165,8 @@ class GrammarConverter:
 
         return g
 
-    def FindUseless(g: Grammar):
+    @staticmethod
+    def FindUseless(g: Grammar) -> set:
         usefull = set()
         for i in range(len(g.productions)):
             flag = True
@@ -190,5 +191,5 @@ class GrammarConverter:
 
         return usefull
 
-    def isTerm(self: str):
+    def isTerm(self: str) -> bool:
         return self.lower() == self
