@@ -61,7 +61,8 @@ class GrammarConverter:
             for j in range(i + 1, len(g.productions)):
                 if g.productions[i].left == g.productions[j].left:
                     if g.productions[i].right[0] == g.productions[j].right[0]:
-                        letters.add(g.productions[i].left)
+                        if len(g.productions[j].right[0]) != 1 and not GrammarConverter.isTerm(g.productions[j].right[0]):
+                            letters.add(g.productions[i].left)
 
         if len(letters) == 0:
             return letters
@@ -78,6 +79,7 @@ class GrammarConverter:
                         continue
                     else:
                         b.pop(j)
+                        break
 
         b.sort(key=lambda x: x.right[0])
 

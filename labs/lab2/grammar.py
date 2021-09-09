@@ -32,7 +32,7 @@ class Grammar:
             if p.left == first_right:
                 new_productions.append(Rules(left, p.right + right))
 
-        print("ERROR in productions: ", new_productions)
+        print("ER: ", new_productions)
         return new_productions
 
     def delete_directly_left_recursion(self, left):
