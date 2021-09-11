@@ -1,4 +1,0 @@
-digraph finite_state_machine {
-	q0 [shape=doublecircle]
-	q0 -> q0 [label=a]
-}

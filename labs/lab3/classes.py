@@ -1,11 +1,8 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
-from queue import SimpleQueue, LifoQueue
-from abc import abstractmethod
+from queue import SimpleQueue
 import os
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Tree(object):
@@ -45,12 +42,10 @@ class GrammarSymbol(object):
     def __eq__(self, another):
         return self.mark == another.mark and self.idx == another.idx
 
-    def get_next_idx(self):
-        return GrammarSymbol(self.mark, self.idx + 1)
-
 
 EPS_SYM = GrammarSymbol('eps')
 FIN_SYM = GrammarSymbol('$')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Rule(object):
@@ -77,6 +72,15 @@ class Grammar(object):
         self.first_table = None
         self.follow_table = None
 
+    def __str__(self):
+        res = ""
+        for nonterm in self.nonterminal:
+            rules = [rule for rule in self.rules if rule.lhs == nonterm]
+            res += f"{nonterm} -> "
+            res += '|'.join([' '.join([str(x) for x in rule.rhs]) for rule in rules])
+            res += '\n'
+        return res
+
     def recursive_decent_parse(self, string):
         is_eval, num, tree = self.recursive_decent_parse_iter(self.start_symbol, string.split())
         return (is_eval and num == len(string.split())), tree
@@ -102,8 +106,7 @@ class Grammar(object):
                     else:
                         break
                 else:
-                    is_eval, num_evaled, new_tree = self.recursive_decent_parse_iter(rule.rhs[idx_rhs],
-                                                                                     string[idx_string:])
+                    is_eval, num_evaled, new_tree = self.recursive_decent_parse_iter(rule.rhs[idx_rhs], string[idx_string:])
                     if is_eval:
                         idx_string += num_evaled
                         idx_rhs += 1
@@ -114,20 +117,10 @@ class Grammar(object):
             if idx_rhs == len(rule.rhs):
                 evaled = idx_string
                 return True, evaled, cur_tree
-
         return False, evaled, None
 
     def sort_rules(self):
         self.rules = sorted(self.rules, key=lambda x: self.nonterminal.index(x.lhs))
-
-    def __str__(self):
-        res = ""
-        for nonterm in self.nonterminal:
-            rules = [rule for rule in self.rules if rule.lhs == nonterm]
-            res += f"{nonterm} -> "
-            res += '|'.join([' '.join([str(x) for x in rule.rhs]) for rule in rules])
-            res += '\n'
-        return res
 
     def first(self, syms: List[GrammarSymbol]):
         res = []
@@ -162,6 +155,7 @@ class Grammar(object):
                     changed = True
                 list_nonterm.append(rule.lhs.mark)
 
+        # составляю нетермы к FIRST, FOLLOW
         unique_nonterm = []
         for number in list_nonterm:
             if number in unique_nonterm:
@@ -249,9 +243,6 @@ class GrammarReader(GrammarBuilder):
 
 class GrammarConverter(GrammarBuilder):
     def __init__(self) -> None:
-        self._grammar = None
-
-    def reset(self):
         self._grammar = None
 
     def grammar(self) -> Grammar:

@@ -1,5 +1,5 @@
 from classes import *
-from rd_parser import *
+# from rd_parser import *
 from print_tree import print_tree
 
 
