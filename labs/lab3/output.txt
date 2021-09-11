@@ -1,0 +1,87 @@
+                          ┌begin
+                          │                      ┌id
+                          │             ┌operator┼=
+                          │             │        │                                 ┌factor─const
+                          │             │        └expression─simple_expression─term┤
+                          │             │                                          │ ┌mul_op─*
+                          │             │                                          └C┤
+                          │             │                                            └factor─id
+external_declaration─block┼operator_list┤
+                          │             │ ┌;
+                          │             │ │        ┌id
+                          │             └A┼operator┼=
+                          │               │        │                                        ┌not
+                          │               │        └expression─simple_expression─term─factor┤
+                          │               │                                                 └factor─id
+                          │               │ ┌;
+                          │               │ │        ┌id
+                          │               └A┼operator┼=
+                          │                 │        │                                        ┌(
+                          │                 │        │                                        │                 ┌term─factor─const
+                          │                 │        │                                 ┌factor┼simple_expression┤
+                          │                 │        │                                 │      │                 │ ┌sym_op─+
+                          │                 │        │                                 │      │                 └B┤
+                          │                 │        │                                 │      │                   │           ┌(
+                          │                 │        │                                 │      │                   │           │                 ┌term─factor─const
+                          │                 │        │                                 │      │                   └term─factor┼simple_expression┤
+                          │                 │        │                                 │      │                               │                 │ ┌sym_op─+
+                          │                 │        │                                 │      │                               │                 └B┤
+                          │                 │        │                                 │      │                               │                   └term─factor─const
+                          │                 │        │                                 │      │                               └)
+                          │                 │        │                                 │      └)
+                          │                 │        │          ┌simple_expression─term┤
+                          │                 │        │          │                      │ ┌mul_op─*
+                          │                 │        │          │                      └C┤
+                          │                 │        │          │                        └factor─const
+                          │                 │        └expression┼relation─<=
+                          │                 │                   └simple_expression─term─factor─id
+                          │                 │ ┌;
+                          │                 │ │        ┌id
+                          │                 └A┼operator┼=
+                          │                   │        │                                        ┌(
+                          │                   │        │                                        │                 ┌term─factor─const
+                          │                   │        │                                 ┌factor┼simple_expression┤
+                          │                   │        │                                 │      │                 │ ┌sym_op─+
+                          │                   │        │                                 │      │                 └B┤
+                          │                   │        │                                 │      │                   └term─factor─const
+                          │                   │        │                                 │      └)
+                          │                   │        │          ┌simple_expression─term┤
+                          │                   │        │          │                      │ ┌mul_op─*
+                          │                   │        │          │                      └C┤
+                          │                   │        │          │                        └factor─const
+                          │                   │        └expression┼relation─<=
+                          │                   │                   └simple_expression─term─factor─id
+                          │                   │ ┌;
+                          │                   │ │        ┌id
+                          │                   └A┼operator┼=
+                          │                     │        └expression─simple_expression─term─factor─id
+                          │                     │ ┌;
+                          │                     │ │        ┌id
+                          │                     └A┼operator┼=
+                          │                       │        └expression─simple_expression─term─factor─id
+                          │                       │ ┌;
+                          │                       │ │        ┌id
+                          │                       └A┼operator┼=
+                          │                         │        └expression─simple_expression─term─factor─id
+                          │                         │ ┌;
+                          │                         │ │        ┌id
+                          │                         └A┼operator┼=
+                          │                           │        └expression─simple_expression─term─factor─id
+                          │                           │ ┌;
+                          │                           └A┤
+                          │                             │        ┌id
+                          │                             └operator┼=
+                          │                                      │                                        ┌(
+                          │                                      │                                        │                 ┌term─factor─const
+                          │                                      │                                 ┌factor┼simple_expression┤
+                          │                                      │                                 │      │                 │ ┌sym_op─+
+                          │                                      │                                 │      │                 └B┤
+                          │                                      │                                 │      │                   └term─factor─const
+                          │                                      │                                 │      └)
+                          │                                      │          ┌simple_expression─term┤
+                          │                                      │          │                      │ ┌mul_op─*
+                          │                                      │          │                      └C┤
+                          │                                      │          │                        └factor─const
+                          │                                      └expression┼relation─<=
+                          │                                                 └simple_expression─term─factor─id
+                          └end

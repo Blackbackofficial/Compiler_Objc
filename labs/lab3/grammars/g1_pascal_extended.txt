@@ -1,0 +1,39 @@
+13
+external_declaration block operator_list operator expression simple_expression relation term factor sym sym_op mul_op useless
+23
+begin end = ; <> < <= > >= + - or * / div mod and not id const ( ) qwerty
+33
+external_declaration -> block
+block -> begin operator_list end
+operator_list -> operator
+operator_list -> operator_list ; operator
+operator -> id = expression
+expression -> simple_expression
+expression -> simple_expression relation simple_expression
+simple_expression -> term
+simple_expression -> sym term
+simple_expression -> simple_expression sym_op term
+term -> factor
+term -> term mul_op factor
+factor -> id
+factor -> const
+factor -> ( simple_expression )
+factor -> not factor
+relation -> =
+relation -> <>
+relation -> <
+relation -> <=
+relation -> >
+relation -> >=
+sym -> +
+sym -> -
+sym_op -> +
+sym_op -> -
+sym_op -> or
+mul_op -> *
+mul_op -> /
+mul_op -> div
+mul_op -> mod
+mul_op -> and
+useless -> qwerty
+external_declaration

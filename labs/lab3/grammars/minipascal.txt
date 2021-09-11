@@ -1,0 +1,52 @@
+22
+program identifier_list expression_list sign factor term simple_expression expression procedure_statement declarations type variable statement compound_statement statement_list standard_type subprogram_declarations parameter_list optional_statements subprogram_declaration subprogram_head arguments
+24
+program id array num eps [ ] ; of integer real function begin end assignop if then else while do relop addop mulop + -
+47
+program -> program id ( identifier_list ) ; declarations subprogram_declarations compound_statement
+identifier_list -> id
+identifier_list -> identifier_list , id
+declarations -> declarations var identifier_list : type ;
+declarations -> eps
+type -> standard_type
+type -> array [ num .. num ] of standard_type
+standard_type -> integer
+standard_type -> real
+subprogram_declarations -> subprogram_declarations subprogram_declarion ;
+subprogram_declarations -> eps
+subprogram_declaration -> subprogram_head declarations compound_statement
+subprogram_head -> function id arguments : standard_type ;
+subprogram_head -> procedure id arguments ;
+arguments -> ( parameter list )
+arguments -> eps
+parameter_list -> identifier_list : type
+parameter_list -> parameter_list ; identifier_list : type
+compound_statement -> begin optional_statements end
+optional_statements -> statement_list
+optional_statements -> eps
+statement_list -> statement
+statement_list -> statement_list ; statement
+statement -> variable assignop expression
+statement -> procedure_statement
+statement -> compound_statement
+statement -> if expression then statement else statement
+statement -> while expression do statement
+variable -> id
+variable -> id [ expression ]
+procedure_statement -> id
+procedure_statement -> id ( expression_list )
+expression_list -> expression
+expression_list -> expression_list , expression
+expression -> simple_expression
+expression -> simple_expression relop simple_expression
+simple_expression -> term
+simple_expression -> sign
+simple_expression -> simple_expression addop term
+term -> factor
+term -> term mulop factor
+factor -> id
+factor -> id ( expression_list )
+factor -> num
+factor -> ( expression )
+factor -> not factor
+sign -> + | −
