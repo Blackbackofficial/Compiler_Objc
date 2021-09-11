@@ -11,10 +11,12 @@ class PrintTree(print_tree):
         return str(node.data)
 
 
+# in_book.txt
+# g1_algo_pascal.txt
 def start():
     reader = GrammarReader()
     converter = GrammarConverter()
-    reader.get_grammar('g1_pascal_extended.txt')
+    reader.get_grammar('in_book.txt')
     converter.get_grammar(reader.grammar())
 
     # PRINT START GRAMMAR

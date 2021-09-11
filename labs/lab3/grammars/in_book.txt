@@ -1,0 +1,14 @@
+5
+E T E' F T'
+7
++ * ( ) E id eps
+8
+E -> T E'
+E' -> + T E'
+E' -> eps
+T -> F T'
+T' -> * F T'
+T' -> eps
+F -> ( E )
+F -> id
+E

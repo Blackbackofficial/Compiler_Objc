@@ -22,4 +22,4 @@ def start(filename):
 
 
 if __name__ == "__main__":
-    start('test/gr1.json')
+    start('test/gr5.json')
