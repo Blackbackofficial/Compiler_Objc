@@ -1,6 +1,6 @@
-TEST = "(a|b)*(ab)"
-TEST_ALPH = ['a', 'b']
-INPUT_TEST = "(a|b)*(ab)"
+TEST = "(a|b)*abb"
+TEST_ALPHA = ['a', 'b']
+INPUT_TEST = "aaabbbbaabbabd"
 
 
 class MPoint:
@@ -28,13 +28,13 @@ class NFA:
             if t.name == 'CHAR':
                 i = self.char_handler(i, t)
             elif t.name == 'STAR':
-                i = self.star_handler(i, t)
+                i = self.star_handler(i)
             elif t.name == 'PLUS':
-                i = self.plus_handler(i, t)
+                i = self.plus_handler(i)
             elif t.name == "ALT":
-                i = self.alt_handler(i, t)
+                i = self.alt_handler(i)
             else:
-                self.concat_handler(t)
+                self.concat_handler()
         self.nfa_stack[0].end.is_term = True
         self.nfa_stack[0].start.name = "Start"
 
@@ -50,62 +50,62 @@ class NFA:
         self.stack.append(work2)
         return i
 
-    def star_handler(self, i, t):
-        workblok = self.nfa_stack.pop()
+    def star_handler(self, i):
+        work_block = self.nfa_stack.pop()
         P1 = MPoint('s' + str(i))
         i += 1
         P2 = MPoint('s' + str(i))
         i += 1
-        workblok.end.eps.append(workblok.start)
-        workblok.end.eps.append(P2)
-        P1.eps.append(workblok.start)
+        work_block.end.eps.append(work_block.start)
+        work_block.end.eps.append(P2)
+        P1.eps.append(work_block.start)
         P1.eps.append(P2)
-        workblok = MBlock(P1, P2)
-        self.nfa_stack.append(workblok)
+        work_block = MBlock(P1, P2)
+        self.nfa_stack.append(work_block)
         self.stack.append(P1)
         self.stack.append(P2)
         return i
 
-    def plus_handler(self, i, t):
-        workblok = self.nfa_stack.pop()
+    def plus_handler(self, i):
+        work_block = self.nfa_stack.pop()
         P1 = MPoint('s' + str(i))
         i += 1
         P2 = MPoint('s' + str(i))
         i += 1
-        workblok.end.eps.append(workblok.start)
-        workblok.end.eps.append(P2)
-        P1.eps.append(workblok.start)
-        workblok = MBlock(P1, P2)
-        self.nfa_stack.append(workblok)
+        work_block.end.eps.append(work_block.start)
+        work_block.end.eps.append(P2)
+        P1.eps.append(work_block.start)
+        work_block = MBlock(P1, P2)
+        self.nfa_stack.append(work_block)
         self.stack.append(P1)
         self.stack.append(P2)
         return i
 
-    def alt_handler(self, i, t):
+    def alt_handler(self, i):
         P1 = MPoint('s' + str(i))
         i += 1
         P2 = MPoint('s' + str(i))
         i += 1
-        workblok1 = self.nfa_stack.pop()
-        workblok2 = self.nfa_stack.pop()
-        P1.eps.append(workblok1.start)
-        P1.eps.append(workblok2.start)
-        workblok1.end.eps.append(P2)
-        workblok2.end.eps.append(P2)
-        workblok = MBlock(P1, P2)
-        self.nfa_stack.append(workblok)
+        work_block1 = self.nfa_stack.pop()
+        work_block2 = self.nfa_stack.pop()
+        P1.eps.append(work_block1.start)
+        P1.eps.append(work_block2.start)
+        work_block1.end.eps.append(P2)
+        work_block2.end.eps.append(P2)
+        work_block = MBlock(P1, P2)
+        self.nfa_stack.append(work_block)
         self.stack.append(P1)
         self.stack.append(P2)
         return i
 
-    def concat_handler(self, t):
-        worckbloc2 = self.nfa_stack.pop()
-        worckbloc1 = self.nfa_stack.pop()
-        worckbloc1.end.eps.append(worckbloc2.start)
-        worckbloc = MBlock(worckbloc1.start, worckbloc2.end)
-        self.nfa_stack.append(worckbloc)
+    def concat_handler(self):
+        work_block2 = self.nfa_stack.pop()
+        work_block1 = self.nfa_stack.pop()
+        work_block1.end.eps.append(work_block2.start)
+        work_block1 = MBlock(work_block1.start, work_block2.end)
+        self.nfa_stack.append(work_block1)
 
-    def print_NFA(self, f):
+    def print_NFA(self):
         string = 'digraph G {\n'
         for i in self.stack:
             string += str(i.name) + '\n'
@@ -115,69 +115,71 @@ class NFA:
                 string += str(i.name) + '->' + str(i.transitions[j].name) + '[label=' + str(j) + ']' + '\n'
         return string + '}'
 
+
 class DFA:
-    def __init__(self, nfa, alph, nfa_end):
+    def __init__(self, nfa, alpha, nfa_end):
         self.start = MPoint('s1')
         j = 2
-        work = []
-        work.append(nfa)
+        work = [nfa]
         self.start.eps = self.e_closure(work)
         self.queue = []
         self.queue.append(self.start)
         self.all_e_closure = []
         self.all_e_closure.append(self.start.eps)
-        Dstate = self.pop_anlable()
-        while Dstate != 0:
-            Dstate.label = True
-            for i in alph:
-                work = Dstate.eps
+        d_state = self.pop_label()
+        while d_state != 0:
+            d_state.label = True
+            for i in alpha:
+                work = d_state.eps
                 w_move = self.move(work, i)
                 w_e_closure = self.e_closure(w_move)
-                if (w_e_closure not in self.all_e_closure):
+                if w_e_closure not in self.all_e_closure:
                     self.all_e_closure.append(w_e_closure)
                     w_point = MPoint('s' + str(j))
                     j += 1
                     w_point.eps = w_e_closure
-                    Dstate.transitions[i] = w_point
+                    d_state.transitions[i] = w_point
                     self.queue.append(w_point)
                 else:
                     for k in self.queue:
                         if k.eps == w_e_closure:
-                            Dstate.transitions[i] = k
-            Dstate = self.pop_anlable()
+                            d_state.transitions[i] = k
+            d_state = self.pop_label()
         for i in self.queue:
             if nfa_end in i.eps:
                 i.is_term = True
             if nfa in i.eps:
                 i.name = "Start"
 
-    def e_closure(self, T_stack):
-        e_closur = []
-        while T_stack != []:
+    @staticmethod
+    def e_closure(T_stack):
+        e_closure = list()
+        while T_stack:
             work = T_stack.pop()
-            if work not in e_closur:
-                e_closur.append(work)
+            if work not in e_closure:
+                e_closure.append(work)
             for i in work.eps:
-                if i not in e_closur:
-                    e_closur.append(i)
+                if i not in e_closure:
+                    e_closure.append(i)
                     T_stack.append(i)
-        return e_closur
+        return e_closure
 
-    def move(self, T_stack, ch):
+    @staticmethod
+    def move(T_stack, ch):
         mov = []
         for i in T_stack:
             work = i.transitions.get(ch)
-            if (work != None) and (work not in mov):
+            if (work is not None) and (work not in mov):
                 mov.append(work)
         return mov
 
-    def pop_anlable(self):
+    def pop_label(self):
         for i in self.queue:
-            if i.label == False:
+            if not i.label:
                 return i
         return 0
 
-    def print_DFA(self, f):
+    def print_DFA(self):
         string = 'digraph G {\n'
         for i in self.queue:
             string += str(i.name) + '\n'
@@ -187,24 +189,24 @@ class DFA:
 
 
 class MFA:
-    def __init__(self, dfa, alph):
-        def tr_al_init(point, alph):
-            for i in alph:
-                point.transitions[i] = []
+    def __init__(self, dfa, alpha):
+        def tr_al_init(point, alpha):
+            for r in alpha:
+                point.transitions[r] = list()
 
         # step 1
         queue_b = {}
         for i in dfa.queue:
             work = queue_b.get(i.name)
-            if work == None:
+            if work is None:
                 work = MPoint(i.name)
-                tr_al_init(work, alph)
+                tr_al_init(work, alpha)
                 queue_b[i.name] = work
             for j in i.transitions:
                 work1 = queue_b.get(i.transitions[j].name)
-                if work1 == None:
+                if work1 is None:
                     work1 = MPoint(i.transitions[j].name)
-                    tr_al_init(work1, alph)
+                    tr_al_init(work1, alpha)
                     queue_b[i.transitions[j].name] = work1
                 work1.transitions[j].append(work)
         # step 2
@@ -212,12 +214,12 @@ class MFA:
         for i in dfa.queue:
             dost[i.name] = False
 
-        def DFS(dost, point):
-            dost[point.name] = True
+        def DFS(d, point):
+            d[point.name] = True
             point.label = True
-            for i in point.transitions:
-                if point.transitions[i].label == False:
-                    DFS(dost, point.transitions[i])
+            for el in point.transitions:
+                if not point.transitions[el].label:
+                    DFS(d, point.transitions[el])
 
         DFS(dost, dfa.start)
         # step 3
@@ -230,7 +232,7 @@ class MFA:
         q = []
         for i in dfa.queue:
             for j in dfa.queue:
-                if (marked[i.name][j.name] != True) and i.is_term != j.is_term:
+                if not marked[i.name][j.name] and i.is_term != j.is_term:
                     marked[i.name][j.name] = True
                     marked[j.name][i.name] = True
                     q.append([i, j])
@@ -239,10 +241,10 @@ class MFA:
             work = q.pop(0)
             work1 = work[1].name
             work = work[0].name
-            for k in alph:
+            for k in alpha:
                 for i in queue_b[work].transitions[k]:
                     for j in queue_b[work1].transitions[k]:
-                        if marked[i.name][j.name] != True:
+                        if not marked[i.name][j.name]:
                             marked[i.name][j.name] = True
                             marked[j.name][i.name] = True
                             q.append([i, j])
@@ -251,17 +253,17 @@ class MFA:
         for i in dfa.queue:
             components[i] = -1
         for i in dfa.queue:
-            if marked[dfa.queue[0].name][i.name] != True:
+            if not marked[dfa.queue[0].name][i.name]:
                 components[i] = 0
         componentsCount = 0
         for i in dfa.queue:
-            if dost[i.name] != True:
+            if not dost[i.name]:
                 continue
             if components[i] == -1:
                 componentsCount += 1
                 components[i] = componentsCount
                 for j in dfa.queue:
-                    if marked[i.name][j.name] != True:
+                    if not marked[i.name][j.name]:
                         components[j] = componentsCount
         # step 6
         self.queue = {}
@@ -273,19 +275,14 @@ class MFA:
             work = self.queue.get('s' + str(components[i]))
             if i == dfa.start:
                 self.start = work
-            if i.is_term == True:
+            if i.is_term:
                 work.is_term = True
             for j in i.transitions:
                 work1 = self.queue.get('s' + str(components[i.transitions[j]]))
-                if work.transitions.get(j) == None:
+                if work.transitions.get(j) is None:
                     work.transitions[j] = work1
 
-    def tr_al_init(self, point, alph):
-        for i in alph:
-            point.transitions[i] = []
-        return point
-
-    def print_MFA(self, f):
+    def print_MFA(self):
         string = 'digraph G {\n'
         for i in self.queue:
             string += str(i) + '\n'

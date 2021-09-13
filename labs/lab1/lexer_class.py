@@ -1,4 +1,4 @@
-from tokens import *
+from tokens_class import *
 
 
 class Lexer:
@@ -9,11 +9,11 @@ class Lexer:
         self.length = len(self.source)
 
     def get_token(self):
-        if (self.current < self.length):
+        if self.current < self.length:
             work = self.source[self.current]
             self.current += 1
             if work not in self.symbols.keys():
-                return Tokens ('CHAR', work)
+                return Tokens('CHAR', work)
             else:
                 return Tokens(self.symbols[work], work)
         else:

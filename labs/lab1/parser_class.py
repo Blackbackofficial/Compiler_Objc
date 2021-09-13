@@ -1,5 +1,5 @@
-from lexer import *
-from tokens import *
+from lexer_class import *
+from tokens_class import *
 
 
 class Parser:
@@ -7,19 +7,20 @@ class Parser:
     def __init__(self, source):
         self.lexer = Lexer(source)
         self.tokens = []
-        work_conc = Tokens('CONCAT', '\x08')
+        work_concat = Tokens('CONCAT', '\x08')
         work1 = self.lexer.get_token()
         while work1.name != 'NONE':
             self.tokens.append(work1)
             work2 = self.lexer.get_token()
-            if self.check_conc(work1, work2) == True:
-                self.tokens.append(work_conc)
+            if self.check_concat(work1, work2):
+                self.tokens.append(work_concat)
             work1 = work2
         self.ex = []
         self.st = []
         self.RPN()
 
-    def check_conc(self, work1, work2):
+    @staticmethod
+    def check_concat(work1, work2):
         if work1.name == 'CHAR' and work2.name == 'CHAR':
             return True
         elif work1.name == 'CHAR' and work2.name == 'LEFT_PAREN':
@@ -48,10 +49,10 @@ class Parser:
                 self.st.append(self.tokens[i])
             else:
                 work = self.st.pop()
-                while (work.name != "LEFT_PAREN"):
+                while work.name != "LEFT_PAREN":
                     self.ex.append(work)
                     work = self.st.pop()
             i += 1
-        while self.st != []:
+        while self.st:
             work = self.st.pop()
             self.ex.append(work)
