@@ -13,8 +13,8 @@ def start(filename):
         grammar = GrammarConverter.delete_left_recursion(g)
         print("\nWithout left recursion:\n{}".format(grammar))
         # Step 2
-        grammar = GrammarConverter.factorization(grammar)
-        print("\nWithout left factorization:\n{}".format(grammar))
+        gram = GrammarConverter.factorization(grammar)
+        print("\nWithout left factorization:\n{}".format(gram))
         # Step 3
         grammar = GrammarConverter.delete_useless(grammar)
         GrammarFile.save_grammar_to_file(grammar, 'out.json')
@@ -22,4 +22,4 @@ def start(filename):
 
 
 if __name__ == "__main__":
-    start('test/gr5.json')
+    start('test/gramfactor.json')

@@ -1,0 +1,11 @@
+digraph G {
+s0
+s0->s1[label=a]
+s0->s0[label=b]
+s1
+s1->s1[label=a]
+s1->s2[label=b]
+s2
+s2->s1[label=a]
+s2->s0[label=b]
+}

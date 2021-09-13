@@ -105,7 +105,7 @@ class Grammar(object):
                         idx_string += 1
                     else:
                         break
-                else:
+                else:  # если нетерминал
                     is_eval, num_evaled, new_tree = self.recursive_decent_parse_iter(rule.rhs[idx_rhs], string[idx_string:])
                     if is_eval:
                         idx_string += num_evaled

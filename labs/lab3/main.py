@@ -11,7 +11,7 @@ class PrintTree(print_tree):
         return str(node.data)
 
 
-# in_book.txt
+# in_book.txt input: id + id * id
 # g1_algo_pascal.txt
 def start():
     reader = GrammarReader()
@@ -56,7 +56,6 @@ def start():
 
     # ENTER EVAL STRING
     string = input("Enter string: ")
-    i, u = converter.grammar().recursive_decent_parse(string)
     # parser = RecursiveDecent()
     res, tree = converter.grammar().recursive_decent_parse(string)
     if res:
