@@ -18,7 +18,7 @@ import (
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/4.m")
+	is, err := antlr.NewFileStream("./test/while.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}
@@ -38,7 +38,7 @@ func main()  {
 	root := listener.Root
 	tree := charts.NewTree()
 	tree.AddSeries("main", []opts.TreeData{root}, charts.WithTreeOpts(opts.TreeChart{
-		Orient: "TB", Roam: true, Layout: "orthogonal",  Left: "0%", Right: "0%", ExpandAndCollapse: false, InitialTreeDepth: -1, // поменять глубину если нужно
+		Orient: "TB", Roam: true, Layout: "orthogonal",  Left: "0%", Right: "0%", ExpandAndCollapse: false, InitialTreeDepth: 4, // поменять глубину если нужно
 	}), charts.WithLabelOpts(opts.Label{Show: true, Position: "top", Color: "Black"}))
 
 	f, err := os.Create("./result/tree.html")
