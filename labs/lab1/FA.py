@@ -1,6 +1,6 @@
 TEST = "(a|b)*abb"
 TEST_ALPHA = ['a', 'b']
-INPUT_TEST = "aaabbbbaabbabd"
+INPUT_TEST = "ababba"
 
 
 class MPoint:  # для подсчета состояний
@@ -110,7 +110,7 @@ class NFA:
         for i in self.stack:
             string += str(i.name) + '\n'
             for j in i.eps:
-                string += str(i.name) + '->' + str(j.name) + '\n'
+                string += str(i.name) + '->' + str(j.name) + '[label=' + "e" + ']' + '\n'
             for j in i.transitions:
                 string += str(i.name) + '->' + str(i.transitions[j].name) + '[label=' + str(j) + ']' + '\n'
         return string + '}'

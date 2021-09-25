@@ -17,7 +17,11 @@ def model_mfa(word, dfa):
 
 
 def main():
-    pars = Parser(TEST)
+    print("Регулярное выражение:")
+    test_input = input()
+    print("Входная цепочка:")
+    test = input()
+    pars = Parser(test)
     nfa = NFA(pars.ex)
     with open('../lab1/output/NFA.gv', "w+") as f:
         data1 = nfa.print_NFA()
