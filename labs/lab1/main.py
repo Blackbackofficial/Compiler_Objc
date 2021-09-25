@@ -42,7 +42,7 @@ def main():
     graphviz.render('dot', 'png', '../lab1/output/NFA.gv')
     graphviz.render('dot', 'png', '../lab1/output/DFA.gv')
     graphviz.render('dot', 'png', '../lab1/output/MFA.gv')
-    # model_mfa(INPUT_TEST, dfa)
+    model_mfa(INPUT_TEST, dfa)
 
 
 if __name__ == "__main__":
