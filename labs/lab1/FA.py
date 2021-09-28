@@ -1,9 +1,9 @@
 TEST = "(a|b)*abb"
 TEST_ALPHA = ['a', 'b']
-INPUT_TEST = "aaabbbbaabbabd"
+INPUT_TEST = "ababba"
 
 
-class MPoint:
+class MPoint:  # для подсчета состояний
     def __init__(self, name):
         self.name = name
         self.transitions = {}
@@ -12,14 +12,14 @@ class MPoint:
         self.is_term = False
 
 
-class MBlock:
+class MBlock:  # блок состояний
     def __init__(self, start, end):
         self.start = start
         self.end = end
 
 
 class NFA:
-    def __init__(self, token):
+    def __init__(self, token):  # в token передаем обратную польскую
         self.nfa_stack = []
         self.stack = []
         self.tokens = token
@@ -40,10 +40,10 @@ class NFA:
 
     def char_handler(self, i, t):
         work1 = MPoint('s' + str(i))
-        i += 1
+        i += 1  # для обозначения номера состояния (s1, s2, s3,...)
         work2 = MPoint('s' + str(i))
         i += 1
-        work1.transitions[t.value] = work2
+        work1.transitions[t.value] = work2  # {S1: b -> S2}
         block = MBlock(work1, work2)
         self.nfa_stack.append(block)
         self.stack.append(work1)
@@ -56,7 +56,7 @@ class NFA:
         i += 1
         P2 = MPoint('s' + str(i))
         i += 1
-        work_block.end.eps.append(work_block.start)
+        work_block.end.eps.append(work_block.start)  # Добавляем переход по eps из конца в начало
         work_block.end.eps.append(P2)
         P1.eps.append(work_block.start)
         P1.eps.append(P2)
@@ -81,7 +81,7 @@ class NFA:
         self.stack.append(P2)
         return i
 
-    def alt_handler(self, i):
+    def alt_handler(self, i):  # ИЛИ
         P1 = MPoint('s' + str(i))
         i += 1
         P2 = MPoint('s' + str(i))
@@ -110,24 +110,25 @@ class NFA:
         for i in self.stack:
             string += str(i.name) + '\n'
             for j in i.eps:
-                string += str(i.name) + '->' + str(j.name) + '\n'
+                string += str(i.name) + '->' + str(j.name) + '[label=' + "e" + ']' + '\n'
             for j in i.transitions:
                 string += str(i.name) + '->' + str(i.transitions[j].name) + '[label=' + str(j) + ']' + '\n'
         return string + '}'
 
 
 class DFA:
-    def __init__(self, nfa, alpha, nfa_end):
-        self.start = MPoint('s1')
-        j = 2
-        work = [nfa]
+    def __init__(self, nfa_start, alpha, nfa_end):
+        j = 1
+        self.start = MPoint('s'+str(j))
+        j += 1
+        work = [nfa_start]
         self.start.eps = self.e_closure(work)
         self.queue = []
         self.queue.append(self.start)
         self.all_e_closure = []
         self.all_e_closure.append(self.start.eps)
-        d_state = self.pop_label()
-        while d_state != 0:
+        d_state = self.pop_label()  # изначально в dstates(множестве состояний) содержится начальное состояние
+        while d_state != 0:  # пока имеется не помеченное состояние
             d_state.label = True
             for i in alpha:
                 work = d_state.eps
@@ -148,20 +149,20 @@ class DFA:
         for i in self.queue:
             if nfa_end in i.eps:
                 i.is_term = True
-            if nfa in i.eps:
+            if nfa_start in i.eps:
                 i.name = "Start"
 
     @staticmethod
     def e_closure(T_stack):
-        e_closure = list()
-        while T_stack:
-            work = T_stack.pop()
+        e_closure = []
+        while T_stack:  # пока стек не пуст
+            work = T_stack.pop()  # снять со стека верхний элемент
             if work not in e_closure:
                 e_closure.append(work)
             for i in work.eps:
                 if i not in e_closure:
                     e_closure.append(i)
-                    T_stack.append(i)
+                    T_stack.append(i)  # помещаем обратно в стек
         return e_closure
 
     @staticmethod
