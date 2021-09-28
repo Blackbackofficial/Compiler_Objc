@@ -6,7 +6,7 @@
 
 @property(readwrite,strong) int* usernameView;
 @property(nonatomic,weak) int* dummyNameView;
-@property(readonly,retain) int* testikView1;
+// @property(readonly,retain) int* testikView1;
 
 - (void)displayLocalVariable;
 + (void)terminalLocalVariable;
@@ -15,6 +15,14 @@
 
 int main(int argc, char *argv[]) // или же просто main()
 {
+    int value = 2011;
+    int i = 9;
+    int j = 8 + i;
+    value *= value++;
+    value /= value - value--;
+    value %= value % --value;
+    value += value - (--value);
+    value >>= value + ++value;
     int integerVar = 100u; // DECIMAL_LITERAL=129
     int i = 0;
         i = -- - i;
@@ -28,16 +36,6 @@ int main(int argc, char *argv[]) // или же просто main()
     char octal = 0213L; //OCTAL_LITERAL=130
     int i = 0;
     i = -- - i;
-
-    NSLog (@"Тип переменной int. Значение переменной равно %i", integerVar);
-    NSLog (@"Тип переменной float. Значение переменной равно %f", floatVar);
-    NSLog (@"Тип переменной double. Значение переменной равно %e", doubleVar);
-    NSLog (@"Тип переменной double. Значение переменной равно %g", doubleVar);
-    NSLog (@"Тип переменной char. Значение переменной равно %c", charVar);
-    NSLog (@"Тип переменной BOOL. Значение переменной равно %c", boolVar);
-    NSLog (@"Тип переменной NSString. Строковый литерал %c", my_string);
-    NSLog (@"Тип переменной char. Литерал в шестнадцатеричной системе %c", hex);
-    NSLog (@"Тип переменной char. Восьмеричный литерал %c", octal);
 
     return 0;
 }

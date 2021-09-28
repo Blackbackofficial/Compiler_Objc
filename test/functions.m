@@ -4,7 +4,6 @@ void func1(int count) {
     int j = 0;
     int i = count;
     for(i; i <= 1; i++) {
-        NSLog(@"func1");
         j = i;
     }
     func2(j);
@@ -14,7 +13,6 @@ void func2(int count) {
     int j = 0;
     int i = count;
     for (i; i <= 1; i++) {
-        NSLog(@"func2");
         j = i;
     }
     func3(j);
@@ -24,7 +22,6 @@ void func3(int count) {
     int j = 0;
     int i = count;
     for (i; i <= 1; i++) {
-        NSLog(@"func3");
         j = i;
     }
     func4(j);
@@ -35,7 +32,6 @@ void func4(int count) {
     if (count != 0) {
         int y = 89;
         for (i; i <= 1; i++) {
-            NSLog(@"func4");
             int qwerty = 0;
             func4(qwerty);
             qwerty = 89;
@@ -46,8 +42,7 @@ void func4(int count) {
 int main(int argc, char *argv[]) {
     int start = 1;
     func1(start);
-//     func2(start);
-//     func3(start);
-    NSLog(@"End");
+    func2(start);
+    func3(start);
     return 0;
 }

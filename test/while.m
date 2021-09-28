@@ -5,11 +5,6 @@ int main(int argc, char *argv[]) // или же просто main()
     int i = 6;
     i = i/i;
     i = i++;
-    i = i++;
-    i = i++;
-    i = i++;
-    i = i++;
-
 
     while (i < 20) {
         int j = 2;
