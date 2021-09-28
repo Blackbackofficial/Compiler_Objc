@@ -62,35 +62,6 @@ func Graph(tree *parser.BaseObjCListener) {
 		}
 	}
 
-	//fmt.Println(v.Name)
-	//		//
-	//		//	queue = append(queue, v)
-	//		//	if len(queue) != 0 {
-	//		//		queue = queue[1:]
-	//		//	}
-	//		//	name, err := graph.CreateNode(v.Name)
-	//		//	if err != nil {
-	//		//		log.Fatal(err)
-	//		//	}
-	//		//	queueGraph = append(queueGraph, name)
-	//		//	_, err = graph.CreateEdge("e", queueGraph[0], name)
-	//		//	if err != nil {
-	//		//		log.Fatal(err)
-	//		//	}
-	//		//	queueGraph = queueGraph[1:]
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// create your graph
 	// 1. write encoded PNG data to buffer
 	var buf bytes.Buffer
