@@ -3,7 +3,6 @@ package visualization
 import (
 	"Compiler_Objc/internal/parser"
 	"bytes"
-	"fmt"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/goccy/go-graphviz"
 	"github.com/goccy/go-graphviz/cgraph"
@@ -56,7 +55,7 @@ func Graph(tree *parser.BaseObjCListener) {
 			e.SetDecorate(false)
 		}
 		queueGraph = queueGraph[1:]
-		fmt.Println(queue[0].Name)
+		//fmt.Println(queue[0].Name)
 		if len(queue) != 0 {
 			queue = queue[1:]
 		}

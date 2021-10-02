@@ -83,7 +83,7 @@ type BaseObjCListener struct {
 
 // VARS
 var start = false
-var debug = true // debug
+var debug = false // debug
 var arrDeep []Arr
 var _ ObjCListener = &BaseObjCListener{}
 var globalHash = make(map[int]InfoType)
@@ -2184,14 +2184,14 @@ func (s *BaseObjCListener) EnterAssignment_expression(ctx *Assignment_expression
 		s.current.Children = append(s.current.Children, &node)
 		scopeclose := opts.TreeData{Name: ")"}
 		s.current.Children = append(s.current.Children, &scopeclose)
-		s.current = &node
+		//s.current = &node
 	} else if openquotes && !s.Flags.For {
 		quotesopen := opts.TreeData{Name: "["}
 		s.current.Children = append(s.current.Children, &quotesopen)
 		s.current.Children = append(s.current.Children, &node)
 		closequotes := opts.TreeData{Name: "]"}
 		s.current.Children = append(s.current.Children, &closequotes)
-		s.current = &node
+		//s.current = &node
 	} else {
 		s.current.Children = append(s.current.Children, &node)
 		sep := opts.TreeData{Name: ";"}
