@@ -18,7 +18,7 @@ import (
 var global = parser.NewGlobalInfo()
 
 func main()  {
-	is, err := antlr.NewFileStream("./test/0.m")
+	is, err := antlr.NewFileStream("./test/course.m")
 	if err != nil {
 		fmt.Printf("No input file provided")
 	}

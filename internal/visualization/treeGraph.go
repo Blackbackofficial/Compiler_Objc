@@ -36,6 +36,7 @@ func Graph(tree *parser.BaseObjCListener) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	// обход в ширину
 	queue = append(queue, tree.Root)
 	queueGraph = append(queueGraph, start)
 	for len(queue) > 0 {

@@ -1,28 +1,27 @@
-#import <Foundation/Foundation.h> //для NSObject и строк NSString
-#include <asl.h>
+// #import <Foundation/Foundation.h> //для NSObject и строк NSString
+// #include <asl.h>
+//
+// @interface LoginViewController ()
+// // 116 - 124
+//
+// @property(readwrite,strong) int* usernameView;
+// @property(nonatomic,weak) int* dummyNameView;
+// // @property(readonly,retain) int* testikView1;
+//
+// - (void)displayLocalVariable;
+// + (void)terminalLocalVariable;
+//
+// @end
 
-@interface LoginViewController ()
-// 116 - 124
-
-@property(readwrite,strong) int* usernameView;
-@property(nonatomic,weak) int* dummyNameView;
-// @property(readonly,retain) int* testikView1;
-
-- (void)displayLocalVariable;
-+ (void)terminalLocalVariable;
-
-@end
-
-int main(int argc, char *argv[]) // или же просто main()
+int main(char *argv) // или же просто main()
 {
-    int value = 2011;
-    int i = 9;
-    int j = 8 + i;
+//     int i = 9;
+//     int j = 8 + i;
     value *= value++;
     value /= value - value--;
     value %= value % --value;
-    value += value - --value;
-    value >>= value + ++value;
+//     value += value - --value;
+//     value >>= value + ++value;
 //     int integerVar = 100u; // DECIMAL_LITERAL=129
 //     int i = 0;
 //         i = -- - i;

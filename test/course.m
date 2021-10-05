@@ -1,7 +1,7 @@
 IfStatement() {
     int i = 0;
     int count = 0;
-    if (count != 0) {
+    if (count != 0 && count || !count) {
         int y = 89;
         ForStatement();
     } else {

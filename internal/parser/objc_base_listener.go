@@ -1162,10 +1162,29 @@ func (s *BaseObjCListener) ExitProtocol_qualifier(ctx *Protocol_qualifierContext
 
 // EnterPrimary_expression is called when production primary_expression is entered.
 func (s *BaseObjCListener) EnterPrimary_expression(ctx *Primary_expressionContext) {
-	node := opts.TreeData{Name: ctx.GetStart().GetText()}
-	s.current.Children = append(s.current.Children, &node)
-	//s.current = &node
-	s.nodes = append(s.nodes, &node)
+	q := opts.TreeData{Name: "Primary_expression"}
+	s.current.Children = append(s.current.Children, &q)
+	s.current = &q
+	if ctx.GetStart().GetTokenType() == 125 {
+		//identifier := opts.TreeData{Name: "Identifier"}
+		//s.current.Children = append(s.current.Children, &identifier)
+		//s.current = &identifier
+		node := opts.TreeData{Name: ctx.GetStart().GetText()}
+		s.current.Children = append(s.current.Children, &node)
+		s.nodes = append(s.nodes, &node)
+	} else if ctx.GetStart().GetTokenType() == 127 {
+		//str := opts.TreeData{Name: "String"}
+		//s.current.Children = append(s.current.Children, &str)
+		//s.current = &str
+		node := opts.TreeData{Name: ctx.GetStart().GetText()}
+		s.current.Children = append(s.current.Children, &node)
+		s.nodes = append(s.nodes, &node)
+	} else {
+		// TODO: нужно обработать
+		node := opts.TreeData{Name: ctx.GetStart().GetText()}
+		s.current.Children = append(s.current.Children, &node)
+		s.nodes = append(s.nodes, &q)
+	}
 }
 
 // ExitPrimary_expression is called when production primary_expression is exited.
@@ -1646,11 +1665,11 @@ func (s *BaseObjCListener) EnterStruct_declarator_list(ctx *Struct_declarator_li
 
 // ExitStruct_declarator_list is called when production struct_declarator_list is exited.
 func (s *BaseObjCListener) ExitStruct_declarator_list(ctx *Struct_declarator_listContext) {
-	node := opts.TreeData{Name: ";"}
-	s.current.Children = append(s.current.Children, &node)
-	s.nodes = append(s.nodes, &node)
-	s.nodes = s.nodes[:len(s.nodes)-1]
-	s.current = s.nodes[len(s.nodes)-1]
+	//node := opts.TreeData{Name: ";"}
+	//s.current.Children = append(s.current.Children, &node)
+	//s.nodes = append(s.nodes, &node)
+	//s.nodes = s.nodes[:len(s.nodes)-1]
+	//s.current = s.nodes[len(s.nodes)-1]
 }
 
 // EnterStruct_declarator is called when production struct_declarator is entered.
@@ -1836,6 +1855,7 @@ func (s *BaseObjCListener) EnterInitializer(ctx *InitializerContext) {
 
 // ExitInitializer is called when production initializer is exited.
 func (s *BaseObjCListener) ExitInitializer(ctx *InitializerContext) {
+	// TODO: осторожно!
 	//s.nodes = s.nodes[:len(s.nodes)-1]
 	//s.current = s.nodes[len(s.nodes)-1]
 }
@@ -2160,9 +2180,11 @@ func (s *BaseObjCListener) ExitJump_statement(ctx *Jump_statementContext) {
 
 // EnterExpression is called when production expression is entered.
 func (s *BaseObjCListener) EnterExpression(ctx *ExpressionContext) {
-// TODO: закомментировать
+// TODO: закомментировать добавить ";"
 	node := opts.TreeData{Name: "Expression"}
 	s.current.Children = append(s.current.Children, &node)
+	q := opts.TreeData{Name: ";"}
+	s.current.Children = append(s.current.Children, &q)
 	s.current = &node
 	s.nodes = append(s.nodes, &node)
 	s.Flags.expression = true
@@ -2170,6 +2192,7 @@ func (s *BaseObjCListener) EnterExpression(ctx *ExpressionContext) {
 
 // ExitExpression is called when production expression is exited.
 func (s *BaseObjCListener) ExitExpression(ctx *ExpressionContext) {
+	// TODO: перенести expression
 	s.nodes = s.nodes[:len(s.nodes)-1]
 	s.current = s.nodes[len(s.nodes)-1]
 	s.Flags.expression = false
@@ -2194,8 +2217,6 @@ func (s *BaseObjCListener) EnterAssignment_expression(ctx *Assignment_expression
 		//s.current = &node
 	} else {
 		s.current.Children = append(s.current.Children, &node)
-		sep := opts.TreeData{Name: ";"}
-		s.current.Children = append(s.current.Children, &sep)
 		s.current = &node
 	}
 	s.Flags.expression = true
@@ -2210,7 +2231,10 @@ func (s *BaseObjCListener) ExitAssignment_expression(ctx *Assignment_expressionC
 
 // EnterAssignment_operator is called when production assignment_operator is entered.
 func (s *BaseObjCListener) EnterAssignment_operator(ctx *Assignment_operatorContext) {
-	node := opts.TreeData{Name: ctx.GetStart().GetText()}
+	q := opts.TreeData{Name: "Assignment_operator"}
+	s.current.Children = append(s.current.Children, &q)
+	s.current = &q
+	node := opts.TreeData{Name: ctx.GetText()}
 	s.current.Children = append(s.current.Children, &node)
 	//s.current = &node
 	s.nodes = append(s.nodes, &node)
@@ -2278,6 +2302,9 @@ func (s *BaseObjCListener) ExitConstant_expression(ctx *Constant_expressionConte
 // EnterLogical_or_expression is called when production logical_or_expression is entered.
 func (s *BaseObjCListener) EnterLogical_or_expression(ctx *Logical_or_expressionContext) {
 	if queue_conditional.Len() > 0 {
+		q := opts.TreeData{Name: "Conditional_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_conditional.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2298,6 +2325,9 @@ func (s *BaseObjCListener) ExitLogical_or_expression(ctx *Logical_or_expressionC
 // EnterLogical_and_expression is called when production logical_and_expression is entered.
 func (s *BaseObjCListener) EnterLogical_and_expression(ctx *Logical_and_expressionContext) {
 	if queue_logical_or.Len() > 0 {
+		q := opts.TreeData{Name: "Logical_or_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_logical_or.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2317,13 +2347,14 @@ func (s *BaseObjCListener) ExitLogical_and_expression(ctx *Logical_and_expressio
 
 // EnterInclusive_or_expression is called when production inclusive_or_expression is entered.
 func (s *BaseObjCListener) EnterInclusive_or_expression(ctx *Inclusive_or_expressionContext) {
+	log.Println("HHHHEEEEEELLLLLLLPPPPPP:" + ctx.GetText() + " " + ctx.GetStart().GetText())
 	if queue_logical_and.Len() > 0 {
+		q := opts.TreeData{Name: "Logical_and_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_logical_and.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
-		if s.current.Children[len(s.current.Children)-1].Name != n.Name {
-			s.nodes[len(s.nodes) - 1].Children = append(s.current.Children, &n)
-		}
-
+		s.nodes = append(s.nodes, &n)
 		queue_logical_and.Remove(queue_logical_and.Front())
 		s.QFlags.queue_logical_and = true
 	}
@@ -2341,6 +2372,9 @@ func (s *BaseObjCListener) ExitInclusive_or_expression(ctx *Inclusive_or_express
 // EnterExclusive_or_expression is called when production exclusive_or_expression is entered.
 func (s *BaseObjCListener) EnterExclusive_or_expression(ctx *Exclusive_or_expressionContext) {
 	if queue_inclusive_or.Len() > 0 {
+		q := opts.TreeData{Name: "inclusive_or_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_inclusive_or.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2361,6 +2395,9 @@ func (s *BaseObjCListener) ExitExclusive_or_expression(ctx *Exclusive_or_express
 // EnterAnd_expression is called when production and_expression is entered.
 func (s *BaseObjCListener) EnterAnd_expression(ctx *And_expressionContext) {
 	if queue_exclusive_or.Len() > 0 {
+		q := opts.TreeData{Name: "exclusive_or_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_exclusive_or.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2385,6 +2422,9 @@ func (s *BaseObjCListener) ExitAnd_expression(ctx *And_expressionContext) {
 // EnterEquality_expression is called when production equality_expression is entered.
 func (s *BaseObjCListener) EnterEquality_expression(ctx *Equality_expressionContext) {
 	if queue_and.Len() > 0 {
+		q := opts.TreeData{Name: "And_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_and.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2405,6 +2445,9 @@ func (s *BaseObjCListener) ExitEquality_expression(ctx *Equality_expressionConte
 // EnterRelational_expression is called when production relational_expression is entered.
 func (s *BaseObjCListener) EnterRelational_expression(ctx *Relational_expressionContext) {
 	if queue_equality.Len() > 0 {
+		q := opts.TreeData{Name: "Equality_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_equality.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2431,6 +2474,9 @@ func (s *BaseObjCListener) ExitRelational_expression(ctx *Relational_expressionC
 // EnterShift_expression is called when production shift_expression is entered.
 func (s *BaseObjCListener) EnterShift_expression(ctx *Shift_expressionContext) {
 	if queue_relational.Len() > 0 {
+		q := opts.TreeData{Name: "Relational_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_relational.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2485,6 +2531,9 @@ func (s *BaseObjCListener) ExitAdditive_expression(ctx *Additive_expressionConte
 // EnterMultiplicative_expression is called when production multiplicative_expression is entered.
 func (s *BaseObjCListener) EnterMultiplicative_expression(ctx *Multiplicative_expressionContext) {
 	if queue_additive.Len() > 0 {
+		q := opts.TreeData{Name: "Additive_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_additive.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2507,11 +2556,24 @@ func (s *BaseObjCListener) ExitMultiplicative_expression(ctx *Multiplicative_exp
 // EnterCast_expression is called when production cast_expression is entered.
 func (s *BaseObjCListener) EnterCast_expression(ctx *Cast_expressionContext) {
 	if queue_multiplicative.Len() > 0 {
+		q := opts.TreeData{Name: "Multiplicative_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_multiplicative.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
 		queue_multiplicative.Remove(queue_multiplicative.Front())
 		s.QFlags.queue_multiplicative = true
+	}
+	if queue_unary_operator.Len() > 0 {
+		q := opts.TreeData{Name: "Unary_operator"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q // TODO: если нужно сделать параллельно
+		n := opts.TreeData{Name: queue_unary_operator.Front().Value.(string)}
+		s.current.Children = append(s.current.Children, &n)
+		s.nodes = append(s.nodes, &q)
+		queue_unary_operator.Remove(queue_unary_operator.Front())
+		s.QFlags.queue_unary_operator = true
 	}
 }
 
@@ -2524,20 +2586,33 @@ func (s *BaseObjCListener) ExitCast_expression(ctx *Cast_expressionContext) {
 		s.current = s.nodes[len(s.nodes)-1]
 		s.QFlags.queue_multiplicative = false
 	}
+	if s.QFlags.queue_unary_operator {
+		s.nodes = s.nodes[:len(s.nodes)-1]
+		s.current = s.nodes[len(s.nodes)-1]
+		s.QFlags.queue_unary_operator = false
+	}
 }
 
 // EnterUnary_expression is called when production unary_expression is entered.
 func (s *BaseObjCListener) EnterUnary_expression(ctx *Unary_expressionContext) {
 	if ctx.GetStart().GetTokenType() == 93 || ctx.GetStart().GetTokenType() == 94 {
-		n := opts.TreeData{Name: ctx.GetStart().GetText() + "(pre)"}
+		q := opts.TreeData{Name: "Unary_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
+		n := opts.TreeData{Name: ctx.GetStart().GetText()}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
-		//s.QFlags.queue_cast = true
+		s.QFlags.queue_cast = true
 	}
 }
 
 // ExitUnary_expression is called when production unary_expression is exited.
 func (s *BaseObjCListener) ExitUnary_expression(ctx *Unary_expressionContext) {
+	//if ctx.GetStart().GetTokenType() == 93 || ctx.GetStart().GetTokenType() == 94 || ctx.GetStart().GetTokenType() == 97 || ctx.GetStart().GetTokenType() == 99 ||
+	//	ctx.GetStart().GetTokenType() == 96 || ctx.GetStart().GetTokenType() == 84 || ctx.GetStart().GetTokenType() == 83 {
+	//	s.nodes = s.nodes[:len(s.nodes)-1]
+	//	s.current = s.nodes[len(s.nodes)-1]
+	//}
 	//s.nodes = s.nodes[:len(s.nodes)-1]
 	//s.current = s.nodes[len(s.nodes)-1]
 	if s.QFlags.queue_cast {
@@ -2549,7 +2624,20 @@ func (s *BaseObjCListener) ExitUnary_expression(ctx *Unary_expressionContext) {
 
 // EnterUnary_operator is called when production unary_operator is entered.
 func (s *BaseObjCListener) EnterUnary_operator(ctx *Unary_operatorContext) {
+	//if ctx.GetStart().GetTokenType() == 97 || ctx.GetStart().GetTokenType() == 99 ||
+	//	ctx.GetStart().GetTokenType() == 96 || ctx.GetStart().GetTokenType() == 84 || ctx.GetStart().GetTokenType() == 83 {
+	//	q := opts.TreeData{Name: "Unary_operator"}
+	//	s.current.Children = append(s.current.Children, &q)
+	//	s.current = &q
+	//	n := opts.TreeData{Name: ctx.GetText()}
+	//	s.current.Children = append(s.current.Children, &n)
+	//	s.nodes = append(s.nodes, &n)
+	//	s.QFlags.queue_unary_operator = true
+	//}
 	if queue_unary.Len() > 0 {
+		q := opts.TreeData{Name: "Unary_operator"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
 		n := opts.TreeData{Name: queue_unary.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
 		s.nodes = append(s.nodes, &n)
@@ -2571,20 +2659,41 @@ func (s *BaseObjCListener) ExitUnary_operator(ctx *Unary_operatorContext) {
 
 // EnterPostfix_expression is called when production postfix_expression is entered.
 func (s *BaseObjCListener) EnterPostfix_expression(ctx *Postfix_expressionContext) {
-	if ctx.GetStop().GetTokenType() == 93 || ctx.GetStop().GetTokenType() == 94 {
-		n := opts.TreeData{Name: ctx.GetStop().GetText() + "(post)"}
-		s.current.Children = append(s.current.Children, &n)
-		s.nodes = append(s.nodes, &n)
+	if ctx.GetStop().GetTokenType() == 93 || ctx.GetStop().GetTokenType() == 94 ||
+		ctx.GetStop().GetTokenType() == 78 || ctx.GetStop().GetTokenType() == 77 {
+		q := opts.TreeData{Name: "Postfix_expression"}
+		s.current.Children = append(s.current.Children, &q)
+		s.current = &q
+		s.nodes = append(s.nodes, &q)
+		s.QFlags.queue_postfix = true
 	}
+	//if ctx.GetStop().GetTokenType() == 93 || ctx.GetStop().GetTokenType() == 94 {
+	//	q := opts.TreeData{Name: "Postfix_expression"}
+	//	s.current.Children = append(s.current.Children, &q)
+	//	s.current = &q
+	//	n := opts.TreeData{Name: ctx.GetStop().GetText() + "(post)"}
+	//	s.current.Children = append(s.current.Children, &n)
+	//	s.nodes = append(s.nodes, &n)
+	//}
 }
 
 // ExitPostfix_expression is called when production postfix_expression is exited.
 func (s *BaseObjCListener) ExitPostfix_expression(ctx *Postfix_expressionContext) {
-	if s.QFlags.queue_unary_operator {
-		s.nodes = s.nodes[:len(s.nodes)-1]
-		s.current = s.nodes[len(s.nodes)-1]
-		s.QFlags.queue_unary_operator = false
+	if s.QFlags.queue_postfix {
+		n := opts.TreeData{Name: ctx.GetStop().GetText()}
+		s.current.Children = append(s.current.Children, &n)
+		s.nodes = append(s.nodes, &n)
+		s.QFlags.queue_postfix = false
 	}
+	//if ctx.GetStop().GetTokenType() == 93 || ctx.GetStop().GetTokenType() == 94 {
+	//	s.nodes = s.nodes[:len(s.nodes)-1]
+	//	s.current = s.nodes[len(s.nodes)-1]
+	//}
+	//if s.QFlags.queue_unary_operator {
+	//	s.nodes = s.nodes[:len(s.nodes)-1]
+	//	s.current = s.nodes[len(s.nodes)-1]
+	//	s.QFlags.queue_unary_operator = false
+	//}
 }
 
 // EnterArgument_expression_list is called when production argument_expression_list is entered.
@@ -2629,6 +2738,33 @@ func (s *BaseObjCListener) ExitIdentifier(ctx *IdentifierContext) {
 
 // EnterConstant is called when production constant is entered.
 func (s *BaseObjCListener) EnterConstant(ctx *ConstantContext) {
+	if ctx.GetStart().GetTokenType() == 129 || ctx.GetStart().GetTokenType() == 128 ||
+		ctx.GetStart().GetTokenType() == 130 || ctx.GetStart().GetTokenType() == 131 {
+		//q := opts.TreeData{Name: "Constant"}
+		//s.current.Children = append(s.current.Children, &q)
+		//s.current = &q
+		if ctx.GetStart().GetTokenType() == 129 {
+			qw := opts.TreeData{Name: "Decimal"}
+			s.current.Children = append(s.current.Children, &qw)
+			s.current = &qw
+		} else if ctx.GetStart().GetTokenType() == 128 {
+			qw := opts.TreeData{Name: "Hex"}
+			s.current.Children = append(s.current.Children, &qw)
+			s.current = &qw
+		} else if ctx.GetStart().GetTokenType() == 130 {
+			qw := opts.TreeData{Name: "Octal"}
+			s.current.Children = append(s.current.Children, &qw)
+			s.current = &qw
+		} else if ctx.GetStart().GetTokenType() == 131 {
+			qw := opts.TreeData{Name: "Floating"}
+			s.current.Children = append(s.current.Children, &qw)
+			s.current = &qw
+		}
+		qw := opts.TreeData{Name: ctx.GetText()}
+		s.current.Children = append(s.current.Children, &qw)
+		s.current = &qw
+	}
+
 	if queue_relational.Len() > 0 {
 		n := opts.TreeData{Name: queue_relational.Front().Value.(string)}
 		s.current.Children = append(s.current.Children, &n)
