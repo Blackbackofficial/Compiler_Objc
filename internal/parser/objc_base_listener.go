@@ -1181,7 +1181,7 @@ func (s *BaseObjCListener) EnterPrimary_expression(ctx *Primary_expressionContex
 		s.nodes = append(s.nodes, &node)
 	} else {
 		// TODO: нужно обработать
-		node := opts.TreeData{Name: ctx.GetStart().GetText()}
+		node := opts.TreeData{Name: ctx.GetText()}
 		s.current.Children = append(s.current.Children, &node)
 		s.nodes = append(s.nodes, &q)
 	}
@@ -1785,12 +1785,12 @@ func (s *BaseObjCListener) ExitDirect_declarator(ctx *Direct_declaratorContext) 
 // EnterDeclarator_suffix is called when production declarator_suffix is entered.
 func (s *BaseObjCListener) EnterDeclarator_suffix(ctx *Declarator_suffixContext) {
 	if ctx.GetStart().GetTokenType() == 69 {
-		start := opts.TreeData{Name: "("}
+		//start := opts.TreeData{Name: "("}
 		node := opts.TreeData{Name: "Declarator_suffix"}
-		end := opts.TreeData{Name: ")"}
-		s.current.Children = append(s.current.Children, &start)
+		//end := opts.TreeData{Name: ")"}
+		//s.current.Children = append(s.current.Children, &start)
 		s.current.Children = append(s.current.Children, &node)
-		s.current.Children = append(s.current.Children, &end)
+		//s.current.Children = append(s.current.Children, &end)
 		s.current = &node
 		s.nodes = append(s.nodes, &node)
 	} else if ctx.GetStart().GetTokenType() == 73 {
@@ -1813,16 +1813,20 @@ func (s *BaseObjCListener) ExitDeclarator_suffix(ctx *Declarator_suffixContext) 
 
 // EnterParameter_list is called when production parameter_list is entered.
 func (s *BaseObjCListener) EnterParameter_list(ctx *Parameter_listContext) {
-	//node := opts.TreeData{Name: "Parameter_list"}
-	//s.current.Children = append(s.current.Children, &node)
-	//s.current = &node
-	//s.nodes = append(s.nodes, &node)
+	start := opts.TreeData{Name: "("}
+	node := opts.TreeData{Name: "Parameter_list"}
+	end := opts.TreeData{Name: ")"}
+	s.current.Children = append(s.current.Children, &start)
+	s.current.Children = append(s.current.Children, &node)
+	s.current.Children = append(s.current.Children, &end)
+	s.current = &node
+	s.nodes = append(s.nodes, &node)
 }
 
 // ExitParameter_list is called when production parameter_list is exited.
 func (s *BaseObjCListener) ExitParameter_list(ctx *Parameter_listContext) {
-	//s.nodes = s.nodes[:len(s.nodes)-1]
-	//s.current = s.nodes[len(s.nodes)-1]
+	s.nodes = s.nodes[:len(s.nodes)-1]
+	s.current = s.nodes[len(s.nodes)-1]
 }
 
 // EnterParameter_declaration is called when production parameter_declaration is entered.
@@ -2347,7 +2351,7 @@ func (s *BaseObjCListener) ExitLogical_and_expression(ctx *Logical_and_expressio
 
 // EnterInclusive_or_expression is called when production inclusive_or_expression is entered.
 func (s *BaseObjCListener) EnterInclusive_or_expression(ctx *Inclusive_or_expressionContext) {
-	log.Println("HHHHEEEEEELLLLLLLPPPPPP:" + ctx.GetText() + " " + ctx.GetStart().GetText())
+	//log.Println("HHHHEEEEEELLLLLLLPPPPPP:" + ctx.GetText() + " " + ctx.GetStart().GetText())
 	if queue_logical_and.Len() > 0 {
 		q := opts.TreeData{Name: "Logical_and_expression"}
 		s.current.Children = append(s.current.Children, &q)
@@ -2738,32 +2742,32 @@ func (s *BaseObjCListener) ExitIdentifier(ctx *IdentifierContext) {
 
 // EnterConstant is called when production constant is entered.
 func (s *BaseObjCListener) EnterConstant(ctx *ConstantContext) {
-	if ctx.GetStart().GetTokenType() == 129 || ctx.GetStart().GetTokenType() == 128 ||
-		ctx.GetStart().GetTokenType() == 130 || ctx.GetStart().GetTokenType() == 131 {
-		//q := opts.TreeData{Name: "Constant"}
-		//s.current.Children = append(s.current.Children, &q)
-		//s.current = &q
-		if ctx.GetStart().GetTokenType() == 129 {
-			qw := opts.TreeData{Name: "Decimal"}
-			s.current.Children = append(s.current.Children, &qw)
-			s.current = &qw
-		} else if ctx.GetStart().GetTokenType() == 128 {
-			qw := opts.TreeData{Name: "Hex"}
-			s.current.Children = append(s.current.Children, &qw)
-			s.current = &qw
-		} else if ctx.GetStart().GetTokenType() == 130 {
-			qw := opts.TreeData{Name: "Octal"}
-			s.current.Children = append(s.current.Children, &qw)
-			s.current = &qw
-		} else if ctx.GetStart().GetTokenType() == 131 {
-			qw := opts.TreeData{Name: "Floating"}
-			s.current.Children = append(s.current.Children, &qw)
-			s.current = &qw
-		}
-		qw := opts.TreeData{Name: ctx.GetText()}
-		s.current.Children = append(s.current.Children, &qw)
-		s.current = &qw
-	}
+	//if ctx.GetStart().GetTokenType() == 129 || ctx.GetStart().GetTokenType() == 128 ||
+	//	ctx.GetStart().GetTokenType() == 130 || ctx.GetStart().GetTokenType() == 131 {
+	//	//q := opts.TreeData{Name: "Constant"}
+	//	//s.current.Children = append(s.current.Children, &q)
+	//	//s.current = &q
+	//	if ctx.GetStart().GetTokenType() == 129 {
+	//		qw := opts.TreeData{Name: "Decimal"}
+	//		s.current.Children = append(s.current.Children, &qw)
+	//		s.current = &qw
+	//	} else if ctx.GetStart().GetTokenType() == 128 {
+	//		qw := opts.TreeData{Name: "Hex"}
+	//		s.current.Children = append(s.current.Children, &qw)
+	//		s.current = &qw
+	//	} else if ctx.GetStart().GetTokenType() == 130 {
+	//		qw := opts.TreeData{Name: "Octal"}
+	//		s.current.Children = append(s.current.Children, &qw)
+	//		s.current = &qw
+	//	} else if ctx.GetStart().GetTokenType() == 131 {
+	//		qw := opts.TreeData{Name: "Floating"}
+	//		s.current.Children = append(s.current.Children, &qw)
+	//		s.current = &qw
+	//	}
+	//	qw := opts.TreeData{Name: ctx.GetText()}
+	//	s.current.Children = append(s.current.Children, &qw)
+	//	s.current = &qw
+	//}
 
 	if queue_relational.Len() > 0 {
 		n := opts.TreeData{Name: queue_relational.Front().Value.(string)}

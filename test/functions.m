@@ -6,6 +6,7 @@ void func1(int count) {
     for(i; i <= 1; i++) {
         j = i;
     }
+    main()
     func2(j);
 }
 
@@ -13,6 +14,7 @@ void func2(int count) {
     int j = 0;
     int i = count;
     for (i; i <= 1; i++) {
+        char k = "4";
         j = i;
     }
     func3(j);

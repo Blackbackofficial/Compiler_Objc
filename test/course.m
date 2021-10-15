@@ -31,15 +31,15 @@ WhileStatement() {
     }
 }
 
-// DoWhileStatement() {
-//     int i = 600;
-//     int foo = 10;
-//     do {
-//         int razr = foo;
-//         razr = 1 + --razr;
-//         foo = razr;
-//     } while (i / i > 0 && foo % foo >= 1);
-// }
+DoWhileStatement() {
+    int i = 600;
+    int foo = 10;
+    do {
+        int razr = foo;
+        razr = 1 + --razr;
+        foo = razr;
+    } while (i / i > 0 && foo % foo >= 1);
+}
 
 int main(int argc, char *argv[]) {
     IfStatement();
